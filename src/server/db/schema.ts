@@ -3,15 +3,15 @@
 
 import { sql } from "drizzle-orm";
 import {
+  boolean,
+  date,
   index,
   integer,
+  pgEnum,
   pgTableCreator,
   timestamp,
-  varchar,
-  date,
   uuid,
-  boolean,
-  pgEnum,
+  varchar,
 } from "drizzle-orm/pg-core";
 
 /**
