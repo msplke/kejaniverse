@@ -1,6 +1,7 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
+import { table } from "console";
 import { sql } from "drizzle-orm";
 import {
   boolean,
@@ -41,18 +42,24 @@ export const prpoertyOwner = createTable(
   }),
 );
 
-export const property = createTable("property", {
-  id: uuid("id")
-    .primaryKey()
-    .default(sql`uuid_generate_v7()`),
-  name: varchar("name", { length: 256 }).notNull(),
-  ownerId: uuid("owner_id").references(() => prpoertyOwner.id),
-  bankAccountNo: varchar("bank_account_no", { length: 256 }).notNull(),
-  // address: varchar("name", { length: 256 }).notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-});
+export const property = createTable(
+  "property",
+  {
+    id: uuid("id")
+      .primaryKey()
+      .default(sql`uuid_generate_v7()`),
+    name: varchar("name", { length: 256 }).notNull(),
+    ownerId: uuid("owner_id").references(() => prpoertyOwner.id),
+    bankAccountNo: varchar("bank_account_no", { length: 256 }).notNull(),
+    // address: varchar("name", { length: 256 }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  },
+  (table) => ({
+    nameIndex: index("name_idx").on(table.name),
+  }),
+);
 
 export const tenant = createTable("tenant", {
   id: uuid("id")
