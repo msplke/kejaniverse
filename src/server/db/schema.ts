@@ -1,7 +1,6 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { table } from "console";
 import { sql } from "drizzle-orm";
 import {
   boolean,
@@ -38,7 +37,7 @@ export const prpoertyOwner = createTable(
       .notNull(),
   },
   (table) => ({
-    firstNameIndex: index("name_idx").on(table.firstName),
+    firstNameIndex: index("owner_first_name_idx").on(table.firstName),
   }),
 );
 
@@ -57,7 +56,7 @@ export const property = createTable(
       .notNull(),
   },
   (table) => ({
-    nameIndex: index("name_idx").on(table.name),
+    nameIndex: index("property_name_idx").on(table.name),
   }),
 );
 
