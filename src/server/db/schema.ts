@@ -22,19 +22,27 @@ import {
  */
 export const createTable = pgTableCreator((name) => `kejaniverse_${name}`);
 
+const personalDetails = {
+  firstName: varchar("first_name", { length: 256 }).notNull(),
+  lastName: varchar("last_name", { length: 256 }).notNull(),
+  phoneNumber: varchar("phone_number", { length: 256 }).notNull(),
+  email: varchar("name", { length: 256 }).notNull(),
+};
+
+const createdAt = {
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+};
+
 export const prpoertyOwner = createTable(
   "property_owner",
   {
     id: uuid("id")
       .primaryKey()
       .default(sql`uuid_generate_v7()`),
-    firstName: varchar("first_name", { length: 256 }).notNull(),
-    lastName: varchar("last_name", { length: 256 }).notNull(),
-    phoneNumber: varchar("phone_number", { length: 256 }).notNull(),
-    email: varchar("name", { length: 256 }).notNull(),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
+    ...personalDetails,
+    ...createdAt,
   },
   (table) => ({
     firstNameIndex: index("owner_first_name_idx").on(table.firstName),
@@ -47,13 +55,11 @@ export const property = createTable(
     id: uuid("id")
       .primaryKey()
       .default(sql`uuid_generate_v7()`),
-    name: varchar("name", { length: 256 }).notNull(),
+    name: varchar("name", { length: 64 }).notNull(),
     ownerId: uuid("owner_id").references(() => prpoertyOwner.id),
-    bankAccountNo: varchar("bank_account_no", { length: 256 }).notNull(),
+    bankAccountNo: varchar("bank_account_no", { length: 32 }).notNull(),
     // address: varchar("name", { length: 256 }).notNull(),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
+    ...createdAt,
   },
   (table) => ({
     nameIndex: index("property_name_idx").on(table.name),
@@ -65,10 +71,10 @@ export const tenant = createTable("tenant", {
     .primaryKey()
     .default(sql`uuid_generate_v7()`),
   unit_id: uuid("unit_id").references(() => property.id),
-  firstName: varchar("first_name", { length: 256 }).notNull(),
-  lastName: varchar("last_name", { length: 256 }).notNull(),
-  phoneNumber: varchar("phone_number", { length: 256 }).notNull(),
-  email: varchar("email", { length: 256 }).notNull(),
+  firstName: varchar("first_name", { length: 32 }).notNull(),
+  lastName: varchar("last_name", { length: 32 }).notNull(),
+  phoneNumber: varchar("phone_number", { length: 16 }).notNull(),
+  email: varchar("email", { length: 64 }).notNull(),
   moveInDate: date("move_in_date").notNull(),
   moveOutDate: date("move_out_date"),
   cumulativeRentPaid: integer("cumulative_amount").notNull(),
@@ -103,7 +109,7 @@ export const payment = createTable("payment", {
   unitId: uuid("unit_id").references(() => unit.id),
   tenantId: uuid("tenant_id").references(() => tenant.id),
   amount: integer("amount").notNull(),
-  paymentDate: date("payment_date").notNull(),
+  paidAt: timestamp("paid_at").notNull(),
   paymentMethod: paymentMethodEnum("payment_method").notNull(),
   paymentReference: varchar("payment_reference", { length: 256 }).notNull(),
 });
