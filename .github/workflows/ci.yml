@@ -27,9 +27,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Setup Contentlayer
-        run: pnpm contentlayer2 build
-
       - name: Run linter
         run: |
           pnpm lint
@@ -52,9 +49,6 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
-
-      - name: Setup Contentlayer
-        run: pnpm contentlayer2 build
 
       - name: Run typecheck
         run: pnpm typecheck
