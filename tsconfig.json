@@ -8,6 +8,7 @@
     "resolveJsonModule": true,
     "moduleDetection": "force",
     "isolatedModules": true,
+    "verbatimModuleSyntax": true,
 
     /* Strictness */
     "strict": true,
@@ -35,8 +36,8 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.js",
-    ".eslintrc.cjs",
     ".next/types/**/*.ts",
+    "eslint.config.js",
     "next-env.d.ts"
   ],
   "exclude": ["node_modules"]
