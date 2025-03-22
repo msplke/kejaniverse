@@ -29,7 +29,7 @@ const id = uuid("id")
 const personalDetails = {
   firstName: varchar("first_name", { length: 32 }).notNull(),
   lastName: varchar("last_name", { length: 32 }).notNull(),
-  phoneNumber: varchar("phone_number", { length: 16 }).notNull(),
+  phoneNumber: varchar("phone_number", { length: 16 }),
   email: varchar("email", { length: 64 }).notNull(),
 };
 
@@ -40,7 +40,7 @@ const createdAt = timestamp("created_at", { withTimezone: true })
 export const propertyOwner = createTable(
   "property_owner",
   {
-    id,
+    id: varchar({ length: 32 }).primaryKey(),
     ...personalDetails,
     createdAt,
   },
@@ -59,7 +59,9 @@ export const property = createTable(
     bankAccountNo: varchar("bank_account_no", { length: 32 }).notNull(),
     createdAt,
 
-    ownerId: uuid("owner_id").references(() => propertyOwner.id),
+    ownerId: varchar("owner_id", { length: 32 }).references(
+      () => propertyOwner.id,
+    ),
   },
   (table) => ({
     nameIndex: index("property_name_idx").on(table.name),
@@ -77,7 +79,7 @@ export const tenant = createTable(
     moveOutDate: date("move_out_date"),
     cumulativeRentPaid: integer("cumulative_rent_paid").default(0).notNull(),
 
-    unit_id: uuid("unit_id").references(() => property.id),
+    unitId: uuid("unit_id").references(() => property.id),
   },
   (table) => ({
     firstNameIndex: index("tenant_first_name_idx").on(table.firstName),
