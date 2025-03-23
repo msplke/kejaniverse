@@ -4,8 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "~/styles/globals.css";
 
 import { cn, constructMetadata } from "~/lib/utils";
-import { TailwindIndicator } from "./_components/tailwind-indicator";
-import { ThemeProvider } from "./_components/theme-provider";
+import { Providers } from "./_components/providers";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -26,11 +25,9 @@ export default function RootLayout({
             geist.variable,
           )}
         >
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <Providers>
             <div className="flex-1">{children}</div>
-
-            <TailwindIndicator />
-          </ThemeProvider>
+          </Providers>
         </body>
       </html>
     </ClerkProvider>
