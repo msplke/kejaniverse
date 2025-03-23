@@ -1,18 +1,22 @@
 "use server";
 
+import "server-only";
+
 import { auth } from "@clerk/nextjs/server";
 
-import { db } from "../db";
-import { property } from "../db/schema";
+import { type CreatePropertyFormData } from "~/app/(dashboard)/properties/new/page";
+import { db } from "~/server/db";
+import { property } from "~/server/db/schema";
 
-export async function createProperty(
-  propertyName: string,
-  bankAccountNo: string,
-) {
+export async function createProperty({
+  propertyName,
+  bankAccountNo,
+}: CreatePropertyFormData) {
   const { userId } = await auth();
-  if (userId === null) {
+  if (!userId) {
     throw new Error("User not authenticated");
   }
+
   const result = await db
     .insert(property)
     .values({
