@@ -92,7 +92,7 @@ function ProfileForm() {
             <FormItem>
               <FormLabel>Bank Account Number</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="12345678" {...field} />
+                <Input placeholder="12345678" {...field} />
               </FormControl>
               <FormDescription>
                 This will be used to settle payments received from tenants.
