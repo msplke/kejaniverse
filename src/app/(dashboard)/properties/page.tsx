@@ -8,7 +8,7 @@ export default function Page() {
     <main>
       <h1 className="text-2xl">Properties</h1>
       <div className="mt-4 flex">
-        <Link href={"/dashboard/properties/new"}>
+        <Link href={"/properties/new"}>
           <Card className="w-2xs">
             <CardContent>
               <div className="flex flex-col items-center gap-2">
