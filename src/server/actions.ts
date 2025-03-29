@@ -4,13 +4,13 @@ import "server-only";
 
 import { auth } from "@clerk/nextjs/server";
 
-import { type CreatePropertyFormData } from "~/app/(dashboard)/properties/new/page";
+import { type CreatePropertyFormData } from "~/app/(dashboard)/properties/new/context";
 import { db } from "~/server/db";
 import { property } from "~/server/db/schema";
 
 export async function createProperty({
   propertyName,
-  bankAccountNo,
+  bankAccountNumber,
 }: CreatePropertyFormData) {
   const { userId } = await auth();
   if (!userId) {
@@ -22,7 +22,7 @@ export async function createProperty({
     .values({
       ownerId: userId,
       name: propertyName,
-      bankAccountNo: bankAccountNo,
+      bankAccountNo: bankAccountNumber,
     })
     .returning({ insertedId: property.id });
 
