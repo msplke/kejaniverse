@@ -1,9 +1,10 @@
 "use client";
 
 import { useContext, useEffect } from "react";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Check, Plus, Trash } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { Check, Loader, Plus, Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -33,19 +34,34 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
+import { createProperty } from "~/server/actions";
 import {
   CreateUnitTypeFormSchema,
   FormContext,
   SetFormValuesContext,
+  type CreatePropertyFormContextType,
   type CreateUnitTypeFormData,
 } from "../context";
 
-function CreateUnitTypeForm({
-  unitTypes,
-}: {
-  unitTypes: CreateUnitTypeFormData[];
-}) {
+function CreateUnitTypeForm() {
+  const router = useRouter();
+  const { propertyName, bankAccountNumber, unitTypes } =
+    useContext(FormContext);
   const setFormData = useContext(SetFormValuesContext);
+
+  const { mutate: server_createProperty, isPending } = useMutation({
+    mutationFn: async (data: CreatePropertyFormContextType) =>
+      createProperty(data),
+
+    onSuccess: (id) => {
+      toast.success(`Success. Property created with id: ${id}`);
+      router.push(`/properties/${id}`);
+    },
+
+    onError: () => {
+      toast.error("Failed. Please try again.");
+    },
+  });
 
   const form = useForm<CreateUnitTypeFormData>({
     resolver: zodResolver(CreateUnitTypeFormSchema),
@@ -75,6 +91,10 @@ function CreateUnitTypeForm({
     });
     form.reset();
     form.setFocus("unitType");
+  }
+
+  function onDone() {
+    server_createProperty({ propertyName, bankAccountNumber, unitTypes });
   }
 
   return (
@@ -133,9 +153,22 @@ function CreateUnitTypeForm({
             <Plus className="h-4 w-4" />
             <span>Add</span>
           </Button>
-          <Button type="button" disabled={unitTypes.length === 0}>
-            <Check className="h-4 w-4" />
-            <span>Done</span>
+          <Button
+            type="button"
+            disabled={unitTypes.length === 0}
+            onClick={onDone}
+          >
+            {isPending ? (
+              <>
+                <Loader className="h-4 w-4 animate-spin" />
+                <span>Creating...</span>
+              </>
+            ) : (
+              <>
+                <Check className="h-4 w-4" />
+                <span>Done</span>
+              </>
+            )}
           </Button>
         </div>
       </form>
@@ -205,7 +238,7 @@ export default function Page() {
       <div className="grid gap-8 md:grid-cols-2">
         <UnitTypesTable unitTypes={unitTypes} />
         <Separator className="md:hidden" />
-        <CreateUnitTypeForm unitTypes={unitTypes} />
+        <CreateUnitTypeForm />
       </div>
     </div>
   );
