@@ -56,7 +56,7 @@ export const property = createTable(
     id,
     name: varchar("name", { length: 64 }).notNull(),
     // address: varchar("address", { length: 64 }).notNull(),
-    bankAccountNo: varchar("bank_account_no", { length: 32 }).notNull(),
+    bankAccountNumber: varchar("bank_account_number", { length: 32 }).notNull(),
     createdAt,
 
     ownerId: varchar("owner_id", { length: 32 }).references(
@@ -98,7 +98,7 @@ export const unitTypeEnum = pgEnum("unit_type_enum", [
 export const unitType = createTable("unit_type", {
   id,
   unitType: unitTypeEnum("unit_type").notNull(),
-  pricePerMonth: integer("price_per_month").notNull(),
+  rentPrice: integer("rent_price").notNull(),
   propertyId: uuid("property_id").references(() => property.id),
 });
 
