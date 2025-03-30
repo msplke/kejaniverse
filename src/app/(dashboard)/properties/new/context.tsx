@@ -33,17 +33,19 @@ export const CreateUnitTypeFormSchema = z.object({
 
 export type CreateUnitTypeFormData = z.infer<typeof CreateUnitTypeFormSchema>;
 
-export type FormContextType = CreatePropertyFormData & {
+export type CreatePropertyFormContextType = CreatePropertyFormData & {
   unitTypes: CreateUnitTypeFormData[];
 };
 
-export const defaultContext: FormContextType = {
+export const defaultContext: CreatePropertyFormContextType = {
   propertyName: "",
   bankAccountNumber: "",
   unitTypes: [],
 };
 
-export type SetValuesContext = Dispatch<SetStateAction<FormContextType>>;
+export type SetValuesContext = Dispatch<
+  SetStateAction<CreatePropertyFormContextType>
+>;
 
 export const FormContext = createContext(defaultContext);
 
