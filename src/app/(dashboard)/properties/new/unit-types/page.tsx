@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext, useEffect } from "react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { Check, Loader, Plus, Trash } from "lucide-react";
@@ -224,15 +224,17 @@ function UnitTypesTable({
 }
 
 export default function Page() {
+  const router = useRouter();
+
   const { bankAccountNumber, propertyName, unitTypes } = useContext(
     CreatePropertyFormContext,
   );
 
   useEffect(() => {
     if (!bankAccountNumber || !propertyName) {
-      redirect("/properties/new");
+      router.push("/properties/new");
     }
-  }, [bankAccountNumber, propertyName]);
+  }, [router, bankAccountNumber, propertyName]);
 
   return (
     <div>
