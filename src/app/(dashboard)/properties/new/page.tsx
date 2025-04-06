@@ -18,14 +18,14 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import {
+  CreatePropertyFormDispatchContext,
   CreatePropertyFormSchema,
-  SetFormValuesContext,
   type CreatePropertyFormData,
 } from "./context";
 
 export default function ProfileForm() {
   const router = useRouter();
-  const setFormData = useContext(SetFormValuesContext);
+  const setFormData = useContext(CreatePropertyFormDispatchContext);
 
   const form = useForm<CreatePropertyFormData>({
     resolver: zodResolver(CreatePropertyFormSchema),

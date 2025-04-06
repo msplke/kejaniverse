@@ -36,18 +36,19 @@ import {
 } from "~/components/ui/table";
 import { createProperty } from "~/server/actions";
 import {
+  CreatePropertyFormContext,
+  CreatePropertyFormDispatchContext,
   CreateUnitTypeFormSchema,
-  FormContext,
-  SetFormValuesContext,
   type CreatePropertyFormContextType,
   type CreateUnitTypeFormData,
 } from "../context";
 
 function CreateUnitTypeForm() {
   const router = useRouter();
-  const { propertyName, bankAccountNumber, unitTypes } =
-    useContext(FormContext);
-  const setFormData = useContext(SetFormValuesContext);
+  const { propertyName, bankAccountNumber, unitTypes } = useContext(
+    CreatePropertyFormContext,
+  );
+  const setFormData = useContext(CreatePropertyFormDispatchContext);
 
   const { mutate: server_createProperty, isPending } = useMutation({
     mutationFn: async (data: CreatePropertyFormContextType) =>
@@ -73,7 +74,6 @@ function CreateUnitTypeForm() {
 
   function onSubmit(values: CreateUnitTypeFormData) {
     setFormData((prev) => {
-      console.log("formstate:", form.formState);
       const unitTypeExists = prev.unitTypes.find(
         (v) =>
           v.unitType === values.unitType && v.rentPrice === values.rentPrice,
@@ -181,7 +181,7 @@ function UnitTypesTable({
 }: {
   unitTypes: CreateUnitTypeFormData[];
 }) {
-  const setFormData = useContext(SetFormValuesContext);
+  const setFormData = useContext(CreatePropertyFormDispatchContext);
 
   function deleteUnitType(unitType: CreateUnitTypeFormData) {
     setFormData((prev) => {
@@ -224,8 +224,9 @@ function UnitTypesTable({
 }
 
 export default function Page() {
-  const { bankAccountNumber, propertyName, unitTypes } =
-    useContext(FormContext);
+  const { bankAccountNumber, propertyName, unitTypes } = useContext(
+    CreatePropertyFormContext,
+  );
 
   useEffect(() => {
     if (!bankAccountNumber || !propertyName) {
