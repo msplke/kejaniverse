@@ -205,9 +205,10 @@ function UnitTypesTable({
             <TableHead className="text-right">Rent Price</TableHead>
           </TableRow>
         </TableHeader>
+
         <TableBody>
-          {unitTypes.map((unitType, i) => (
-            <TableRow key={i}>
+          {unitTypes.map((unitType) => (
+            <TableRow key={`${unitType.unitType}-${unitType.rentPrice}`}>
               <TableCell className="font-medium">{unitType.unitType}</TableCell>
               <TableCell className="text-right">{unitType.rentPrice}</TableCell>
               <TableCell className="text-right">
