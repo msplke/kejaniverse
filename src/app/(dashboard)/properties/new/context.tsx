@@ -43,15 +43,15 @@ export const defaultContext: CreatePropertyFormContextType = {
   unitTypes: [],
 };
 
-export type SetValuesContext = Dispatch<
+export type CreatePropertyFormDispatch = Dispatch<
   SetStateAction<CreatePropertyFormContextType>
 >;
 
-export const FormContext = createContext(defaultContext);
+export const CreatePropertyFormContext = createContext(defaultContext);
 
-export const defaultSetValue: SetValuesContext = (v) => {
+export const defaultSetValue: CreatePropertyFormDispatch = (v) => {
   console.log(v);
 };
 
-export const SetFormValuesContext =
-  createContext<SetValuesContext>(defaultSetValue);
+export const CreatePropertyFormDispatchContext =
+  createContext<CreatePropertyFormDispatch>(defaultSetValue);
