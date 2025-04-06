@@ -34,9 +34,9 @@ export default function LandingPage() {
               </SignUpButton>
             </SignedOut>
             <SignedIn>
-              <Link href="/dashboard">
+              <Link href="/properties">
                 <Button size="sm" className="cursor-pointer">
-                  Dashboard
+                  Properties
                 </Button>
               </Link>
               <UserButton />
