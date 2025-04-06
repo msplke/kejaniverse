@@ -186,7 +186,11 @@ function UnitTypesTable({
   function deleteUnitType(unitType: CreateUnitTypeFormData) {
     setFormData((prev) => {
       const unitTypes = prev.unitTypes.filter(
-        (prevUnitType) => !Object.is(prevUnitType, unitType),
+        (prevUnitType) =>
+          !(
+            prevUnitType.unitType === unitType.unitType &&
+            prevUnitType.rentPrice === unitType.rentPrice
+          ),
       );
       return { ...prev, unitTypes };
     });
