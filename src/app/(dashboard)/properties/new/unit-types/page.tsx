@@ -54,9 +54,9 @@ function CreateUnitTypeForm() {
     mutationFn: async (data: CreatePropertyFormContextType) =>
       createProperty(data),
 
-    onSuccess: (id) => {
-      toast.success(`Success. Property created with id: ${id}`);
-      router.push(`/properties/${id}`);
+    onSuccess: ({ propertyId, propertyName }) => {
+      toast.success(`Success. Property "${propertyName}" created.`);
+      router.push(`/properties/${propertyId}`);
     },
 
     onError: () => {
