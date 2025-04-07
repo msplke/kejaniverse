@@ -42,7 +42,7 @@ export async function createProperty({
       })),
     );
 
-    return propertyId;
+    return { propertyId, propertyName };
   });
 
   return result;
