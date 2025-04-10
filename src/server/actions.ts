@@ -5,7 +5,7 @@ import "server-only";
 import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 
-import { type CreatePropertyFormContextType } from "~/app/(dashboard)/properties/new/context";
+import { type CreatePropertyFormContextType } from "~/app/properties/new/context";
 import type { AddTenantFormData } from "~/components/ui/forms/AddTenantForm";
 import { db } from "~/server/db";
 import { property, tenant, unit, unitType } from "~/server/db/schema";
