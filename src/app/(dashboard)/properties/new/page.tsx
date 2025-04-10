@@ -36,7 +36,6 @@ export default function ProfileForm() {
   });
 
   const onSubmit = (data: CreatePropertyFormData) => {
-    console.log(data);
     setFormData((prev) => ({
       ...prev,
       ...data,
