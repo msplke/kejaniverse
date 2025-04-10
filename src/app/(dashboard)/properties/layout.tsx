@@ -4,8 +4,8 @@ export default function Layout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className="p-4">
-      <div className="flex items-center justify-end py-2">
+    <div className="px-8 py-4">
+      <div className="sticky top-0 flex items-center justify-end py-4">
         <SignedIn>
           <UserButton />
         </SignedIn>
