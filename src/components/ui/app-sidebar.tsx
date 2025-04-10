@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Box, ChevronDown, Home, Settings, Users } from "lucide-react";
+import {
+  Banknote,
+  Box,
+  ChevronDown,
+  Home,
+  Settings,
+  Users,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -79,6 +86,12 @@ export function AppSidebar({ id, properties }: AppSidebarProps) {
           url: `/properties/${id}/tenants/new`,
         },
       ],
+    },
+    {
+      title: "Payments",
+      url: `/properties/${id}/payments`,
+      icon: Banknote,
+      subItems: [],
     },
     {
       title: "Settings",
