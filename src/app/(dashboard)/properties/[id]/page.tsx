@@ -4,8 +4,9 @@ import { eq } from "drizzle-orm";
 import { Plus } from "lucide-react";
 
 import { Button } from "~/components/ui/button";
+import { getUnits } from "~/server/actions";
 import { db } from "~/server/db";
-import { property, unit, unitType } from "~/server/db/schema";
+import { property } from "~/server/db/schema";
 
 type Params = Promise<{ id: string }>;
 
@@ -21,21 +22,7 @@ export default async function Page({ params }: { params: Params }) {
     notFound();
   }
 
-  const unitTypes = await db
-    .select({ id: unitType.id })
-    .from(unitType)
-    .where(eq(unitType.propertyId, id));
-
-  const currentUnits = [];
-
-  for (const type of unitTypes) {
-    const unitData = await db
-      .select({ name: unit.unitName })
-      .from(unit)
-      .where(eq(unit.unitTypeId, type.id));
-
-    currentUnits.push(...unitData);
-  }
+  const units = await getUnits(id);
 
   return (
     <div>
@@ -43,7 +30,7 @@ export default async function Page({ params }: { params: Params }) {
         <h1 className="text-sm">Overview</h1>
         <p className="text-2xl font-bold">{currentProperty[0].name}</p>
         <div className="my-8">
-          {currentUnits.length === 0 ? (
+          {units.length === 0 ? (
             <Link href={`/properties/${id}/units/new`}>
               <Button className="cursor-pointer">
                 <Plus className="h-4 w-4" />

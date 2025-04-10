@@ -31,6 +31,7 @@ import { type unitType } from "~/server/db/schema";
 
 type NewUnitFormProps = {
   unitTypes: InferSelectModel<typeof unitType>[];
+  propertyId: string;
 };
 
 const formSchema = z.object({
@@ -38,7 +39,7 @@ const formSchema = z.object({
   unitType: z.string().min(2).max(50),
 });
 
-export function NewUnitForm({ unitTypes }: NewUnitFormProps) {
+export function NewUnitForm({ unitTypes, propertyId }: NewUnitFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,7 +50,7 @@ export function NewUnitForm({ unitTypes }: NewUnitFormProps) {
 
   const { mutate: server_addUnit, isPending } = useMutation({
     mutationFn: async (data: z.infer<typeof formSchema>) =>
-      addUnit(data.unitName, data.unitType),
+      addUnit(data.unitName, data.unitType, propertyId),
 
     onSuccess: () => {
       toast.success(`Success. Unit created.`);

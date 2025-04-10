@@ -7,7 +7,7 @@ import { eq } from "drizzle-orm";
 
 import { type CreatePropertyFormContextType } from "~/app/(dashboard)/properties/new/context";
 import { db } from "~/server/db";
-import { property, unit, unitType } from "~/server/db/schema";
+import { property, tenant, unit, unitType } from "~/server/db/schema";
 
 export async function createProperty({
   propertyName,
@@ -58,12 +58,17 @@ export async function getUnitTypes(propertyId: string) {
   return unitTypes;
 }
 
-export async function addUnit(unitName: string, unitTypeId: string) {
+export async function addUnit(
+  unitName: string,
+  unitTypeId: string,
+  propertyId: string,
+) {
   const result = await db
     .insert(unit)
     .values({
       unitName,
       unitTypeId,
+      propertyId,
     })
     .returning({ id: unit.id });
 
@@ -71,29 +76,18 @@ export async function addUnit(unitName: string, unitTypeId: string) {
 }
 
 export async function getUnits(propertyId: string) {
-  const unitTypes = await db
-    .select()
-    .from(unitType)
-    .where(eq(unitType.propertyId, propertyId));
+  const units = await db
+    .select({
+      id: unit.id,
+      name: unit.unitName,
+      rentPrice: unitType.rentPrice,
+      unitType: unitType.unitType,
+    })
+    .from(unit)
+    .leftJoin(unitType, eq(unit.unitTypeId, unitType.id))
+    .where(eq(unit.propertyId, propertyId));
 
-  const currentUnits = [];
-
-  for (const type of unitTypes) {
-    const unitData = await db
-      .select({
-        id: unit.id,
-        name: unit.unitName,
-        unitType: unitType.unitType,
-        rentPrice: unitType.rentPrice,
-      })
-      .from(unit)
-      .innerJoin(unitType, eq(unit.unitTypeId, unitType.id))
-      .where(eq(unit.unitTypeId, type.id));
-
-    currentUnits.push(...unitData);
-  }
-
-  return currentUnits;
+  return units;
 }
 
 /**
@@ -112,4 +106,14 @@ export async function getProperties() {
     .where(eq(property.ownerId, userId));
 
   return properties;
+}
+
+export async function getTenants(propertyId: string) {
+  const tenants = await db
+    .select()
+    .from(tenant)
+    .innerJoin(unit, eq(unit.id, tenant.unitId))
+    .where(eq(unit.propertyId, propertyId));
+
+  return tenants;
 }

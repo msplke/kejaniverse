@@ -13,7 +13,7 @@ export default async function NewUnit({ params }: { params: Params }) {
       <h1 className="text-2xl font-bold">New Unit</h1>
       <p className="text-sm">Create a new unit for your property.</p>
       <div className="mt-4">
-        <NewUnitForm unitTypes={unitTypes} />
+        <NewUnitForm unitTypes={unitTypes} propertyId={id} />
       </div>
     </div>
   );
