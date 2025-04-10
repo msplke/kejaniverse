@@ -78,8 +78,7 @@ export const tenant = createTable(
       .notNull(),
     moveOutDate: date("move_out_date"),
     cumulativeRentPaid: integer("cumulative_rent_paid").default(0).notNull(),
-
-    unitId: uuid("unit_id").references(() => property.id),
+    unitId: uuid("unit_id").references(() => unit.id),
   },
   (table) => ({
     firstNameIndex: index("tenant_first_name_idx").on(table.firstName),
