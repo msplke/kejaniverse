@@ -6,6 +6,7 @@ import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 
 import { type CreatePropertyFormContextType } from "~/app/(dashboard)/properties/new/context";
+import type { AddTenantFormData } from "~/components/ui/forms/AddTenantForm";
 import { db } from "~/server/db";
 import { property, tenant, unit, unitType } from "~/server/db/schema";
 
@@ -116,4 +117,19 @@ export async function getTenants(propertyId: string) {
     .where(eq(unit.propertyId, propertyId));
 
   return tenants;
+}
+
+export async function addTenant(data: AddTenantFormData) {
+  const result = await db
+    .insert(tenant)
+    .values({
+      unitId: data.unitId,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      phoneNumber: data.phoneNumber,
+      email: data.email,
+    })
+    .returning({ id: tenant.id });
+
+  return result;
 }
