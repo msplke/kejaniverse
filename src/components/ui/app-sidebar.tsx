@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Box, Home, Settings, Users } from "lucide-react";
+import { Box, ChevronDown, Home, Settings, Users } from "lucide-react";
 
 import {
   Sidebar,
@@ -10,6 +10,7 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -17,12 +18,40 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "~/components/ui/sidebar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./dropdown-menu";
 
-export function AppSidebar({ id }: { id: string }) {
-  const pathname = usePathname();
+type AppSidebarProps = {
+  properties: {
+    id: string;
+    name: string;
+  }[];
+  id: string;
+};
+
+type NavItem = {
+  title: string;
+  url: string;
+  icon: React.ElementType;
+  subItems: {
+    title: string;
+    url: string;
+  }[];
+};
+
+export function AppSidebar({ id, properties }: AppSidebarProps) {
+  const property = properties.find((property) => property.id === id);
+
+  if (!property) {
+    return null;
+  }
 
   // Menu items.
-  const items = [
+  const items: NavItem[] = [
     {
       title: "Overview",
       url: `/properties/${id}`,
@@ -58,50 +87,91 @@ export function AppSidebar({ id }: { id: string }) {
       subItems: [],
     },
   ];
-  // const pathname = usePathname();
 
   return (
     <Sidebar collapsible="icon">
+      <Header property={property} properties={properties} />
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Kejaniverse</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => {
-                const isActive = pathname === item.url;
-
-                return (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild isActive={isActive}>
-                      <Link href={item.url}>
-                        <item.icon />
-                        <span>{item.title}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                    {item.subItems.length > 0 && (
-                      <SidebarMenuSub>
-                        {item.subItems.map((subItem) => {
-                          const isSubActive = pathname === subItem.url;
-                          return (
-                            <SidebarMenuSubItem key={subItem.title}>
-                              <SidebarMenuSubButton
-                                asChild
-                                isActive={isSubActive}
-                              >
-                                <Link href={subItem.url}>{subItem.title}</Link>
-                              </SidebarMenuSubButton>
-                            </SidebarMenuSubItem>
-                          );
-                        })}
-                      </SidebarMenuSub>
-                    )}
-                  </SidebarMenuItem>
-                );
-              })}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        <SidebarNavItems items={items} />
       </SidebarContent>
     </Sidebar>
+  );
+}
+
+type HeaderProps = {
+  property: { id: string; name: string };
+  properties: { id: string; name: string }[];
+};
+
+function Header({ property, properties }: HeaderProps) {
+  return (
+    <SidebarHeader>
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <SidebarMenuButton>
+                {property.name}
+                <ChevronDown className="ml-auto" />
+              </SidebarMenuButton>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
+              {properties.map((property) => (
+                <DropdownMenuItem key={property.id}>
+                  <Link href={`/properties/${property.id}`}>
+                    {property.name}
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    </SidebarHeader>
+  );
+}
+
+type SidebarNavItemsProps = {
+  items: NavItem[];
+};
+
+function SidebarNavItems({ items }: SidebarNavItemsProps) {
+  const pathname = usePathname();
+
+  return (
+    <SidebarGroup>
+      <SidebarGroupLabel>Kejaniverse</SidebarGroupLabel>
+      <SidebarGroupContent>
+        <SidebarMenu>
+          {items.map((item) => {
+            const isActive = pathname === item.url;
+            return (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton asChild isActive={isActive}>
+                  <Link href={item.url}>
+                    <item.icon />
+                    <span>{item.title}</span>
+                  </Link>
+                </SidebarMenuButton>
+                {item.subItems.length > 0 && (
+                  <SidebarMenuSub>
+                    {item.subItems.map((subItem) => {
+                      const isSubActive = pathname === subItem.url;
+                      return (
+                        <SidebarMenuSubItem key={subItem.title}>
+                          <SidebarMenuSubButton asChild isActive={isSubActive}>
+                            <Link href={subItem.url}>{subItem.title}</Link>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      );
+                    })}
+                  </SidebarMenuSub>
+                )}
+              </SidebarMenuItem>
+            );
+          })}
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
   );
 }
