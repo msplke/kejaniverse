@@ -29,7 +29,7 @@ import {
 import { addUnit } from "~/server/actions";
 import { type unitType } from "~/server/db/schema";
 
-type NewUnitFormProps = {
+type AddUnitFormProps = {
   unitTypes: InferSelectModel<typeof unitType>[];
   propertyId: string;
 };
@@ -39,7 +39,7 @@ const formSchema = z.object({
   unitType: z.string().min(2).max(50),
 });
 
-export function NewUnitForm({ unitTypes, propertyId }: NewUnitFormProps) {
+export function AddUnitForm({ unitTypes, propertyId }: AddUnitFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
