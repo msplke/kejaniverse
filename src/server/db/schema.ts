@@ -44,10 +44,12 @@ export const propertyOwner = createTable(
     ...personalDetails,
     createdAt,
   },
-  (table) => ({
-    firstNameIndex: index("owner_first_name_idx").on(table.firstName),
-    lastNameIndex: index("owner_last_name_idx").on(table.lastName),
-  }),
+  (table) => [
+    {
+      firstNameIndex: index("owner_first_name_idx").on(table.firstName),
+      lastNameIndex: index("owner_last_name_idx").on(table.lastName),
+    },
+  ],
 );
 
 export const property = createTable(
@@ -63,9 +65,7 @@ export const property = createTable(
       { onDelete: "cascade" },
     ),
   },
-  (table) => ({
-    nameIndex: index("property_name_idx").on(table.name),
-  }),
+  (table) => [{ nameIndex: index("property_name_idx").on(table.name) }],
 );
 
 export const tenant = createTable(
@@ -80,10 +80,12 @@ export const tenant = createTable(
     cumulativeRentPaid: integer("cumulative_rent_paid").default(0).notNull(),
     unitId: uuid("unit_id").references(() => unit.id, { onDelete: "cascade" }),
   },
-  (table) => ({
-    firstNameIndex: index("tenant_first_name_idx").on(table.firstName),
-    lastNameIndex: index("tenant_last_name_idx").on(table.lastName),
-  }),
+  (table) => [
+    {
+      firstNameIndex: index("tenant_first_name_idx").on(table.firstName),
+      lastNameIndex: index("tenant_last_name_idx").on(table.lastName),
+    },
+  ],
 );
 
 export const unitTypeEnum = pgEnum("unit_type_enum", [
