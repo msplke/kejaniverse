@@ -102,7 +102,7 @@ export function AppSidebar({ id, properties }: AppSidebarProps) {
   ];
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar>
       <Header property={property} properties={properties} />
       <SidebarContent>
         <SidebarNavItems items={items} />
