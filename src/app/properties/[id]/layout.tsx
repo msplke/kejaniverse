@@ -19,8 +19,10 @@ export default async function Layout({
     <SidebarProvider>
       <AppSidebar id={id} properties={properties} />
       <main className="w-full">
-        <SidebarTrigger />
-        {children}
+        <div className="bg-background border-border sticky top-0 z-10 flex items-center border-b py-4">
+          <SidebarTrigger />
+        </div>
+        <div className="pt-4">{children}</div>
       </main>
     </SidebarProvider>
   );
