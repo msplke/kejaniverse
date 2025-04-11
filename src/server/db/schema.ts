@@ -58,9 +58,9 @@ export const property = createTable(
     // address: varchar("address", { length: 64 }).notNull(),
     bankAccountNumber: varchar("bank_account_number", { length: 32 }).notNull(),
     createdAt,
-
     ownerId: varchar("owner_id", { length: 32 }).references(
       () => propertyOwner.id,
+      { onDelete: "cascade" },
     ),
   },
   (table) => ({
@@ -78,7 +78,7 @@ export const tenant = createTable(
       .notNull(),
     moveOutDate: date("move_out_date"),
     cumulativeRentPaid: integer("cumulative_rent_paid").default(0).notNull(),
-    unitId: uuid("unit_id").references(() => unit.id),
+    unitId: uuid("unit_id").references(() => unit.id, { onDelete: "cascade" }),
   },
   (table) => ({
     firstNameIndex: index("tenant_first_name_idx").on(table.firstName),
@@ -98,7 +98,9 @@ export const unitType = createTable("unit_type", {
   id,
   unitType: unitTypeEnum("unit_type").notNull(),
   rentPrice: integer("rent_price").notNull(),
-  propertyId: uuid("property_id").references(() => property.id),
+  propertyId: uuid("property_id").references(() => property.id, {
+    onDelete: "cascade",
+  }),
 });
 
 export const unit = createTable("unit", {
@@ -106,7 +108,9 @@ export const unit = createTable("unit", {
   unitTypeId: uuid("unit_type_id").references(() => unitType.id),
   unitName: varchar("unit_name", { length: 16 }).notNull(),
   occupied: boolean("occupied").default(false).notNull(),
-  propertyId: uuid("property_id").references(() => property.id),
+  propertyId: uuid("property_id").references(() => property.id, {
+    onDelete: "cascade",
+  }),
 });
 
 export const paymentMethodEnum = pgEnum("payment_method", [
@@ -121,6 +125,8 @@ export const payment = createTable("payment", {
   paymentMethod: paymentMethodEnum("payment_method").notNull(),
   paymentReference: varchar("payment_reference", { length: 256 }).notNull(),
 
-  unitId: uuid("unit_id").references(() => unit.id),
-  tenantId: uuid("tenant_id").references(() => tenant.id),
+  unitId: uuid("unit_id").references(() => unit.id, { onDelete: "cascade" }),
+  tenantId: uuid("tenant_id").references(() => tenant.id, {
+    onDelete: "cascade",
+  }),
 });
