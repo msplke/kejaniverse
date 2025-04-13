@@ -28,6 +28,7 @@ export default async function Units({ params }: { params: Params }) {
           <TableRow>
             <TableHead className="w-[100px]">Unit Name</TableHead>
             <TableHead className="w-[100px]">Unit Type</TableHead>
+            <TableHead className="w-[100px]">Is Occupied</TableHead>
             <TableHead className="text-right">Rent Price</TableHead>
           </TableRow>
         </TableHeader>
@@ -37,6 +38,9 @@ export default async function Units({ params }: { params: Params }) {
             <TableRow key={unit.id}>
               <TableCell className="font-medium">{unit.name}</TableCell>
               <TableCell className="font-medium">{unit.unitType}</TableCell>
+              <TableCell className="font-medium">
+                {unit.occupied ? "Yes" : "No"}
+              </TableCell>
               <TableCell className="text-right">{unit.rentPrice}</TableCell>
             </TableRow>
           ))}

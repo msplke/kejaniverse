@@ -82,6 +82,7 @@ export async function getUnits(propertyId: string) {
       id: unit.id,
       name: unit.unitName,
       rentPrice: unitType.rentPrice,
+      occupied: unit.occupied,
       unitType: unitType.unitType,
     })
     .from(unit)
@@ -125,6 +126,20 @@ export async function getTenants(propertyId: string) {
  * @returns The id of the added tenant
  */
 export async function addTenant(data: AddTenantFormData) {
+  const unitExists = await db
+    .select()
+    .from(unit)
+    .where(eq(unit.id, data.unitId))
+    .limit(1);
+  if (unitExists.length === 0) {
+    throw new Error("Unit does not exist");
+  }
+
+  const unitOccupied = unitExists[0]?.occupied;
+  if (unitOccupied) {
+    throw new Error("Unit is already occupied");
+  }
+
   const result = await db.transaction(async (tx) => {
     const addTenantResult = await tx
       .insert(tenant)
