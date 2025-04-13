@@ -87,7 +87,8 @@ export async function getUnits(propertyId: string) {
     })
     .from(unit)
     .leftJoin(unitType, eq(unit.unitTypeId, unitType.id))
-    .where(eq(unit.propertyId, propertyId));
+    .where(eq(unit.propertyId, propertyId))
+    .orderBy(unit.unitName);
 
   return units;
 }
