@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@clerk/nextjs':
-        specifier: ^6.14.3
-        version: 6.14.3(next@15.3.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(svix@1.64.1)
+        specifier: ^6.15.1
+        version: 6.15.1(next@15.3.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(svix@1.64.1)
       '@hookform/resolvers':
         specifier: ^5.0.1
         version: 5.0.1(react-hook-form@7.55.0(react@19.1.0))
@@ -178,34 +178,32 @@ packages:
     resolution: {integrity: sha512-emqcG3vHrpxUKTrxcblR36dcrcoRDvKmnL/dCL6ZsHaShW80qxCAcNhzQZrpeM765VzEos+xOi4s+r4IXzTwdQ==}
     engines: {node: '>=6.9.0'}
 
-  '@clerk/backend@1.27.3':
-    resolution: {integrity: sha512-Epuhej19VcBnPfDenQoDvj+MpExs/OhJRsFM0jM1TmTt75tE6UFJwJHD5byAPX0TuGvncHKqv5FjcuPEF8zu5Q==}
+  '@clerk/backend@1.29.0':
+    resolution: {integrity: sha512-X3mkc3zDaTRtHjqyK6sBPY3aIYQOZPn6ujmozGF1GYO+TLpsR2hOL8Ku+CxGrq5XTSxITCm4iogmZ9T0lln54A==}
     engines: {node: '>=18.17.0'}
-    deprecated: Incorrect parsing of the experimental JWT v2 claims. Please update to the latest version. For more information about JWT v2, see https://clerk.com/docs/backend-requests/resources/session-tokens
     peerDependencies:
       svix: ^1.62.0
     peerDependenciesMeta:
       svix:
         optional: true
 
-  '@clerk/clerk-react@5.27.0':
-    resolution: {integrity: sha512-OD6ZYREAtlxVLUgGJu1S6A6kUzXKo9VX+x5ZlGWjdPqfxXdrlFx7n8WqgJKREOGV8f20DcuphNCnBdLzbRCvHg==}
+  '@clerk/clerk-react@5.28.1':
+    resolution: {integrity: sha512-et5vUhzBkjX5QSegyWH9bJ1nBdWwH85l6tZPSolEjXtUN9j4ecMTils5KyKw2/udJ9TReiZxTlfOYAqIS74JQA==}
     engines: {node: '>=18.17.0'}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
       react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-0
 
-  '@clerk/nextjs@6.14.3':
-    resolution: {integrity: sha512-HMZPn8Rv9waatoKihH0HcRjiZKzTO1OmrZxkFdFwbLlyQBeOYe5u85qgTZR0elvIp6zD5kGjj+l3b6HVLqrMrw==}
+  '@clerk/nextjs@6.15.1':
+    resolution: {integrity: sha512-v17KCP5xHIwrPFZPmJm33O9+sX8EFVIGguSkgJLszhRyCQRkr03fYq6/5ARDhF35lfNCQ8qe4lYWer+rtECL2A==}
     engines: {node: '>=18.17.0'}
-    deprecated: Incorrect parsing of the experimental JWT v2 claims. Please update to the latest version. For more information about JWT v2, see https://clerk.com/docs/backend-requests/resources/session-tokens
     peerDependencies:
       next: ^13.5.7 || ^14.2.25 || ^15.2.3
       react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
       react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-0
 
-  '@clerk/shared@3.6.0':
-    resolution: {integrity: sha512-rAbXmwXTgexye+og4iFyfyzve3is5TQL03n5k0K3qEbH7TjxUx5MbHpdTg1zRhNvrzwxpxJmcduoOuyQh1W9DA==}
+  '@clerk/shared@3.7.1':
+    resolution: {integrity: sha512-kbP/op32aYgAgLReU0OxqakUXP7VNxLtz5lrbt3PXbqNdvGuQ5opPkdxA7YBgZe09JcPKDOiBJ0rZM9mTDt4Rw==}
     engines: {node: '>=18.17.0'}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
@@ -216,8 +214,8 @@ packages:
       react-dom:
         optional: true
 
-  '@clerk/types@4.53.0':
-    resolution: {integrity: sha512-MkJckVDQtxPK9WTbPZugsqO5dbatiX1uCtSdu4b16OKtt0adZSXX72RKQLKdRfcP/eIbijruBMrGIuZR9qLEeQ==}
+  '@clerk/types@4.54.1':
+    resolution: {integrity: sha512-XVns/t1p13VyUhjI05qJV2RBLWsL+bDua48A0dKPMT17SFJGI5UXm7olDuidYN1VdrFFxMVvIIbdZqFviOJvaA==}
     engines: {node: '>=18.17.0'}
 
   '@drizzle-team/brocli@0.10.2':
@@ -3026,10 +3024,10 @@ snapshots:
       '@babel/helper-string-parser': 7.25.9
       '@babel/helper-validator-identifier': 7.25.9
 
-  '@clerk/backend@1.27.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(svix@1.64.1)':
+  '@clerk/backend@1.29.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(svix@1.64.1)':
     dependencies:
-      '@clerk/shared': 3.6.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@clerk/types': 4.53.0
+      '@clerk/shared': 3.7.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@clerk/types': 4.54.1
       cookie: 1.0.2
       snakecase-keys: 8.0.1
       tslib: 2.8.1
@@ -3039,20 +3037,20 @@ snapshots:
       - react
       - react-dom
 
-  '@clerk/clerk-react@5.27.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@clerk/clerk-react@5.28.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
-      '@clerk/shared': 3.6.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@clerk/types': 4.53.0
+      '@clerk/shared': 3.7.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@clerk/types': 4.54.1
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
       tslib: 2.8.1
 
-  '@clerk/nextjs@6.14.3(next@15.3.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(svix@1.64.1)':
+  '@clerk/nextjs@6.15.1(next@15.3.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(svix@1.64.1)':
     dependencies:
-      '@clerk/backend': 1.27.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(svix@1.64.1)
-      '@clerk/clerk-react': 5.27.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@clerk/shared': 3.6.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@clerk/types': 4.53.0
+      '@clerk/backend': 1.29.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(svix@1.64.1)
+      '@clerk/clerk-react': 5.28.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@clerk/shared': 3.7.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@clerk/types': 4.54.1
       next: 15.3.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
@@ -3061,9 +3059,9 @@ snapshots:
     transitivePeerDependencies:
       - svix
 
-  '@clerk/shared@3.6.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@clerk/shared@3.7.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
-      '@clerk/types': 4.53.0
+      '@clerk/types': 4.54.1
       dequal: 2.0.3
       glob-to-regexp: 0.4.1
       js-cookie: 3.0.5
@@ -3073,7 +3071,7 @@ snapshots:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
 
-  '@clerk/types@4.53.0':
+  '@clerk/types@4.54.1':
     dependencies:
       csstype: 3.1.3
 
