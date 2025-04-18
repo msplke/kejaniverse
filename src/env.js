@@ -6,11 +6,18 @@ export const env = createEnv({
    * Specify your server-side environment variables schema here.
    */
   server: {
-    CLERK_SIGNING_SECRET: z.string(),
-    DATABASE_URL: z.string().url(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
+
+    DATABASE_URL: z.string().url(),
+
+    CLERK_SIGNING_SECRET: z.string(),
+
+    PAYSTACK_LIVE_SECRET_KEY: z.string(),
+    PAYSTACK_LIVE_PUBLIC_KEY: z.string(),
+    PAYSTACK_TEST_SECRET_KEY: z.string(),
+    PAYSTACK_TEST_PUBLIC_KEY: z.string(),
   },
 
   /**
@@ -26,9 +33,15 @@ export const env = createEnv({
    * (e.g. middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
-    CLERK_SIGNING_SECRET: process.env.CLERK_SIGNING_SECRET,
-    DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
+    DATABASE_URL: process.env.DATABASE_URL,
+
+    CLERK_SIGNING_SECRET: process.env.CLERK_SIGNING_SECRET,
+
+    PAYSTACK_LIVE_SECRET_KEY: process.env.PAYSTACK_LIVE_SECRET_KEY,
+    PAYSTACK_LIVE_PUBLIC_KEY: process.env.PAYSTACK_LIVE_PUBLIC_KEY,
+    PAYSTACK_TEST_SECRET_KEY: process.env.PAYSTACK_TEST_SECRET_KEY,
+    PAYSTACK_TEST_PUBLIC_KEY: process.env.PAYSTACK_TEST_PUBLIC_KEY,
 
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
