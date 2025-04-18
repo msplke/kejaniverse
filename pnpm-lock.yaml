@@ -89,6 +89,9 @@ importers:
       zod:
         specifier: ^3.24.3
         version: 3.24.3
+      zod-form-data:
+        specifier: ^2.0.7
+        version: 2.0.7(zod@3.24.3)
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3.3.1
@@ -1163,6 +1166,9 @@ packages:
 
   '@rushstack/eslint-patch@1.10.5':
     resolution: {integrity: sha512-kkKUDVlII2DQiKy7UstOR1ErJP8kUKAQ4oa+SQtM0K+lPdmmjj0YnnxBgtTVYH7mUKtbsxeFC9y0AmK7Yb78/A==}
+
+  '@rvf/set-get@7.0.1':
+    resolution: {integrity: sha512-GkTSn9K1GrTYoTUqlUs36k6nJnzjQaFBTTEIqUYmzBcsGsoJM8xG7EAx2WLHWAA4QzFjcwWUSHQ3vM3Fbw50Tg==}
 
   '@stablelib/base64@1.0.1':
     resolution: {integrity: sha512-1bnPQqSxSuc3Ii6MhBysoWCg58j97aUjuCSZrGSmDxNqtytIi0k8utUenAwTZN4V5mXXYGsVUI9zeBqy+jBOSQ==}
@@ -2934,6 +2940,11 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
+  zod-form-data@2.0.7:
+    resolution: {integrity: sha512-O27uzKMx7qc7z51KXER326Fp966jqHGvZX3i18CbvElF/QqVsQQN6Q7BnzepkzeBzTJnU3golibVSagf4dp7RQ==}
+    peerDependencies:
+      zod: '>= 3.11.0'
+
   zod@3.24.3:
     resolution: {integrity: sha512-HhY1oqzWCQWuUqvBFnsyrtZRhyPeR7SUGv+C4+MsisMuVfSPx8HpwWqH8tRahSlt6M3PiFAcoeFhZAqIXTxoSg==}
 
@@ -3776,6 +3787,8 @@ snapshots:
   '@rtsao/scc@1.1.0': {}
 
   '@rushstack/eslint-patch@1.10.5': {}
+
+  '@rvf/set-get@7.0.1': {}
 
   '@stablelib/base64@1.0.1': {}
 
@@ -5699,5 +5712,10 @@ snapshots:
   word-wrap@1.2.5: {}
 
   yocto-queue@0.1.0: {}
+
+  zod-form-data@2.0.7(zod@3.24.3):
+    dependencies:
+      '@rvf/set-get': 7.0.1
+      zod: 3.24.3
 
   zod@3.24.3: {}
