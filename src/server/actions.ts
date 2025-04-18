@@ -76,6 +76,42 @@ export async function addUnit(
   return result;
 }
 
+/** Gets a unit with the given unit name */
+export async function getUnitbyName(name: string) {
+  const results = await db
+    .select()
+    .from(unit)
+    .where(eq(unit.unitName, name))
+    .limit(1);
+
+  if (results.length === 0) {
+    throw new Error("Unit not found");
+  }
+
+  return results[0];
+}
+
+export async function getTenantByUnitName(unitName: string) {
+  const results = await db
+    .select({
+      id: tenant.id,
+      firstName: tenant.firstName,
+      lastName: tenant.lastName,
+      phoneNumber: tenant.phoneNumber,
+      email: tenant.email,
+    })
+    .from(tenant)
+    .innerJoin(unit, eq(unit.id, tenant.unitId))
+    .where(eq(unit.unitName, unitName))
+    .limit(1);
+
+  if (results.length === 0) {
+    throw new Error("Tenant not found");
+  }
+
+  return results[0];
+}
+
 export async function getUnits(propertyId: string) {
   const units = await db
     .select({
