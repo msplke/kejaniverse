@@ -1,9 +1,9 @@
-import { AddUnitForm } from "~/components/ui/forms/AddUnitForm";
+import { AddUnitForm } from "~/components/forms/add-unit-form";
 import { getUnitTypes } from "~/server/actions";
 
 type Params = Promise<{ id: string }>;
 
-export default async function AddUnit({ params }: { params: Params }) {
+export default async function AddUnitPage({ params }: { params: Params }) {
   const { id } = await params;
 
   const unitTypes = await getUnitTypes(id);

@@ -1,9 +1,9 @@
-import { AddTenantForm } from "~/components/ui/forms/AddTenantForm";
+import { AddTenantForm } from "~/components/forms/add-tenant-form";
 import { getUnits } from "~/server/actions";
 
 type Params = Promise<{ id: string }>;
 
-export default async function AddTenant({ params }: { params: Params }) {
+export default async function AddTenantPage({ params }: { params: Params }) {
   const { id } = await params;
   const units = await getUnits(id);
 

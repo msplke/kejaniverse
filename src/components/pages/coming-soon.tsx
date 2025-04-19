@@ -1,11 +1,10 @@
 "use client";
 
-import React from "react";
 import { useRouter } from "next/navigation";
 
 import { Button } from "~/components/ui/button";
 
-function ComingSoon() {
+export function ComingSoon() {
   const router = useRouter();
 
   const handleRedirect = () => {
@@ -31,5 +30,3 @@ function ComingSoon() {
     </div>
   );
 }
-
-export default ComingSoon;

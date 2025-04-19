@@ -11,7 +11,7 @@ import { getUnits } from "~/server/actions";
 
 type Params = Promise<{ id: string }>;
 
-export default async function Units({ params }: { params: Params }) {
+export default async function UnitsPage({ params }: { params: Params }) {
   const { id } = await params;
 
   const units = await getUnits(id);

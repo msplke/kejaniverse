@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 // routes in the under the properties/[id] path. It must be rendered under a
 // SidebarContextProvider to work properly.
 // It is used in the properties/[id]/layout.tsx file.
-function PropertiesBreadcrumb() {
+export function PropertiesBreadcrumb() {
   const pathname = usePathname();
 
   // Remove "properties/[id]" from the path
@@ -33,5 +33,3 @@ function PropertiesBreadcrumb() {
     </nav>
   );
 }
-
-export default PropertiesBreadcrumb;
