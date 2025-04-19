@@ -5,13 +5,63 @@ import "server-only";
 import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 
-import { type CreatePropertyFormContextType } from "~/app/properties/new/context";
-import type { AddTenantFormData } from "~/components/ui/forms/AddTenantForm";
+import { type AddTenantFormData } from "~/components/forms/add-tenant-form";
+import { type CreatePropertyFormContextType } from "~/components/forms/context";
+import { env } from "~/env";
 import { db } from "~/server/db";
 import { property, tenant, unit, unitType } from "~/server/db/schema";
 
+export interface Bank {
+  id: number;
+  name: string;
+  slug: string;
+  code: string;
+  active: boolean;
+  is_deleted: boolean;
+  country: string;
+  currency: string;
+}
+
+interface ListBanksResponse {
+  status: boolean;
+  message: string;
+  data: Bank[];
+}
+
+/**
+ * Fetches a list of banks from Paystack for the given country.
+ * @param country ISO country code (e.g., 'nigeria', 'ghana', 'kenya', 'south africa')
+ * @returns An array of Bank objects
+ * @throws Error if the network request fails or Paystack returns a non-OK status
+ */
+export async function fetchBanks() {
+  try {
+    const response = await fetch(
+      `https://api.paystack.co/bank?country=kenya&currency=KES`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${env.PAYSTACK_SECRET_KEY}`,
+        },
+      },
+    );
+
+    // The Fetch API only rejects on network errors; non-2xx statuses must be handled manually
+    if (!response.ok) {
+      throw new Error(`Failed to fetch banks: ${response.statusText}`);
+    }
+
+    const result: ListBanksResponse = await response.json();
+    return result.data;
+  } catch (error: unknown) {
+    console.error("✖ [fetchBanks] Failed to fetch banks:", error);
+    throw error;
+  }
+}
+
 export async function createProperty({
   propertyName,
+  bankCode,
   bankAccountNumber,
   unitTypes,
 }: CreatePropertyFormContextType) {
@@ -25,6 +75,7 @@ export async function createProperty({
       .insert(property)
       .values({
         name: propertyName,
+        bankCode,
         bankAccountNumber,
         ownerId: userId,
       })
