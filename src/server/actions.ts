@@ -109,7 +109,7 @@ export async function getTenantByUnitName(unitName: string) {
     throw new Error("Tenant not found");
   }
 
-  return results[0];
+  return results[0]!;
 }
 
 export async function getUnits(propertyId: string) {

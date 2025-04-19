@@ -92,55 +92,58 @@ export async function chargeUser(
 ): Promise<string> {
   let responseText;
   // Get tenant for the unit
-  const tenant = await getTenantByUnitName(unitName);
-  if (!tenant) {
-    return "END Tenant not found. Please try again.";
-  }
-
-  const tenantEmail = tenant.email;
-  if (!tenantEmail) {
-    return "END Tenant email not found. Please try again.";
-  }
-
-  const data: ChargeApiRequest = {
-    // Paystack parses the amount in subunits, so we multiply by 100
-    // after parsing it to an integer
-    amount: parseInt(amount, 10) * 100,
-    email: tenantEmail,
-    mobile_money: {
-      phone: phoneNumber,
-      provider: "mpesa",
-    },
-  };
-
-  const validation = validateChargeApiRequestData(data);
-  if (validation.status === "invalid") {
-    return validation.message!;
-  }
-
-  // The charge request is valid, proceed with the payment
-  console.log(data);
-
   try {
-    const paystackResponse = await fetch("https://api.paystack.co/charge", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${env.PAYSTACK_LIVE_SECRET_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (paystackResponse.status !== 200) {
-      console.log(await paystackResponse.json());
-      responseText = "END Transaction failed. Please try again later.";
-    } else {
-      responseText = "END You'll receive an M-Pesa prompt shortly.";
+    const tenant = await getTenantByUnitName(unitName);
+    const tenantEmail = tenant.email;
+    if (!tenantEmail) {
+      return "END Tenant email not found. Please try again.";
     }
+
+    const data: ChargeApiRequest = {
+      // Paystack parses the amount in subunits, so we multiply by 100
+      // after parsing it to an integer
+      amount: parseInt(amount, 10) * 100,
+      email: tenantEmail,
+      mobile_money: {
+        phone: phoneNumber,
+        provider: "mpesa",
+      },
+    };
+
+    const validation = validateChargeApiRequestData(data);
+    if (validation.status === "invalid") {
+      return validation.message!;
+    }
+
+    // The charge request is valid, proceed with the payment
+    console.log(data);
+
+    try {
+      const paystackResponse = await fetch("https://api.paystack.co/charge", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${env.PAYSTACK_LIVE_SECRET_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (paystackResponse.status !== 200) {
+        console.log(await paystackResponse.json());
+        responseText = "END Transaction failed. Please try again later.";
+      } else {
+        responseText = "END You'll receive an M-Pesa prompt shortly.";
+      }
+    } catch (error) {
+      console.error(error);
+      responseText = "END Transaction failed. Please try again later.";
+    }
+    return responseText;
   } catch (error) {
     console.error(error);
-    responseText = "END Transaction failed. Please try again later.";
+    if (error instanceof Error && error.message === "Tenant not found") {
+      return "END Tenant not found. Please try again.";
+    }
+    return "END Something went wrong. Please try again.";
   }
-
-  return responseText;
 }
