@@ -13,7 +13,7 @@ import { getTenants } from "~/server/actions";
 
 type Params = Promise<{ id: string }>;
 
-export default async function Units({ params }: { params: Params }) {
+export default async function TenantsPage({ params }: { params: Params }) {
   const { id } = await params;
 
   const tenants = await getTenants(id);
