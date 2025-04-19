@@ -35,7 +35,7 @@ export async function validateUnitName(
     console.error(error);
     return {
       status: "invalid",
-      message: "Unit not found. Please try again.",
+      message: "END Unit not found. Please try again.",
     };
   }
   return {
@@ -49,7 +49,7 @@ export function validateAmount(amount: string): UssdInputValidationResult {
   if (!validation.success) {
     return {
       status: "invalid",
-      message: `Invalid amount: ${amount}. Please try again.`,
+      message: `END Invalid amount: ${amount}. Please try again.`,
     };
   }
 
@@ -66,7 +66,7 @@ export function validatePhoneNumber(
   if (!phoneNumberRegex.test(phoneNumber)) {
     return {
       status: "invalid",
-      message: `Invalid phone number: ${phoneNumber}. Please try again.`,
+      message: `END Invalid phone number: ${phoneNumber}. Please try again.`,
     };
   }
 
@@ -80,11 +80,11 @@ export function validateChargeApiRequestData(
 ): UssdInputValidationResult {
   const validation = chargeApiRequestSchema.safeParse(data);
   if (!validation.success) {
+    console.log("Invalid charge API request data", validation.error.format());
+
     return {
       status: "invalid",
-      message: `Invalid request data: ${JSON.stringify(
-        validation.error.format(),
-      )}. Please try again.`,
+      message: `END Transaction failed. Please try again.`,
     };
   }
 
