@@ -33,9 +33,18 @@ export async function validateUnitName(
     await getUnitbyName(unitName);
   } catch (error) {
     console.error(error);
+    // Check if this is the expected "Unit not found" error
+    if (error instanceof Error && error.message === "Unit not found") {
+      return {
+        status: "invalid",
+        message: "END Unit not found. Please try again.",
+      };
+    }
+    // Log unexpected errors
+    console.error("Unexpected error validating unit name:", error);
     return {
       status: "invalid",
-      message: "END Unit not found. Please try again.",
+      message: "END Something went wrong. Please try again later.",
     };
   }
   return {
