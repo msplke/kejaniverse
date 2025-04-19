@@ -95,9 +95,6 @@ export async function chargeUser(
   try {
     const tenant = await getTenantByUnitName(unitName);
     const tenantEmail = tenant.email;
-    if (!tenantEmail) {
-      return "END Tenant email not found. Please try again.";
-    }
 
     const data: ChargeApiRequest = {
       // Paystack parses the amount in subunits, so we multiply by 100
