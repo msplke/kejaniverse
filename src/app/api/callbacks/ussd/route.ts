@@ -4,8 +4,8 @@ import {
   handlePhoneNumber,
   handleUnitName,
   welcome,
-} from "./input-handlers";
-import { formDataSchema } from "./input-validators";
+} from "~/app/api/callbacks/ussd/input-handlers";
+import { formDataSchema } from "~/app/api/callbacks/ussd/input-validators";
 
 const responseHeaders = {
   "Content-Type": "application/text",

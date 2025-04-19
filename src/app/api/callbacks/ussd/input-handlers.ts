@@ -1,13 +1,13 @@
 import { env } from "process";
 
-import { getTenantByUnitName } from "~/server/actions";
 import {
   validateAmount,
   validateChargeApiRequestData,
   validatePhoneNumber,
   validateUnitName,
   type ChargeApiRequest,
-} from "./input-validators";
+} from "~/app/api/callbacks/ussd/input-validators";
+import { getTenantByUnitName } from "~/server/actions";
 
 /**
  * @returns Welcome text with prompt to enter unit name.
