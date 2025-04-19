@@ -13,6 +13,7 @@ export const CreatePropertyFormSchema = z.object({
       message: "Property name must be at least 4 characters long",
     })
     .max(64, { message: "Name can't be more than 64 characters" }),
+  bankCode: z.string().nonempty("Bank code is required"),
   bankAccountNumber: z
     .string()
     .nonempty("Bank account number is required")
@@ -39,6 +40,7 @@ export type CreatePropertyFormContextType = CreatePropertyFormData & {
 
 export const defaultContext: CreatePropertyFormContextType = {
   propertyName: "",
+  bankCode: "",
   bankAccountNumber: "",
   unitTypes: [],
 };

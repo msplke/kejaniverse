@@ -58,6 +58,7 @@ export const property = createTable(
     id,
     name: varchar("name", { length: 64 }).notNull(),
     // address: varchar("address", { length: 64 }).notNull(),
+    bankCode: varchar("bank_code", { length: 3 }).notNull(),
     bankAccountNumber: varchar("bank_account_number", { length: 32 }).notNull(),
     createdAt,
     ownerId: varchar("owner_id", { length: 32 }).references(
