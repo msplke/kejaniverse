@@ -51,7 +51,7 @@ export async function fetchBanks() {
       throw new Error(`Failed to fetch banks: ${response.statusText}`);
     }
 
-    const result: ListBanksResponse = await response.json();
+    const result = (await response.json()) as ListBanksResponse;
     return result.data;
   } catch (error: unknown) {
     console.error("✖ [fetchBanks] Failed to fetch banks:", error);
