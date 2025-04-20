@@ -130,12 +130,13 @@ export async function createSubaccount(input: CreateSubaccountBody) {
       throw new Error(`Paystack API ${response.status}: ${errMsg}`);
     }
 
-    const result = await CreateSubaccountResponseSchema.parseAsync(
-      response.json(),
-    );
+    const result = (await response.json()) as z.infer<
+      typeof CreateSubaccountResponseSchema
+    >;
+    console.log(result);
     return result.data;
   } catch (error: unknown) {
-    console.error("✖ [fetchBanks] Failed to fetch banks:", error);
+    console.error("✖ [createSubaccount]: unable to create subaccount", error);
     throw error;
   }
 }
