@@ -17,8 +17,8 @@ export const CreatePropertyFormSchema = z.object({
   bankAccountNumber: z
     .string()
     .nonempty("Bank account number is required")
-    .min(8, {
-      message: "Bank account number must be at least 8 characters long",
+    .min(10, {
+      message: "Bank account number must be at least 10 characters long",
     })
     .max(32, {
       message: "Bank account number can't be more than 32 characters",

@@ -13,15 +13,15 @@ import { Separator } from "~/components/ui/separator";
 export default function Page() {
   const router = useRouter();
 
-  const { bankAccountNumber, propertyName, unitTypes } = useContext(
+  const { bankCode, bankAccountNumber, propertyName, unitTypes } = useContext(
     CreatePropertyFormContext,
   );
 
   useEffect(() => {
-    if (!bankAccountNumber || !propertyName) {
+    if (!bankCode || !bankAccountNumber || !propertyName) {
       router.push("/properties/new");
     }
-  }, [router, bankAccountNumber, propertyName]);
+  }, [router, bankCode, bankAccountNumber, propertyName]);
 
   return (
     <div>
