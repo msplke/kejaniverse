@@ -26,7 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { addUnit } from "~/server/actions";
+import { addUnit } from "~/server/actions/units";
 import { type unitType } from "~/server/db/schema";
 
 type AddUnitFormProps = {

@@ -24,7 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { type Bank } from "~/server/actions";
+import { type Bank } from "~/server/actions/properties";
 import {
   CreatePropertyFormDispatchContext,
   CreatePropertyFormSchema,

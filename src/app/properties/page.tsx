@@ -2,7 +2,7 @@ import Link from "next/link";
 import { PlusCircle } from "lucide-react";
 
 import { Card, CardContent } from "~/components/ui/card";
-import { getProperties } from "~/server/actions";
+import { getProperties } from "~/server/actions/properties";
 
 export default async function Page() {
   const properties = await getProperties();

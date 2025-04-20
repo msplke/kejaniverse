@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { getUnits } from "~/server/actions";
+import { getUnits } from "~/server/actions/units";
 
 type Params = Promise<{ id: string }>;
 

@@ -1,5 +1,5 @@
 import { AddTenantForm } from "~/components/forms/add-tenant-form";
-import { getUnits } from "~/server/actions";
+import { getUnits } from "~/server/actions/units";
 
 type Params = Promise<{ id: string }>;
 

@@ -1,5 +1,5 @@
 import { AddUnitForm } from "~/components/forms/add-unit-form";
-import { getUnitTypes } from "~/server/actions";
+import { getUnitTypes } from "~/server/actions/units";
 
 type Params = Promise<{ id: string }>;
 

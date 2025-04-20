@@ -24,7 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { addTenant } from "~/server/actions";
+import { addTenant } from "~/server/actions/tenants";
 
 type AddTenantFormProps = {
   units: {
