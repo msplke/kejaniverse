@@ -56,9 +56,6 @@ export const property = createTable(
   "property",
   {
     id,
-    uniqueIdentifier: varchar("unique_identifier", { length: 6 })
-      .notNull()
-      .unique(),
     name: varchar("name", { length: 64 }).notNull(),
     // address: varchar("address", { length: 64 }).notNull(),
     bankCode: varchar("bank_code", { length: 3 }).notNull(),
@@ -83,7 +80,9 @@ export const tenant = createTable(
       .notNull(),
     moveOutDate: date("move_out_date"),
     cumulativeRentPaid: integer("cumulative_rent_paid").default(0).notNull(),
-    unitId: uuid("unit_id").references(() => unit.id, { onDelete: "cascade" }),
+    unitId: varchar("unit_id", { length: 6 }).references(() => unit.id, {
+      onDelete: "cascade",
+    }),
   },
   (table) => [
     {
@@ -111,10 +110,11 @@ export const unitType = createTable("unit_type", {
 });
 
 export const unit = createTable("unit", {
-  id,
-  unitTypeId: uuid("unit_type_id").references(() => unitType.id),
+  id: varchar("id", { length: 6 }).primaryKey(),
   unitName: varchar("unit_name", { length: 16 }).notNull(),
   occupied: boolean("occupied").default(false).notNull(),
+
+  unitTypeId: uuid("unit_type_id").references(() => unitType.id),
   propertyId: uuid("property_id").references(() => property.id, {
     onDelete: "cascade",
   }),
@@ -132,7 +132,9 @@ export const payment = createTable("payment", {
   paymentMethod: paymentMethodEnum("payment_method").notNull(),
   paymentReference: varchar("payment_reference", { length: 256 }).notNull(),
 
-  unitId: uuid("unit_id").references(() => unit.id, { onDelete: "cascade" }),
+  unitId: varchar("unit_id", { length: 6 }).references(() => unit.id, {
+    onDelete: "cascade",
+  }),
   tenantId: uuid("tenant_id").references(() => tenant.id, {
     onDelete: "cascade",
   }),

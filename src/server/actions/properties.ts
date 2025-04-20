@@ -4,15 +4,12 @@ import "server-only";
 
 import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
-import { customAlphabet } from "nanoid";
 import { z } from "zod";
 
 import { type CreatePropertyFormContextType } from "~/components/forms/context";
 import { env } from "~/env";
 import { db } from "~/server/db";
 import { property, unitType } from "~/server/db/schema";
-
-const genUniqueId = customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", 6);
 
 export interface Bank {
   id: number;
@@ -157,7 +154,6 @@ export async function createProperty({
       .insert(property)
       .values({
         name: propertyName,
-        uniqueIdentifier: genUniqueId(),
         bankCode,
         bankAccountNumber,
         ownerId: userId,

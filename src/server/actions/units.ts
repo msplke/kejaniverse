@@ -3,9 +3,12 @@
 import "server-only";
 
 import { eq } from "drizzle-orm";
+import { customAlphabet } from "nanoid";
 
 import { db } from "~/server/db";
 import { unit, unitType } from "~/server/db/schema";
+
+const genUniqueId = customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", 6);
 
 export async function getUnitTypes(propertyId: string) {
   const unitTypes = await db
@@ -21,9 +24,17 @@ export async function addUnit(
   unitTypeId: string,
   propertyId: string,
 ) {
+  let id;
+  do {
+    id = genUniqueId();
+  } while (
+    (await db.select().from(unit).where(eq(unit.id, id)).limit(1)).length > 0
+  );
+
   const result = await db
     .insert(unit)
     .values({
+      id,
       unitName,
       unitTypeId,
       propertyId,
