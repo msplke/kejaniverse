@@ -7,7 +7,7 @@ import {
   validateUnitName,
   type ChargeApiRequest,
 } from "~/app/api/callbacks/ussd/input-validators";
-import { getTenantByUnitName } from "~/server/actions";
+import { getTenantByUnitName } from "~/server/actions/tenants";
 
 /**
  * @returns Welcome text with prompt to enter unit name.

@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { getTenants } from "~/server/actions";
+import { getTenants } from "~/server/actions/tenants";
 
 type Params = Promise<{ id: string }>;
 

@@ -33,7 +33,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { createProperty } from "~/server/actions";
+import { createProperty } from "~/server/actions/properties";
 import {
   CreatePropertyFormContext,
   CreatePropertyFormDispatchContext,

@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 
-import { getUnitbyName } from "~/server/actions";
+import { getUnitbyName } from "~/server/actions/units";
 
 export const formDataSchema = zfd.formData({
   sessionId: zfd.text(),

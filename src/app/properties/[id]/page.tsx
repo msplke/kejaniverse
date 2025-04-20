@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 import { Plus } from "lucide-react";
 
 import { Button } from "~/components/ui/button";
-import { getUnits } from "~/server/actions";
+import { getUnits } from "~/server/actions/units";
 import { db } from "~/server/db";
 import { property } from "~/server/db/schema";
 
