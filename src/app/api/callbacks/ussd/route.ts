@@ -59,6 +59,8 @@ export async function POST(req: Request) {
       prevResponses[1]!,
       prevResponses[2]!,
     );
+  } else {
+    responseText = "END Invalid input. Please try again.";
   }
 
   return new Response(responseText, {
