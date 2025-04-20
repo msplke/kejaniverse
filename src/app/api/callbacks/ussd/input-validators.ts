@@ -11,7 +11,12 @@ export const formDataSchema = zfd.formData({
 });
 
 export const chargeApiRequestSchema = z.object({
-  amount: z.number().positive(),
+  // Take into account subunits for the amount validation
+  // thus allow a minimum of 100 and a maximum of 15,000,000
+  // which is equivalent to KES 1 and KES 150,000
+  // respectively
+  // Paystack parses the amount in subunits, so we multiply by 100
+  amount: z.number().min(100).max(15_000_000).positive(),
   email: z.string().email(),
   mobile_money: z.object({
     phone: z.string().regex(/\+254\d{9}/),
@@ -53,12 +58,18 @@ export async function validateUnitName(
 }
 
 export function validateAmount(amount: string): UssdInputValidationResult {
-  // Validate that the amount is a number
-  const validation = z.coerce.number().positive().safeParse(amount);
+  // Validate that the amount is a number, and is between 1 and 150,000 as per
+  // M-Pesa limits for Paystack
+  const validation = z.coerce
+    .number()
+    .positive()
+    .min(1)
+    .max(150_000)
+    .safeParse(amount);
   if (!validation.success) {
     return {
       status: "invalid",
-      message: `END Invalid amount: ${amount}. Please try again.`,
+      message: `END Invalid amount: ${amount}. The amount must be between KES 1 and KES 150,000.\nPlease try again.`,
     };
   }
 
