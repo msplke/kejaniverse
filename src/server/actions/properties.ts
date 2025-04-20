@@ -4,21 +4,25 @@ import "server-only";
 
 import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
+import { customAlphabet } from "nanoid";
+import { z } from "zod";
 
 import { type CreatePropertyFormContextType } from "~/components/forms/context";
 import { env } from "~/env";
 import { db } from "~/server/db";
 import { property, unitType } from "~/server/db/schema";
 
+const genUniqueId = customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", 6);
+
 export interface Bank {
   id: number;
   name: string;
   slug: string;
   code: string;
-  active: boolean;
-  is_deleted: boolean;
   country: string;
   currency: string;
+  active: boolean;
+  is_deleted: boolean;
 }
 
 interface ListBanksResponse {
@@ -45,12 +49,90 @@ export async function fetchBanks() {
       },
     );
 
-    // The Fetch API only rejects on network errors; non-2xx statuses must be handled manually
     if (!response.ok) {
       throw new Error(`Failed to fetch banks: ${response.statusText}`);
     }
 
-    const result: ListBanksResponse = await response.json();
+    const result = (await response.json()) as ListBanksResponse;
+    return result.data;
+  } catch (error: unknown) {
+    console.error("✖ [fetchBanks] Failed to fetch banks:", error);
+    throw error;
+  }
+}
+
+const CreateSubaccountBodySchema = z.object({
+  business_name: z.string(),
+  bank_code: z.string(),
+  account_number: z.string(),
+  percentage_charge: z.number().min(0).max(100),
+  description: z.string().optional(),
+  primary_contact_name: z.string().optional(),
+  primary_contact_email: z.string().email().optional(),
+  primary_contact_phone: z.string().optional(),
+});
+
+const SubaccountSchema = z.object({
+  id: z.number(),
+  subaccount_code: z.string(),
+  business_name: z.string(),
+  description: z.string().nullable(),
+  primary_contact_name: z.string().nullable(),
+  primary_contact_email: z.string().nullable(),
+  primary_contact_phone: z.string().nullable(),
+  percentage_charge: z.number(),
+  settlement_bank: z.string(),
+  account_number: z.string(),
+  currency: z.string(),
+  active: z.boolean(),
+  is_verified: z.boolean(),
+  settlement_schedule: z.string(),
+});
+
+const CreateSubaccountResponseSchema = z.object({
+  status: z.boolean(),
+  message: z.string(),
+  data: SubaccountSchema,
+});
+
+type CreateSubaccountBody = z.infer<typeof CreateSubaccountBodySchema>;
+// type CreateSubaccountResponse = z.infer<typeof CreateSubaccountResponseSchema>;
+// type Subaccount = z.infer<typeof SubaccountSchema>;}
+
+/**
+ * Create a Paystack subaccount.
+ * @param input Validated subaccount payload
+ * @returns The newly created subaccount record
+ */
+export async function createSubaccount(input: CreateSubaccountBody) {
+  // Runtime-validate request shape
+  const body = CreateSubaccountBodySchema.parse(input);
+
+  try {
+    const response = await fetch("https://api.paystack.co/subaccount", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${env.PAYSTACK_LIVE_SECRET_KEY}`,
+      },
+      body: JSON.stringify(body),
+    });
+
+    // if (!response.ok) {
+    //   throw new Error(`Failed to fetch banks: ${response.statusText}`);
+    // }
+
+    // Notify on HTTP-level failures
+    if (!response.ok) {
+      // Attempt to parse error details
+      const errPayload = (await response.json()) as { message?: string };
+      const errMsg = errPayload.message ?? response.statusText;
+      throw new Error(`Paystack API ${response.status}: ${errMsg}`);
+    }
+
+    const result = await CreateSubaccountResponseSchema.parseAsync(
+      response.json(),
+    );
     return result.data;
   } catch (error: unknown) {
     console.error("✖ [fetchBanks] Failed to fetch banks:", error);
@@ -74,6 +156,7 @@ export async function createProperty({
       .insert(property)
       .values({
         name: propertyName,
+        uniqueIdentifier: genUniqueId(),
         bankCode,
         bankAccountNumber,
         ownerId: userId,
@@ -93,6 +176,20 @@ export async function createProperty({
         propertyId,
       })),
     );
+
+    const subaccount = await createSubaccount({
+      business_name: propertyName,
+      bank_code: bankCode,
+      account_number: bankAccountNumber,
+      percentage_charge: 1,
+    });
+
+    await tx
+      .update(property)
+      .set({
+        subaccountCode: subaccount.subaccount_code,
+      })
+      .where(eq(property.id, propertyId));
 
     return { propertyId, propertyName };
   });

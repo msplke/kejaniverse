@@ -56,10 +56,14 @@ export const property = createTable(
   "property",
   {
     id,
+    uniqueIdentifier: varchar("unique_identifier", { length: 6 })
+      .notNull()
+      .unique(),
     name: varchar("name", { length: 64 }).notNull(),
     // address: varchar("address", { length: 64 }).notNull(),
     bankCode: varchar("bank_code", { length: 3 }).notNull(),
     bankAccountNumber: varchar("bank_account_number", { length: 32 }).notNull(),
+    subaccountCode: varchar("subaccount_code", { length: 32 }),
     createdAt,
     ownerId: varchar("owner_id", { length: 32 }).references(
       () => propertyOwner.id,
