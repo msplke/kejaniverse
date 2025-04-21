@@ -100,8 +100,6 @@ async function handleChargeSuccess(data: PaystackWebhookEvent["data"]) {
           cumulativeRentPaid: currentTenant.cumulativeRentPaid + amount,
         })
         .where(eq(tenant.id, currentTenant.id));
-
-      return payment;
     });
   } catch (error) {
     console.error("Error handling charge success:", error);
