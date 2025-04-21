@@ -24,24 +24,23 @@ export async function addUnit(
   unitTypeId: string,
   propertyId: string,
 ) {
-  let id;
-  do {
-    id = genUniqueId();
-  } while (
-    (await db.select().from(unit).where(eq(unit.id, id)).limit(1)).length > 0
-  );
+  for (let attempts = 0; attempts < 5; attempts++) {
+    const id = genUniqueId();
+    try {
+      // optimistic insert – break on success
+      const result = await db
+        .insert(unit)
+        .values({ id, unitName, unitTypeId, propertyId })
+        .returning({ id: unit.id });
+      return result;
+    } catch (err: unknown) {
+      // retry only on duplicate‑key error
+      // https://www.postgresql.org/docs/current/errcodes-appendix.html
+      if (!(err as { code?: string }).code?.startsWith("23")) throw err;
+    }
+  }
 
-  const result = await db
-    .insert(unit)
-    .values({
-      id,
-      unitName,
-      unitTypeId,
-      propertyId,
-    })
-    .returning({ id: unit.id });
-
-  return result;
+  throw new Error("Failed to generate unique unit id");
 }
 
 export async function getUnits(propertyId: string) {
@@ -61,7 +60,7 @@ export async function getUnits(propertyId: string) {
   return units;
 }
 /** Gets a unit with the given unit name */
-export async function getUnitbyName(name: string) {
+export async function getUnitByName(name: string) {
   const results = await db
     .select()
     .from(unit)
@@ -90,25 +89,16 @@ export async function getUnitById(unitId: string) {
 }
 
 export async function getPropertyByUnitId(unitId: string) {
-  const unitResults = await db
-    .select()
+  const results = await db
+    .select({ property })
     .from(unit)
+    .leftJoin(property, eq(unit.propertyId, property.id))
     .where(eq(unit.id, unitId))
     .limit(1);
-  if (unitResults.length === 0) {
-    throw new Error("Unit not found");
+  const current = results[0]?.property;
+  if (!current) {
+    throw new Error("Unit or property not found");
   }
-  const currentUnit = unitResults[0]!;
 
-  const propertyResults = await db
-    .select()
-    .from(property)
-    .where(eq(property.id, currentUnit.propertyId!))
-    .limit(1);
-
-  if (propertyResults.length === 0) {
-    throw new Error("Property not found");
-  }
-  const currentProperty = propertyResults[0]!;
-  return currentProperty;
+  return current;
 }
