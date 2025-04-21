@@ -126,7 +126,7 @@ export async function createSubaccount(input: CreateSubaccountBody) {
     }
 
     const result = (await response.json()) as CreateSubaccountResponse;
-    console.log(result);
+    // console.log(result);
     return result.data;
   } catch (error: unknown) {
     console.error("✖ [createSubaccount]: unable to create subaccount", error);

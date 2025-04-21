@@ -118,7 +118,6 @@ export async function chargeUser(
     }
 
     // The charge request is valid, proceed with the payment
-    console.log(data);
 
     try {
       const paystackResponse = await fetch("https://api.paystack.co/charge", {
@@ -131,7 +130,7 @@ export async function chargeUser(
       });
 
       if (paystackResponse.status !== 200) {
-        console.log(await paystackResponse.json());
+        console.error(await paystackResponse.json());
         responseText = "END Transaction failed. Please try again later.";
       } else {
         responseText = "END You'll receive an M-Pesa prompt shortly.";
