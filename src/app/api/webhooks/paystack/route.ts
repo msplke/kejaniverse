@@ -24,16 +24,14 @@ const defaultResponse = new Response("OK", { status: 200 });
 const secret = env.PAYSTACK_LIVE_SECRET_KEY;
 
 export async function POST(req: Request) {
-  const body = (await req.json()) as PaystackWebhookEvent;
-
-  const hash = createHmac("sha512", secret)
-    .update(JSON.stringify(body))
-    .digest("hex");
+  const rawBody = await req.text();
+  const hash = createHmac("sha512", secret).update(rawBody).digest("hex");
 
   if (hash !== req.headers.get("x-paystack-signature")) {
     return new Response("Invalid signature", { status: 401 });
   }
 
+  const body = JSON.parse(rawBody) as PaystackWebhookEvent;
   console.log("Body:");
   console.log(body);
 
