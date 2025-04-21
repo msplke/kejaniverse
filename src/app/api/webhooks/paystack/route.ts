@@ -24,16 +24,14 @@ const defaultResponse = new Response("OK", { status: 200 });
 const secret = env.PAYSTACK_LIVE_SECRET_KEY;
 
 export async function POST(req: Request) {
-  const body = (await req.json()) as PaystackWebhookEvent;
-
-  const hash = createHmac("sha512", secret)
-    .update(JSON.stringify(body))
-    .digest("hex");
+  const rawBody = await req.text();
+  const hash = createHmac("sha512", secret).update(rawBody).digest("hex");
 
   if (hash !== req.headers.get("x-paystack-signature")) {
     return new Response("Invalid signature", { status: 401 });
   }
 
+  const body = JSON.parse(rawBody) as PaystackWebhookEvent;
   console.log("Body:");
   console.log(body);
 
@@ -82,7 +80,10 @@ async function handleChargeSuccess(data: PaystackWebhookEvent["data"]) {
       }
 
       // Paystack uses subunits, so we divide the amount by 100 to get the actual amount
-      const amount = data.amount / 100;
+      // Currently, the type of amount is integer in the schema, hence the rounding,
+      // but it should be a decimal type in the future
+      // to avoid rounding errors.
+      const amount = Math.round(data.amount / 100);
 
       // Insert payment record
       await tx.insert(payment).values({
@@ -102,8 +103,6 @@ async function handleChargeSuccess(data: PaystackWebhookEvent["data"]) {
           cumulativeRentPaid: currentTenant.cumulativeRentPaid + amount,
         })
         .where(eq(tenant.id, currentTenant.id));
-
-      return payment;
     });
   } catch (error) {
     console.error("Error handling charge success:", error);
