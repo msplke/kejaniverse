@@ -18,7 +18,7 @@ export async function getTenants(propertyId: string) {
   return tenants;
 }
 
-export async function getTenantByUnitName(unitName: string) {
+export async function getTenantByUnitId(unitId: string) {
   const results = await db
     .select({
       id: tenant.id,
@@ -29,7 +29,7 @@ export async function getTenantByUnitName(unitName: string) {
     })
     .from(tenant)
     .innerJoin(unit, eq(unit.id, tenant.unitId))
-    .where(eq(unit.unitName, unitName))
+    .where(eq(unit.id, unitId))
     .limit(1);
 
   if (results.length === 0) {

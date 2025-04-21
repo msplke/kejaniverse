@@ -2,7 +2,7 @@ import {
   handleAmount,
   handleConfirmation,
   handlePhoneNumber,
-  handleUnitName,
+  handleUnitId,
   welcome,
 } from "~/app/api/callbacks/ussd/input-handlers";
 import { formDataSchema } from "~/app/api/callbacks/ussd/input-validators";
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
   const prevResponses = text.split("*");
 
   if (prevResponses.length === 1) {
-    responseText = await handleUnitName(prevResponses[0]!);
+    responseText = await handleUnitId(prevResponses[0]!);
   } else if (prevResponses.length === 2) {
     responseText = handleAmount(prevResponses[1]!);
   } else if (prevResponses.length === 3) {

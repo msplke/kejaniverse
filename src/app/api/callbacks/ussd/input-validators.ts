@@ -1,7 +1,8 @@
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 
-import { getUnitbyName } from "~/server/actions/units";
+import { getUnitById } from "~/server/actions/units";
+import { unit } from "~/server/db/schema";
 
 export const formDataSchema = zfd.formData({
   sessionId: zfd.text(),
@@ -31,11 +32,17 @@ type UssdInputValidationResult = {
   message?: string;
 };
 
-export async function validateUnitName(
-  unitName: string,
+export async function validateUnitId(
+  unitId: string,
 ): Promise<UssdInputValidationResult> {
+  if (unitId.length !== 6) {
+    return {
+      status: "invalid",
+      message: `END The unit identifier should be 6 characters long. Please try again.`,
+    };
+  }
   try {
-    await getUnitbyName(unitName);
+    await getUnitById(unitId);
   } catch (error) {
     console.error(error);
     // Check if this is the expected "Unit not found" error
