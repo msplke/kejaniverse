@@ -80,7 +80,10 @@ async function handleChargeSuccess(data: PaystackWebhookEvent["data"]) {
       }
 
       // Paystack uses subunits, so we divide the amount by 100 to get the actual amount
-      const amount = data.amount / 100;
+      // Currently, the type of amount is `integer` in the schema, hence the rounding,
+      // but it should be of type `decimal` in the future
+      // to avoid rounding errors.
+      const amount = Math.round(data.amount / 100);
 
       // Insert payment record
       await tx.insert(payment).values({
