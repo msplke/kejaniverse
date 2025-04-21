@@ -89,3 +89,26 @@ export async function getUnitById(unitId: string) {
   return results[0]!;
 }
 
+export async function getPropertyByUnitId(unitId: string) {
+  const unitResults = await db
+    .select()
+    .from(unit)
+    .where(eq(unit.id, unitId))
+    .limit(1);
+  if (unitResults.length === 0) {
+    throw new Error("Unit not found");
+  }
+  const currentUnit = unitResults[0]!;
+
+  const propertyResults = await db
+    .select()
+    .from(property)
+    .where(eq(property.id, currentUnit.propertyId!))
+    .limit(1);
+
+  if (propertyResults.length === 0) {
+    throw new Error("Property not found");
+  }
+  const currentProperty = propertyResults[0]!;
+  return currentProperty;
+}

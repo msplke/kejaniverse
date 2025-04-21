@@ -23,6 +23,10 @@ export const chargeApiRequestSchema = z.object({
     phone: z.string().regex(/\+254\d{9}/),
     provider: z.literal("mpesa"),
   }),
+  subaccount: z.string().regex(/^ACCT_*/),
+  metadata: z.object({
+    unitId: z.string().length(6),
+  }),
 });
 
 export type ChargeApiRequest = z.infer<typeof chargeApiRequestSchema>;

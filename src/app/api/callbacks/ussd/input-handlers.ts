@@ -94,8 +94,8 @@ export async function chargeUser(
   let responseText;
   // Get tenant for the unit
   try {
-    const tenant = await getTenantByUnitId(unitId);
-    const tenantEmail = tenant.email;
+    const { email: tenantEmail } = await getTenantByUnitId(unitId);
+    const { subaccountCode } = await getPropertyByUnitId(unitId);
 
     const data: ChargeApiRequest = {
       // Paystack parses the amount in subunits, so we multiply by 100
@@ -106,6 +106,10 @@ export async function chargeUser(
         phone: phoneNumber,
         provider: "mpesa",
       },
+      metadata: {
+        unitId,
+      },
+      subaccount: subaccountCode!,
     };
 
     const validation = validateChargeApiRequestData(data);
