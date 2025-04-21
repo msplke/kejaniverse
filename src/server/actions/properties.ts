@@ -69,32 +69,30 @@ const CreateSubaccountBodySchema = z.object({
   primary_contact_phone: z.string().optional(),
 });
 
-const SubaccountSchema = z.object({
-  id: z.number(),
-  subaccount_code: z.string(),
-  business_name: z.string(),
-  description: z.string().nullable(),
-  primary_contact_name: z.string().nullable(),
-  primary_contact_email: z.string().nullable(),
-  primary_contact_phone: z.string().nullable(),
-  percentage_charge: z.number(),
-  settlement_bank: z.string(),
-  account_number: z.string(),
-  currency: z.string(),
-  active: z.boolean(),
-  is_verified: z.boolean(),
-  settlement_schedule: z.string(),
-});
-
-const CreateSubaccountResponseSchema = z.object({
-  status: z.boolean(),
-  message: z.string(),
-  data: SubaccountSchema,
-});
-
 type CreateSubaccountBody = z.infer<typeof CreateSubaccountBodySchema>;
-// type CreateSubaccountResponse = z.infer<typeof CreateSubaccountResponseSchema>;
-// type Subaccount = z.infer<typeof SubaccountSchema>;}
+
+interface Subaccount {
+  id: number;
+  subaccount_code: string;
+  business_name: string;
+  description: string | null;
+  primary_contact_name: string | null;
+  primary_contact_email: string | null;
+  primary_contact_phone: string | null;
+  percentage_charge: number;
+  settlement_bank: string;
+  account_number: string;
+  currency: string;
+  active: boolean;
+  is_verified: boolean;
+  settlement_schedule: string;
+}
+
+interface CreateSubaccountResponse {
+  status: boolean;
+  message: string;
+  data: Subaccount;
+}
 
 /**
  * Create a Paystack subaccount.
@@ -127,9 +125,7 @@ export async function createSubaccount(input: CreateSubaccountBody) {
       throw new Error(`Paystack API ${response.status}: ${errMsg}`);
     }
 
-    const result = (await response.json()) as z.infer<
-      typeof CreateSubaccountResponseSchema
-    >;
+    const result = (await response.json()) as CreateSubaccountResponse;
     console.log(result);
     return result.data;
   } catch (error: unknown) {
