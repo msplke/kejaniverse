@@ -4,24 +4,25 @@ import {
   validateAmount,
   validateChargeApiRequestData,
   validatePhoneNumber,
-  validateUnitName,
+  validateUnitId,
   type ChargeApiRequest,
 } from "~/app/api/callbacks/ussd/input-validators";
-import { getTenantByUnitName } from "~/server/actions/tenants";
+import { getTenantByUnitId } from "~/server/actions/tenants";
+import { getPropertyByUnitId } from "~/server/actions/units";
 
 /**
  * @returns Welcome text with prompt to enter unit name.
  */
 export function welcome(): string {
-  return "CON Kejaniverse Rent Payment\nEnter the unit name";
+  return "CON Kejaniverse Rent Payment\nEnter the unit identifier";
 }
 
 /**
  * Validates the unit name and returns a prompt to enter the amount.
  * If the unit name is invalid, it returns an error message.
  */
-export async function handleUnitName(unitName: string) {
-  const validationResult = await validateUnitName(unitName);
+export async function handleUnitId(unitId: string) {
+  const validationResult = await validateUnitId(unitId);
   if (validationResult.status === "invalid") {
     return validationResult.message!;
   }
@@ -48,14 +49,14 @@ export function handleAmount(amount: string) {
  */
 export function handlePhoneNumber(
   phoneNumber: string,
-  unitName: string,
+  unitId: string,
   amount: string,
 ) {
   const validationResult = validatePhoneNumber(phoneNumber);
   if (validationResult.status === "invalid") {
     return validationResult.message!;
   }
-  return `CON Do you want to pay KES ${amount} for unit ${unitName}?\n1. Yes\n2. No`;
+  return `CON Do you want to pay KES ${amount} for the unit with the identifier ${unitId}?\n1. Yes\n2. No`;
 }
 
 /**
@@ -64,12 +65,12 @@ export function handlePhoneNumber(
  */
 export async function handleConfirmation(
   choice: string,
-  unitName: string,
+  unitId: string,
   amount: string,
   phoneNumber: string,
 ) {
   if (choice === "1") {
-    return await chargeUser(unitName, amount, phoneNumber);
+    return await chargeUser(unitId, amount, phoneNumber);
   } else {
     return "END Transaction cancelled.";
   }
@@ -86,14 +87,14 @@ export async function handleConfirmation(
  *          the final operation in the USSD session.
  */
 export async function chargeUser(
-  unitName: string,
+  unitId: string,
   amount: string,
   phoneNumber: string,
 ): Promise<string> {
   let responseText;
   // Get tenant for the unit
   try {
-    const tenant = await getTenantByUnitName(unitName);
+    const tenant = await getTenantByUnitId(unitId);
     const tenantEmail = tenant.email;
 
     const data: ChargeApiRequest = {
@@ -138,9 +139,6 @@ export async function chargeUser(
     return responseText;
   } catch (error) {
     console.error(error);
-    if (error instanceof Error && error.message === "Tenant not found") {
-      return "END Tenant not found. Please try again.";
-    }
     return "END Something went wrong. Please try again.";
   }
 }

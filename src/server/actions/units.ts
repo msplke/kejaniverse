@@ -6,7 +6,7 @@ import { eq } from "drizzle-orm";
 import { customAlphabet } from "nanoid";
 
 import { db } from "~/server/db";
-import { unit, unitType } from "~/server/db/schema";
+import { property, unit, unitType } from "~/server/db/schema";
 
 const genUniqueId = customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", 6);
 
@@ -74,3 +74,18 @@ export async function getUnitbyName(name: string) {
 
   return results[0];
 }
+
+export async function getUnitById(unitId: string) {
+  const results = await db
+    .select()
+    .from(unit)
+    .where(eq(unit.id, unitId))
+    .limit(1);
+
+  if (results.length === 0) {
+    throw new Error("Unit not found");
+  }
+
+  return results[0]!;
+}
+
