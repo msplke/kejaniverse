@@ -8,7 +8,7 @@ import {
 import { formDataSchema } from "~/app/api/callbacks/ussd/input-validators";
 
 const responseHeaders = {
-  "Content-Type": "application/text",
+  "Content-Type": "text/plain",
 };
 
 /**
