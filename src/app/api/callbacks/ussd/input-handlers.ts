@@ -11,15 +11,15 @@ import { getTenantByUnitId } from "~/server/actions/tenants";
 import { getPropertyByUnitId } from "~/server/actions/units";
 
 /**
- * @returns Welcome text with prompt to enter unit name.
+ * @returns Welcome text with prompt to enter unit identifier.
  */
 export function welcome(): string {
   return "CON Kejaniverse Rent Payment\nEnter the unit identifier";
 }
 
 /**
- * Validates the unit name and returns a prompt to enter the amount.
- * If the unit name is invalid, it returns an error message.
+ * Validates `unitId` returns a prompt to enter the amount.
+ * If `unitId` invalid, it returns an error message.
  */
 export async function handleUnitId(unitId: string) {
   const validationResult = await validateUnitId(unitId);
