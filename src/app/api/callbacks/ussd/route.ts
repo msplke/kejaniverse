@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     });
   }
 
-  console.log(validation.data);
+  // console.log(validation.data);
   const { text } = validation.data;
 
   if (text === "") {

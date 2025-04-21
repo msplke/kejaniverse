@@ -32,8 +32,8 @@ export async function POST(req: Request) {
   }
 
   const body = JSON.parse(rawBody) as PaystackWebhookEvent;
-  console.log("Body:");
-  console.log(body);
+  // console.log("Body:");
+  // console.log(body);
 
   const event = body.event;
   if (event !== "charge.success") {
