@@ -57,7 +57,7 @@ export async function POST(req: Request) {
  */
 async function handleChargeSuccess(data: PaystackWebhookEvent["data"]) {
   let unitId: string;
-  if (data.metadata.custom_fields.length === 1) {
+  if (data.metadata.custom_fields?.length === 1) {
     unitId = data.metadata.custom_fields[0]!.value;
   } else if (data.metadata.unitId) {
     unitId = data.metadata.unitId;
