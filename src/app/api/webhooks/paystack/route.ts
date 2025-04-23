@@ -65,7 +65,7 @@ async function handleChargeSuccess(data: PaystackWebhookEvent["data"]) {
     throw new Error("Unit ID not found in metadata");
   }
 
-  updateDbOnRentPayment(unitId, data).catch((err) => {
+  await updateDbOnRentPayment(unitId, data).catch((err) => {
     console.error("Error updating database on rent payment:", err);
   });
 }
