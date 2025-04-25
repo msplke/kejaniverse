@@ -69,8 +69,9 @@ export function constructMetadata({
 
 export function getBaseUrl() {
   if (typeof window !== "undefined") return window.location.origin; // Browser should use relative url
+  // SSR should use Vercel url
   if (process.env.VERCEL_PROJECT_PRODUCTION_URL)
-    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`; // Use production URL if available
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use Vercel url
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
   return `http://localhost:${process.env.PORT ?? 3000}`; // Dev SSR should use localhost
 }
