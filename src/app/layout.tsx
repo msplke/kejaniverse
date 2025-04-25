@@ -3,8 +3,11 @@ import { ClerkProvider } from "@clerk/nextjs";
 
 import "~/styles/globals.css";
 
+import { Toaster } from "~/components/ui/sonner";
 import { cn, constructMetadata } from "~/lib/utils";
-import { Providers } from "./_components/providers";
+import { TRPCReactProvider } from "~/trpc/react";
+import { TailwindIndicator } from "./_components/tailwind-indicator";
+import { ThemeProvider } from "./_components/theme-provider";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -25,9 +28,12 @@ export default function RootLayout({
             geist.variable,
           )}
         >
-          <Providers>
-            <div className="flex-1">{children}</div>
-          </Providers>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <TRPCReactProvider>{children}</TRPCReactProvider>
+
+            <TailwindIndicator />
+            <Toaster />
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

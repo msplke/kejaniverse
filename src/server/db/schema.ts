@@ -22,6 +22,21 @@ import {
  */
 export const createTable = pgTableCreator((name) => `kejaniverse_${name}`);
 
+// Temporary table for tRPC integration testing
+export const posts = createTable(
+  "post",
+  (d) => ({
+    id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
+    name: d.varchar({ length: 256 }),
+    createdAt: d
+      .timestamp({ withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: d.timestamp({ withTimezone: true }).$onUpdate(() => new Date()),
+  }),
+  (t) => [index("name_idx").on(t.name)],
+);
+
 const id = uuid("id")
   .primaryKey()
   .default(sql`uuid_generate_v7()`);
