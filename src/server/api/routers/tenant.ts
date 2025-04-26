@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { AddTenantFormSchema } from "~/lib/validators/tenant";
@@ -47,7 +47,6 @@ export const tenantRouter = createTRPCRouter({
 
         const tenantId = addTenantResult[0]?.id;
         if (!tenantId) {
-          tx.rollback();
           throw new TRPCError({
             code: "INTERNAL_SERVER_ERROR",
             message: "Failed to create tenant",
@@ -78,7 +77,7 @@ export const tenantRouter = createTRPCRouter({
         .from(tenant)
         .innerJoin(unit, eq(tenant.unitId, unit.id))
         .innerJoin(property, eq(unit.propertyId, property.id))
-        .where(eq(property.id, propertyId) && eq(property.ownerId, userId));
+        .where(and(eq(property.id, propertyId), eq(property.ownerId, userId)));
 
       if (tenants.length === 0) {
         // Could be not found or not authorized

@@ -4,7 +4,7 @@ import { createContext, type Dispatch, type SetStateAction } from "react";
 
 import { type CreatePropertyPayload } from "~/lib/validators/property";
 
-export const defaultContext: CreatePropertyPayload = {
+export const defaultContext: Readonly<CreatePropertyPayload> = {
   propertyName: "",
   bankCode: "",
   bankAccountNumber: "",
@@ -15,7 +15,8 @@ export type CreatePropertyFormDispatch = Dispatch<
   SetStateAction<CreatePropertyPayload>
 >;
 
-export const CreatePropertyFormContext = createContext(defaultContext);
+export const CreatePropertyFormContext =
+  createContext<CreatePropertyPayload>(defaultContext);
 
 export const defaultSetValue: CreatePropertyFormDispatch = (v) => {
   console.log(v);

@@ -1,10 +1,9 @@
 import { TRPCError } from "@trpc/server";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { useCreateSubaccount } from "~/hooks/paystack";
-import { type Subaccount } from "~/lib/validators/paystack";
 import { CreatePropertyPayloadSchema } from "~/lib/validators/property";
+import { createSubaccount } from "~/server/actions/properties";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { property, unit, unitType } from "~/server/db/schema";
 
@@ -15,19 +14,13 @@ export const propertyRouter = createTRPCRouter({
       const { propertyName, bankCode, bankAccountNumber, unitTypes } = input;
       const { userId } = ctx.auth;
 
-      let subaccount: Subaccount;
-
-      const mutation = await useCreateSubaccount();
-      await mutation.mutateAsync({
+      const subaccount = await createSubaccount({
         business_name: propertyName,
         bank_code: bankCode,
         account_number: bankAccountNumber,
         percentage_charge: 1,
       });
-
-      if (mutation.isSuccess && mutation.data) {
-        subaccount = mutation.data;
-      } else {
+      if (!subaccount) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Failed to create subaccount",
@@ -90,7 +83,7 @@ export const propertyRouter = createTRPCRouter({
         .select({ property })
         .from(unit)
         .leftJoin(property, eq(unit.propertyId, property.id))
-        .where(eq(unit.id, unitId) && eq(property.ownerId, userId))
+        .where(and(eq(unit.id, unitId), eq(property.ownerId, userId)))
         .limit(1);
 
       const result = results[0]?.property;

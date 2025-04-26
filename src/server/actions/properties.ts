@@ -22,6 +22,9 @@ import { property, unitType } from "~/server/db/schema";
  * @throws Error if the network request fails or Paystack returns a non-OK status
  */
 export async function fetchBanks() {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
   try {
     const res = await fetch(
       `https://api.paystack.co/bank?country=kenya&currency=KES`,
@@ -32,6 +35,9 @@ export async function fetchBanks() {
         },
       },
     );
+
+    // Use the abort controller to cancel the request if it takes too long
+    clearTimeout(timeoutId);
 
     // Notify on HTTP-level failures
     if (!res.ok) {
@@ -44,6 +50,9 @@ export async function fetchBanks() {
     const result = (await res.json()) as FetchBanksResponse;
     return result.data;
   } catch (error: unknown) {
+    if (error instanceof Error && error.name === "AbortError") {
+      throw new Error("Paystack API request timed out");
+    }
     console.error("✖ [fetchBanks] Failed to fetch banks:", error);
     throw error;
   }
@@ -93,17 +102,17 @@ export async function createProperty({
     throw new Error("User not authenticated");
   }
 
-  const result = await db.transaction(async (tx) => {
-    const subaccount = await createSubaccount({
-      business_name: propertyName,
-      bank_code: bankCode,
-      account_number: bankAccountNumber,
-      percentage_charge: 1,
-    });
-    if (!subaccount) {
-      throw new Error("Failed to create subaccount");
-    }
+  const subaccount = await createSubaccount({
+    business_name: propertyName,
+    bank_code: bankCode,
+    account_number: bankAccountNumber,
+    percentage_charge: 1,
+  });
+  if (!subaccount) {
+    throw new Error("Failed to create subaccount");
+  }
 
+  const result = await db.transaction(async (tx) => {
     const results = await tx
       .insert(property)
       .values({
