@@ -109,13 +109,19 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  * @see https://trpc.io/docs/middleware
  */
 const isAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.auth.userId) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
+  const { userId, sessionId } = ctx.auth;
+
+  if (!userId || !sessionId) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "User not authenticated",
+    });
   }
+
   // Pass through the auth object for downstream use
   return next({
     ctx: {
-      auth: ctx.auth,
+      auth: { userId, sessionId },
     },
   });
 });
