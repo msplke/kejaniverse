@@ -75,14 +75,20 @@ export const property = createTable(
     // address: varchar("address", { length: 64 }).notNull(),
     bankCode: varchar("bank_code", { length: 3 }).notNull(),
     bankAccountNumber: varchar("bank_account_number", { length: 32 }).notNull(),
-    subaccountCode: varchar("subaccount_code", { length: 32 }),
+    subaccountCode: varchar("subaccount_code", { length: 32 }).notNull(),
     createdAt,
-    ownerId: varchar("owner_id", { length: 32 }).references(
-      () => propertyOwner.id,
-      { onDelete: "cascade" },
-    ),
+    ownerId: varchar("owner_id", { length: 32 })
+      .references(() => propertyOwner.id, { onDelete: "cascade" })
+      .notNull(),
   },
-  (table) => [{ nameIndex: index("property_name_idx").on(table.name) }],
+  (table) => [
+    {
+      nameIndex: index("property_name_idx").on(table.name),
+      subaccountIndex: index("property_subaccount_idx").on(
+        table.subaccountCode,
+      ),
+    },
+  ],
 );
 
 export const tenant = createTable(
@@ -95,14 +101,15 @@ export const tenant = createTable(
       .notNull(),
     moveOutDate: date("move_out_date"),
     cumulativeRentPaid: integer("cumulative_rent_paid").default(0).notNull(),
-    unitId: varchar("unit_id", { length: 6 }).references(() => unit.id, {
-      onDelete: "cascade",
-    }),
+    unitId: varchar("unit_id", { length: 6 })
+      .references(() => unit.id, { onDelete: "cascade" })
+      .notNull(),
   },
   (table) => [
     {
       firstNameIndex: index("tenant_first_name_idx").on(table.firstName),
       lastNameIndex: index("tenant_last_name_idx").on(table.lastName),
+      unitIdIndex: index("tenant_unit_id_idx").on(table.unitId),
     },
   ],
 );
@@ -119,38 +126,58 @@ export const unitType = createTable("unit_type", {
   id,
   unitType: unitTypeEnum("unit_type").notNull(),
   rentPrice: integer("rent_price").notNull(),
-  propertyId: uuid("property_id").references(() => property.id, {
-    onDelete: "cascade",
-  }),
+  propertyId: uuid("property_id")
+    .references(() => property.id, { onDelete: "cascade" })
+    .notNull(),
 });
 
-export const unit = createTable("unit", {
-  id: varchar("id", { length: 6 }).primaryKey(),
-  unitName: varchar("unit_name", { length: 16 }).notNull(),
-  occupied: boolean("occupied").default(false).notNull(),
+export const unit = createTable(
+  "unit",
+  {
+    id: varchar("id", { length: 6 }).primaryKey(),
+    unitName: varchar("unit_name", { length: 16 }).notNull(),
+    occupied: boolean("occupied").default(false).notNull(),
 
-  unitTypeId: uuid("unit_type_id").references(() => unitType.id),
-  propertyId: uuid("property_id").references(() => property.id, {
-    onDelete: "cascade",
-  }),
-});
+    unitTypeId: uuid("unit_type_id")
+      .references(() => unitType.id)
+      .notNull(),
+    propertyId: uuid("property_id")
+      .references(() => property.id, { onDelete: "cascade" })
+      .notNull(),
+  },
+  (table) => [
+    {
+      unitNameIndex: index("unit_name_idx").on(table.unitName),
+      propertyIdIndex: index("unit_property_id_idx").on(table.propertyId),
+    },
+  ],
+);
 
 export const paymentMethodEnum = pgEnum("payment_method", [
   "mpesa",
   "bank_transfer",
 ]);
 
-export const payment = createTable("payment", {
-  referenceNumber: varchar("reference_no").primaryKey(),
-  amount: integer("amount").notNull(),
-  paidAt: timestamp("paid_at").notNull(),
-  paymentMethod: paymentMethodEnum("payment_method").notNull(),
-  paymentReference: varchar("payment_reference", { length: 256 }).notNull(),
+export const payment = createTable(
+  "payment",
+  {
+    referenceNumber: varchar("reference_no").primaryKey(),
+    amount: integer("amount").notNull(),
+    paidAt: timestamp("paid_at").notNull(),
+    paymentMethod: paymentMethodEnum("payment_method").notNull(),
+    paymentReference: varchar("payment_reference", { length: 256 }).notNull(),
 
-  unitId: varchar("unit_id", { length: 6 }).references(() => unit.id, {
-    onDelete: "cascade",
-  }),
-  tenantId: uuid("tenant_id").references(() => tenant.id, {
-    onDelete: "cascade",
-  }),
-});
+    unitId: varchar("unit_id", { length: 6 })
+      .references(() => unit.id, { onDelete: "cascade" })
+      .notNull(),
+    tenantId: uuid("tenant_id").references(() => tenant.id, {
+      onDelete: "cascade",
+    }),
+  },
+  (table) => [
+    {
+      unitIdIndex: index("payment_unit_id_idx").on(table.unitId),
+      tenantIdIndex: index("payment_tenant_id_idx").on(table.tenantId),
+    },
+  ],
+);
