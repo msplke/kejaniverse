@@ -28,7 +28,7 @@ export async function fetchBanks() {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${env.PAYSTACK_TEST_SECRET_KEY}`,
+          Authorization: `Bearer ${env.PAYSTACK_SECRET_KEY}`,
         },
       },
     );
@@ -60,7 +60,7 @@ export async function createSubaccount(input: CreateSubaccountPayload) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${env.PAYSTACK_LIVE_SECRET_KEY}`,
+        Authorization: `Bearer ${env.PAYSTACK_SECRET_KEY}`,
       },
       body: JSON.stringify(input),
     });
