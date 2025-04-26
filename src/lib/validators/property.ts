@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { unitTypeEnum } from "~/server/db/schema";
+import { unitTypeEnumValues } from "~/server/db/schema";
 
 export const CreatePropertyFormSchema = z.object({
   propertyName: z
@@ -9,7 +9,7 @@ export const CreatePropertyFormSchema = z.object({
     .min(4, {
       message: "Property name must be at least 4 characters long",
     })
-    .max(64, { message: "Name can't be more than 64 characters" }),
+    .max(64, { message: "Name cannot exceed 64 characters" }),
   bankCode: z.string().nonempty("Bank code is required"),
   bankAccountNumber: z
     .string()
@@ -18,15 +18,15 @@ export const CreatePropertyFormSchema = z.object({
       message: "Bank account number must be at least 10 characters long",
     })
     .max(32, {
-      message: "Bank account number can't be more than 32 characters",
+      message: "Bank account number cannot exceed 32 characters",
     }),
 });
 
 export type CreatePropertyFormData = z.infer<typeof CreatePropertyFormSchema>;
 
 export const CreateUnitTypeFormSchema = z.object({
-  unitType: z.enum(unitTypeEnum.enumValues),
-  rentPrice: z.number({ coerce: true }).int().min(1000).max(35000),
+  unitType: z.enum(unitTypeEnumValues),
+  rentPrice: z.number({ coerce: true }).int().min(1000).max(100_000),
 });
 
 export type CreateUnitTypeFormData = z.infer<typeof CreateUnitTypeFormSchema>;

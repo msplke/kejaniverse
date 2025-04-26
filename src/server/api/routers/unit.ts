@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { customAlphabet } from "nanoid";
 import { z } from "zod";
 
@@ -50,9 +50,11 @@ export const unitRouter = createTRPCRouter({
         .leftJoin(unitType, eq(unit.unitTypeId, unitType.id))
         .innerJoin(property, eq(unit.propertyId, property.id))
         .where(
-          eq(unit.propertyId, propertyId) &&
-            eq(property.id, propertyId) &&
+          and(
+            eq(unit.propertyId, propertyId),
+            eq(property.id, propertyId),
             eq(property.ownerId, userId),
+          ),
         )
         .orderBy(unit.unitName);
 
@@ -92,9 +94,11 @@ export const unitRouter = createTRPCRouter({
         .from(unit)
         .innerJoin(property, eq(unit.propertyId, property.id))
         .where(
-          eq(unit.id, unitId) &&
-            eq(unit.propertyId, property.id) &&
+          and(
+            eq(unit.id, unitId),
+            eq(unit.propertyId, property.id),
             eq(property.ownerId, userId),
+          ),
         )
         .limit(1);
 
@@ -119,9 +123,11 @@ export const unitRouter = createTRPCRouter({
         .from(unit)
         .innerJoin(property, eq(unit.propertyId, property.id))
         .where(
-          eq(unit.unitName, unitName) &&
-            eq(unit.propertyId, property.id) &&
+          and(
+            eq(unit.unitName, unitName),
+            eq(unit.propertyId, property.id),
             eq(property.ownerId, userId),
+          ),
         )
         .limit(1);
 
@@ -146,9 +152,11 @@ export const unitRouter = createTRPCRouter({
         .from(unitType)
         .innerJoin(property, eq(unitType.propertyId, property.id))
         .where(
-          eq(unitType.propertyId, propertyId) &&
-            eq(property.id, propertyId) &&
+          and(
+            eq(unitType.propertyId, propertyId),
+            eq(property.id, propertyId),
             eq(property.ownerId, userId),
+          ),
         );
 
       if (unitTypes.length === 0) {

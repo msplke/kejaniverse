@@ -109,7 +109,7 @@ export async function chargeUser(
       metadata: {
         unitId,
       },
-      subaccount: subaccountCode!,
+      subaccount: subaccountCode,
     };
 
     const validation = validateChargeApiRequestData(data);

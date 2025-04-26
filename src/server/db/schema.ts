@@ -22,28 +22,13 @@ import {
  */
 export const createTable = pgTableCreator((name) => `kejaniverse_${name}`);
 
-// Temporary table for tRPC integration testing
-export const posts = createTable(
-  "post",
-  (d) => ({
-    id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
-    name: d.varchar({ length: 256 }),
-    createdAt: d
-      .timestamp({ withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: d.timestamp({ withTimezone: true }).$onUpdate(() => new Date()),
-  }),
-  (t) => [index("name_idx").on(t.name)],
-);
-
 const id = uuid("id")
   .primaryKey()
   .default(sql`uuid_generate_v7()`);
 
 const personalDetails = {
-  firstName: varchar("first_name", { length: 32 }).notNull(),
-  lastName: varchar("last_name", { length: 32 }).notNull(),
+  firstName: varchar("first_name", { length: 16 }).notNull(),
+  lastName: varchar("last_name", { length: 16 }).notNull(),
   phoneNumber: varchar("phone_number", { length: 16 }),
   email: varchar("email", { length: 64 }).notNull(),
 };
@@ -114,13 +99,14 @@ export const tenant = createTable(
   ],
 );
 
-export const unitTypeEnum = pgEnum("unit_type_enum", [
+export const unitTypeEnumValues = [
   "Single-room",
   "Bedsitter",
   "One-bedroom",
   "Two-bedroom",
   "Three-bedroom",
-]);
+] as const;
+const unitTypeEnum = pgEnum("unit_type_enum", unitTypeEnumValues);
 
 export const unitType = createTable("unit_type", {
   id,

@@ -19,6 +19,7 @@ export async function fetchBanks() {
     "https://api.paystack.co/bank?country=kenya&currency=KES",
     {
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${env.PAYSTACK_SECRET_KEY}`,
       },
     },
