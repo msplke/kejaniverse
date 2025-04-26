@@ -11,8 +11,7 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
-    PAYSTACK_LIVE_SECRET_KEY: z.string(),
-    PAYSTACK_TEST_SECRET_KEY: z.string(),
+    PAYSTACK_SECRET_KEY: z.string(),
   },
 
   /**
@@ -31,8 +30,7 @@ export const env = createEnv({
     CLERK_SIGNING_SECRET: process.env.CLERK_SIGNING_SECRET,
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
-    PAYSTACK_LIVE_SECRET_KEY: process.env.PAYSTACK_LIVE_SECRET_KEY,
-    PAYSTACK_TEST_SECRET_KEY: process.env.PAYSTACK_TEST_SECRET_KEY,
+    PAYSTACK_SECRET_KEY: process.env.PAYSTACK_SECRET_KEY,
 
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },

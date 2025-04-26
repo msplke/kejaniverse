@@ -26,7 +26,7 @@ interface PaystackWebhookEvent {
 }
 
 const defaultResponse = new Response("OK", { status: 200 });
-const secret = env.PAYSTACK_LIVE_SECRET_KEY;
+const secret = env.PAYSTACK_SECRET_KEY;
 
 export async function POST(req: Request) {
   const rawBody = await req.text();
