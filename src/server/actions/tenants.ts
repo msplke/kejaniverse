@@ -4,7 +4,7 @@ import "server-only";
 
 import { eq } from "drizzle-orm";
 
-import { type AddTenantFormData } from "~/components/forms/add-tenant-form";
+import { type AddTenantFormPayload } from "~/lib/validators/tenant";
 import { db } from "~/server/db";
 import { tenant, unit } from "~/server/db/schema";
 
@@ -44,7 +44,7 @@ export async function getTenantByUnitId(unitId: string) {
  * @param data information regarding the tenant to be added from the form
  * @returns The id of the added tenant
  */
-export async function addTenant(data: AddTenantFormData) {
+export async function addTenant(data: AddTenantFormPayload) {
   const unitExists = await db
     .select()
     .from(unit)

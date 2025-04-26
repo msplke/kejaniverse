@@ -24,12 +24,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { type Bank } from "~/server/actions/properties";
+import { type Bank } from "~/lib/validators/paystack";
 import {
-  CreatePropertyFormDispatchContext,
   CreatePropertyFormSchema,
   type CreatePropertyFormData,
-} from "./context";
+} from "~/lib/validators/property";
+import { CreatePropertyFormDispatchContext } from "./context";
 
 export function CreatePropertyForm({ banks }: { banks: Bank[] }) {
   const router = useRouter();
