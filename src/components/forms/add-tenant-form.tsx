@@ -5,7 +5,6 @@ import { useMutation } from "@tanstack/react-query";
 import { Check, Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
 
 import { Button } from "~/components/ui/button";
 import {
@@ -24,6 +23,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
+import {
+  AddTenantFormSchema,
+  type AddTenantFormPayload,
+} from "~/lib/validators/tenant";
 import { addTenant } from "~/server/actions/tenants";
 
 type AddTenantFormProps = {
@@ -41,19 +44,9 @@ type AddTenantFormProps = {
   }[];
 };
 
-const formSchema = z.object({
-  firstName: z.string().min(2).max(50),
-  lastName: z.string().min(2).max(50),
-  phoneNumber: z.string().length(10),
-  email: z.string().email().min(2).max(50),
-  unitId: z.string().min(2).max(50),
-});
-
-export type AddTenantFormData = z.infer<typeof formSchema>;
-
 export function AddTenantForm({ units }: AddTenantFormProps) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<AddTenantFormPayload>({
+    resolver: zodResolver(AddTenantFormSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -64,7 +57,7 @@ export function AddTenantForm({ units }: AddTenantFormProps) {
   });
 
   const { mutate: server_addTenant, isPending } = useMutation({
-    mutationFn: async (data: z.infer<typeof formSchema>) => addTenant(data),
+    mutationFn: async (data: AddTenantFormPayload) => addTenant(data),
 
     onSuccess: () => {
       toast.success(`Success. Tenant created for unit.`);
@@ -76,7 +69,7 @@ export function AddTenantForm({ units }: AddTenantFormProps) {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: AddTenantFormPayload) {
     server_addTenant(values);
   }
 

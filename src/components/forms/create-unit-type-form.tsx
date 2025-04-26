@@ -33,13 +33,15 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
+import {
+  CreateUnitTypeFormSchema,
+  type CreatePropertyPayload,
+  type CreateUnitTypeFormData,
+} from "~/lib/validators/property";
 import { createProperty } from "~/server/actions/properties";
 import {
   CreatePropertyFormContext,
   CreatePropertyFormDispatchContext,
-  CreateUnitTypeFormSchema,
-  type CreatePropertyFormContextType,
-  type CreateUnitTypeFormData,
 } from "./context";
 
 export function CreateUnitTypeForm() {
@@ -50,8 +52,7 @@ export function CreateUnitTypeForm() {
   const setFormData = useContext(CreatePropertyFormDispatchContext);
 
   const { mutate: server_createProperty, isPending } = useMutation({
-    mutationFn: async (data: CreatePropertyFormContextType) =>
-      createProperty(data),
+    mutationFn: async (data: CreatePropertyPayload) => createProperty(data),
 
     onSuccess: ({ propertyId, propertyName }) => {
       toast.success(`Success. Property "${propertyName}" created.`);
