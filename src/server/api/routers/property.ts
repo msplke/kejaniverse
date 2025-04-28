@@ -3,7 +3,10 @@ import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { CreatePropertyPayloadSchema } from "~/lib/validators/property";
-import { createSubaccount } from "~/server/actions/properties";
+import {
+  createSubaccount,
+  getPropertyDashboardData,
+} from "~/server/actions/properties";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { property, unit, unitType } from "~/server/db/schema";
 
@@ -95,5 +98,32 @@ export const propertyRouter = createTRPCRouter({
       }
 
       return result;
+    }),
+
+  getPropertyDashboardData: protectedProcedure
+    .input(z.object({ propertyId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      try {
+        const { propertyId } = input;
+        const currentProperty = await ctx.db
+          .select({ id: property.id })
+          .from(property);
+
+        if (!currentProperty[0]) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Property not found",
+          });
+        }
+
+        const data = await getPropertyDashboardData(propertyId);
+        return data;
+      } catch (error) {
+        console.error("Error fetching property dashboard data:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to fetch property dashboard data",
+        });
+      }
     }),
 });
