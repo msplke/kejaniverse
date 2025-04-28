@@ -4,9 +4,11 @@ import { eq } from "drizzle-orm";
 import { Plus } from "lucide-react";
 
 import { Button } from "~/components/ui/button";
+import { PropertyDashboard } from "~/components/ui/property-dashboard";
 import { getUnits } from "~/server/actions/units";
 import { db } from "~/server/db";
 import { property } from "~/server/db/schema";
+import { api } from "~/trpc/server";
 
 type Params = Promise<{ id: string }>;
 
@@ -23,12 +25,13 @@ export default async function Page({ params }: { params: Params }) {
   }
 
   const units = await getUnits(id);
+  const dashboardData = await api.property.getPropertyDashboardData({
+    propertyId: id,
+  });
 
   return (
     <div>
       <div>
-        <h1 className="text-sm">Overview</h1>
-        <p className="text-2xl font-bold">{currentProperty[0].name}</p>
         <div className="my-8">
           {units.length === 0 ? (
             <Link href={`/properties/${id}/units/new`}>
@@ -38,7 +41,7 @@ export default async function Page({ params }: { params: Params }) {
               </Button>
             </Link>
           ) : (
-            <div>Dashboard Content</div>
+            <PropertyDashboard data={dashboardData} />
           )}
         </div>
       </div>

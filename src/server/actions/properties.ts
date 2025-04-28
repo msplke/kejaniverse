@@ -3,7 +3,7 @@
 import "server-only";
 
 import { auth } from "@clerk/nextjs/server";
-import { eq } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 
 import { env } from "~/env";
 import type {
@@ -13,7 +13,7 @@ import type {
 } from "~/lib/validators/paystack";
 import { type CreatePropertyPayload } from "~/lib/validators/property";
 import { db } from "~/server/db";
-import { property, unitType } from "~/server/db/schema";
+import { payment, property, tenant, unit, unitType } from "~/server/db/schema";
 
 /**
  * Fetches a list of banks from Paystack for the given country.
@@ -160,4 +160,50 @@ export async function getProperties() {
     .where(eq(property.ownerId, userId));
 
   return properties;
+}
+
+export async function getPropertyDashboardData(propertyId: string) {
+  // Get recent payments with tenant and unit info
+  const recentPayments = await db
+    .select({
+      referenceNumber: payment.referenceNumber,
+      amount: payment.amount,
+      paidAt: payment.paidAt,
+      paymentMethod: payment.paymentMethod,
+      tenantName: sql<string>`concat(${tenant.firstName}, ' ', ${tenant.lastName})`,
+      unitName: unit.unitName,
+    })
+    .from(payment)
+    .innerJoin(tenant, eq(payment.tenantId, tenant.id))
+    .innerJoin(unit, eq(payment.unitId, unit.id))
+    .where(eq(unit.propertyId, propertyId))
+    .orderBy(desc(payment.paidAt))
+    .limit(10);
+
+  // Get total revenue
+  const result = await db
+    .select({
+      totalRevenue: sql<number>`sum(${payment.amount})`,
+    })
+    .from(payment)
+    .innerJoin(unit, eq(payment.unitId, unit.id))
+    .where(eq(unit.propertyId, propertyId));
+
+  const totalRevenue = result[0]!.totalRevenue;
+
+  // Get unit statistics
+  const [unitStats] = await db
+    .select({
+      totalUnits: sql<number>`count(*)`,
+      occupiedUnits: sql<number>`sum(case when ${unit.occupied} then 1 else 0 end)`,
+    })
+    .from(unit)
+    .where(eq(unit.propertyId, propertyId));
+
+  return {
+    recentPayments,
+    totalRevenue: totalRevenue ?? 0,
+    totalUnits: Number(unitStats?.totalUnits),
+    occupiedUnits: Number(unitStats?.occupiedUnits),
+  };
 }
