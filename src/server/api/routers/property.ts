@@ -107,7 +107,8 @@ export const propertyRouter = createTRPCRouter({
         const { propertyId } = input;
         const currentProperty = await ctx.db
           .select({ id: property.id })
-          .from(property);
+          .from(property)
+          .where(eq(property.id, propertyId));
 
         if (!currentProperty[0]) {
           throw new TRPCError({
