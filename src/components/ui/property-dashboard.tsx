@@ -57,6 +57,14 @@ export function PropertyDashboard({ data }: { data: PropertyDashboardData }) {
 }
 
 function RecentPaymentsTable({ payments }: { payments: Payment[] }) {
+  const dateFormatter = new Intl.DateTimeFormat("en-UK", {
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
   return (
     <Table>
       <TableHeader>
@@ -71,7 +79,7 @@ function RecentPaymentsTable({ payments }: { payments: Payment[] }) {
         {payments.map((payment, index) => (
           <TableRow key={index}>
             <TableCell>
-              {new Date(payment.paidAt).toLocaleDateString()}
+              {dateFormatter.format(new Date(payment.paidAt))}
             </TableCell>
             <TableCell>{payment.tenantName}</TableCell>
             <TableCell>{payment.unitName}</TableCell>
