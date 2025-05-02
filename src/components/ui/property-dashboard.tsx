@@ -83,8 +83,8 @@ function RecentPaymentsTable({ payments }: { payments: Payment[] }) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {payments.map((payment, index) => (
-          <TableRow key={index}>
+        {payments.map((payment) => (
+          <TableRow key={payment.referenceNumber}>
             <TableCell>
               {dateFormatter.format(new Date(payment.paidAt))}
             </TableCell>
