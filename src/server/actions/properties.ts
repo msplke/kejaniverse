@@ -13,6 +13,7 @@ import type {
 } from "~/lib/validators/paystack";
 import { type CreatePropertyPayload } from "~/lib/validators/property";
 import { db } from "~/server/db";
+import { RECENT_PAYMENTS_LIMIT } from "~/server/db/constants";
 import { payment, property, tenant, unit, unitType } from "~/server/db/schema";
 
 /**
@@ -178,7 +179,7 @@ export async function getPropertyDashboardData(propertyId: string) {
     .innerJoin(unit, eq(payment.unitId, unit.id))
     .where(eq(unit.propertyId, propertyId))
     .orderBy(desc(payment.paidAt))
-    .limit(10);
+    .limit(RECENT_PAYMENTS_LIMIT);
 
   // Get total revenue
   const result = await db

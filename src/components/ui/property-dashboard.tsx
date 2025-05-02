@@ -2,11 +2,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
+import { RECENT_PAYMENTS_LIMIT } from "~/server/db/constants";
 import { payment } from "~/server/db/schema";
 
 type Payment = {
@@ -67,6 +69,11 @@ function RecentPaymentsTable({ payments }: { payments: Payment[] }) {
 
   return (
     <Table>
+      <TableCaption>
+        {payments.length
+          ? `The ${RECENT_PAYMENTS_LIMIT} most recent payment(s).`
+          : "No payments yet."}
+      </TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead>Date</TableHead>
