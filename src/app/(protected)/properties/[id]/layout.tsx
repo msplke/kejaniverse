@@ -10,17 +10,13 @@ import {
 } from "~/components/ui/sidebar";
 import { api } from "~/trpc/server";
 
-type Params = Promise<{ id: string }>;
-
 export default async function Layout({
   children,
-  params,
+  params: { id },
 }: {
   children: React.ReactNode;
-  params: Params;
+  params: { id: string };
 }) {
-  const { id } = await params;
-
   const properties = await api.property.getAllUnderOwner();
 
   return (

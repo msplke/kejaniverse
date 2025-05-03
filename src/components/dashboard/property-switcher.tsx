@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ChevronsUpDown, Plus } from "lucide-react";
 
 import { Icons } from "~/components/icons";
@@ -12,7 +12,6 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import {
@@ -31,6 +30,7 @@ export function PropertySwitcher({
   property,
   properties,
 }: PropertySwitcherProps) {
+  const router = useRouter();
   const { isMobile } = useSidebar();
   const [activeProperty, setActiveProperty] = useState(property);
 
@@ -69,12 +69,12 @@ export function PropertySwitcher({
               Properties
             </DropdownMenuLabel>
 
-            {properties.map((property, index) => (
+            {properties.map((property) => (
               <DropdownMenuItem
-                key={property.name}
+                key={property.id}
                 onClick={() => {
                   setActiveProperty(property);
-                  redirect(`/properties/${property.id}`);
+                  router.push(`/properties/${property.id}`);
                 }}
                 className="gap-2 p-2"
               >
@@ -82,22 +82,21 @@ export function PropertySwitcher({
                   <Icons.house className="size-4 shrink-0" />
                 </div>
                 {property.name}
-                <DropdownMenuShortcut>⌘ {index + 1}</DropdownMenuShortcut>
               </DropdownMenuItem>
             ))}
 
             <DropdownMenuSeparator />
 
-            <Link href="/properties/new">
-              <DropdownMenuItem className="gap-2 p-2">
+            <DropdownMenuItem asChild className="gap-2 p-2">
+              <Link href="/properties/new">
                 <div className="bg-background flex size-6 items-center justify-center rounded-md border">
                   <Plus className="size-4" />
                 </div>
                 <div className="text-muted-foreground font-medium">
                   Create property
                 </div>
-              </DropdownMenuItem>
-            </Link>
+              </Link>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

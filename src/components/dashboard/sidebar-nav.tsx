@@ -46,15 +46,22 @@ export function SidebarNav({
                               : "text-muted-foreground hover:text-accent-foreground",
                           )}
                         >
-                          <Link
-                            href={item.disabled ? "#" : item.href}
-                            className={cn(
-                              "hover:bg-muted flex flex-1 items-center gap-3 rounded-md text-sm font-medium",
-                            )}
-                          >
-                            <Icon className="size-4" />
-                            <span>{item.title}</span>
-                          </Link>
+                          {item.disabled ? (
+                            <div className="flex flex-1 cursor-not-allowed items-center gap-3 rounded-md text-sm font-medium opacity-80">
+                              <Icon className="size-4" />
+                              <span>{item.title}</span>
+                            </div>
+                          ) : (
+                            <Link
+                              href={item.href}
+                              className={cn(
+                                "hover:bg-muted flex flex-1 items-center gap-3 rounded-md text-sm font-medium",
+                              )}
+                            >
+                              <Icon className="size-4" />
+                              <span>{item.title}</span>
+                            </Link>
+                          )}
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     );
