@@ -34,6 +34,7 @@ export const getSidebarLinks = (id: string): SidebarNavItem[] => [
         title: "Settings",
         href: `/properties/${id}/settings`,
         icon: "settings",
+        disabled: true,
       },
       {
         title: "Homepage",
