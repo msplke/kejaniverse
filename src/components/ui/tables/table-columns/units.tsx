@@ -75,8 +75,8 @@ export const unitTableColumns: ColumnDef<UnitTableColumns>[] = [
           <DropdownMenuContent align="end" className="p-2">
             <DropdownMenuGroup>
               <DropdownMenuItem
-                onClick={() => {
-                  navigator.clipboard.writeText(unit.id);
+                onClick={async () => {
+                  await navigator.clipboard.writeText(unit.id);
                   toast.info("Unit ID copied to clipboard");
                 }}
               >
