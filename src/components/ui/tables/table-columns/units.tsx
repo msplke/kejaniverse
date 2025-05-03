@@ -12,6 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import { DataTableColumnHeader } from "../data-table-column-header";
 
 type UnitTableColumns = {
   id: string;
@@ -24,7 +25,9 @@ type UnitTableColumns = {
 export const unitTableColumns: ColumnDef<UnitTableColumns>[] = [
   {
     accessorKey: "name",
-    header: "Unit Name",
+    header: ({ column }) => (
+      <DataTableColumnHeader title="Unit Name" column={column} />
+    ),
   },
   {
     accessorKey: "unitType",
@@ -44,7 +47,9 @@ export const unitTableColumns: ColumnDef<UnitTableColumns>[] = [
   },
   {
     accessorKey: "rentPrice",
-    header: "Rent Price",
+    header: ({ column }) => (
+      <DataTableColumnHeader title="Rent price" column={column} />
+    ),
     cell: ({ row }) => {
       const rentPrice = parseFloat(row.getValue("rentPrice"));
       const currencyFormatter = new Intl.NumberFormat("en-US", {
