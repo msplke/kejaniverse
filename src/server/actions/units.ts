@@ -53,7 +53,7 @@ export async function getUnits(propertyId: string) {
       unitType: unitType.unitType,
     })
     .from(unit)
-    .leftJoin(unitType, eq(unit.unitTypeId, unitType.id))
+    .innerJoin(unitType, eq(unit.unitTypeId, unitType.id))
     .where(eq(unit.propertyId, propertyId))
     .orderBy(unit.unitName);
 
