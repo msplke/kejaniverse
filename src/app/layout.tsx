@@ -1,4 +1,4 @@
-import { Geist } from "next/font/google";
+import { Inter as FontSans } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 
 import "~/styles/globals.css";
@@ -9,9 +9,9 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { TailwindIndicator } from "./_components/tailwind-indicator";
 import { ThemeProvider } from "./_components/theme-provider";
 
-const geist = Geist({
+const fontSans = FontSans({
   subsets: ["latin"],
-  variable: "--font-geist-sans",
+  variable: "--font-sans",
 });
 
 export const metadata = constructMetadata();
@@ -25,7 +25,7 @@ export default function RootLayout({
         <body
           className={cn(
             "bg-background min-h-screen font-sans antialiased",
-            geist.variable,
+            fontSans.variable,
           )}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
