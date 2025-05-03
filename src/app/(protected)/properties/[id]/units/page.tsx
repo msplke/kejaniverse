@@ -17,7 +17,12 @@ export default async function UnitsPage({ params }: { params: Params }) {
   return (
     <div>
       <h1 className="my-4 text-2xl font-bold">Units</h1>
-      <DataTable columns={unitTableColumns} data={units} />
+      <div></div>
+      <DataTable
+        columns={unitTableColumns}
+        data={units}
+        filterOption={{ columnKey: "name" }}
+      />
     </div>
   );
 }
