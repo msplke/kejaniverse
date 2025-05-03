@@ -3,8 +3,8 @@ import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { Plus } from "lucide-react";
 
+import { PropertyDashboard } from "~/components/property-dashboard";
 import { Button } from "~/components/ui/button";
-import { PropertyDashboard } from "~/components/ui/property-dashboard";
 import { getUnits } from "~/server/actions/units";
 import { db } from "~/server/db";
 import { property } from "~/server/db/schema";
