@@ -9,7 +9,6 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import { RECENT_PAYMENTS_LIMIT } from "~/server/db/constants";
-import { payment } from "~/server/db/schema";
 
 type Payment = {
   referenceNumber: string;
