@@ -75,3 +75,9 @@ export function getBaseUrl() {
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
   return `http://localhost:${process.env.PORT ?? 3000}`; // Dev SSR should use localhost
 }
+
+export function camelCaseToSentenceCase(input: string): string {
+  return input
+    .replace(/([a-z])([A-Z])/g, "$1 $2") // Add space between camelCase words
+    .replace(/^./, (str) => str.toUpperCase()); // Capitalize the first letter
+}
