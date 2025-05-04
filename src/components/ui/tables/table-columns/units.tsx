@@ -1,17 +1,8 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
-import { toast } from "sonner";
 
-import { Button } from "~/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
+import { formatCurrency } from "~/lib/formatters";
 import { DataTableColumnHeader } from "../data-table-column-header";
 
 type UnitTableColumns = {
@@ -56,46 +47,47 @@ export const unitTableColumns: ColumnDef<UnitTableColumns>[] = [
     ),
     cell: ({ row }) => {
       const rentPrice = parseFloat(row.getValue("rentPrice"));
-      const currencyFormatter = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "KES",
-      });
-      const formatted = currencyFormatter.format(rentPrice);
+      const formatted = formatCurrency(rentPrice);
       return <span>{formatted}</span>;
     },
     enableHiding: false,
   },
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const unit = row.original;
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="p-2">
-            <DropdownMenuGroup>
-              <DropdownMenuItem
-                onClick={async () => {
-                  await navigator.clipboard.writeText(unit.id);
-                  toast.info("Unit ID copied to clipboard");
-                }}
-              >
-                Copy unit ID
-              </DropdownMenuItem>
-              <DropdownMenuItem>Edit unit info</DropdownMenuItem>
-              <DropdownMenuItem variant="destructive">
-                Remove unit
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-    enableHiding: false,
-  },
+  // {
+  //   id: "actions",
+  //   cell: ({ row }) => {
+  //     const unit = row.original;
+  //     return (
+  //       <DropdownMenu>
+  //         <DropdownMenuTrigger asChild>
+  //           <Button variant="ghost" className="h-8 w-8 p-0">
+  //             <span className="sr-only">Open menu</span>
+  //             <MoreHorizontal className="h-4 w-4" />
+  //           </Button>
+  //         </DropdownMenuTrigger>
+  //         <DropdownMenuContent align="end" className="p-2">
+  //           <DropdownMenuGroup>
+  //             <DropdownMenuItem
+  //               onClick={async () => {
+  //                 try {
+  //                   await navigator.clipboard.writeText(unit.id);
+  //                   toast.success("Unit ID copied to clipboard");
+  //                 } catch (error) {
+  //                   toast.error("Failed to copy Unit ID to clipboard");
+  //                   console.error("Clipboard error:", error);
+  //                 }
+  //               }}
+  //             >
+  //               Copy unit ID
+  //             </DropdownMenuItem>
+  //             <DropdownMenuItem>Edit unit info</DropdownMenuItem>
+  //             <DropdownMenuItem variant="destructive">
+  //               Remove unit
+  //             </DropdownMenuItem>
+  //           </DropdownMenuGroup>
+  //         </DropdownMenuContent>
+  //       </DropdownMenu>
+  //     );
+  //   },
+  //   enableHiding: false,
+  // },
 ];
