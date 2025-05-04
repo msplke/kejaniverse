@@ -41,7 +41,9 @@ export const propertyOwner = createTable(
   "property_owner",
   {
     id: varchar({ length: 32 }).primaryKey(),
-    ...personalDetails,
+    firstName: personalDetails.firstName,
+    lastName: personalDetails.lastName,
+    email: personalDetails.email,
     phoneNumber: varchar("phone_number", { length: 16 }),
     createdAt,
   },
