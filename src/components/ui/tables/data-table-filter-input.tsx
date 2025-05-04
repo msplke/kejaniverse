@@ -14,7 +14,7 @@ export function DataTableFilterInput<TData>({
   const column = table.getColumn(columnKey);
 
   return (
-    <div className="flex items-center py-4">
+    <div className="flex items-center">
       <Input
         placeholder={`Filter by ${columnKey}...`}
         value={(column?.getFilterValue() as string) ?? ""}
