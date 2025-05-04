@@ -36,10 +36,14 @@ export function PropertyDashboard({ data }: { data: PropertyDashboardData }) {
         </Card>
       </div>
       <div className="mt-8">
-        <h2 className="mb-4 text-2xl font-bold">Recent Payments</h2>
+        <h2 className="mb-2 text-2xl font-bold">Recent Payments</h2>
+        <p className="text-muted-foreground text-sm">
+          This table shows the 5 most recent payments made by tenants.
+        </p>
         <DataTable
           columns={recentPaymentsTableColumns}
           data={data.recentPayments}
+          showPagination={false}
         />
       </div>
     </div>

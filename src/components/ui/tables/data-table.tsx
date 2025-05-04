@@ -43,12 +43,14 @@ interface DataTableProps<TData, TValue> {
   // Optional filter option to show a filter input for a specific column
   // If not provided, no filter input will be shown
   filterOption?: FilterOption;
+  showPagination?: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   filterOption,
+  showPagination = false,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -158,9 +160,11 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="my-4">
-        <DataTablePagination table={table} />
-      </div>
+      {showPagination && (
+        <div className="my-4">
+          <DataTablePagination table={table} />
+        </div>
+      )}
     </div>
   );
 }
