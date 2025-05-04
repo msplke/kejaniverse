@@ -29,7 +29,7 @@ const id = uuid("id")
 const personalDetails = {
   firstName: varchar("first_name", { length: 16 }).notNull(),
   lastName: varchar("last_name", { length: 16 }).notNull(),
-  phoneNumber: varchar("phone_number", { length: 16 }),
+  phoneNumber: varchar("phone_number", { length: 16 }).notNull(),
   email: varchar("email", { length: 64 }).notNull(),
 };
 
@@ -42,6 +42,7 @@ export const propertyOwner = createTable(
   {
     id: varchar({ length: 32 }).primaryKey(),
     ...personalDetails,
+    phoneNumber: varchar("phone_number", { length: 16 }),
     createdAt,
   },
   (table) => [
