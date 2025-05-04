@@ -1,23 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { DataTable } from "./ui/tables/data-table";
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "~/components/ui/table";
-import { RECENT_PAYMENTS_LIMIT } from "~/server/db/constants";
-
-type Payment = {
-  referenceNumber: string;
-  amount: number;
-  paidAt: Date;
-  paymentMethod: "mpesa" | "bank_transfer";
-  tenantName: string;
-  unitName: string;
-};
+  recentPaymentsTableColumns,
+  type Payment,
+} from "./ui/tables/table-columns/recent-payments";
 
 type PropertyDashboardData = {
   recentPayments: Payment[];
@@ -51,48 +37,11 @@ export function PropertyDashboard({ data }: { data: PropertyDashboardData }) {
       </div>
       <div className="mt-8">
         <h2 className="mb-4 text-2xl font-bold">Recent Payments</h2>
-        <RecentPaymentsTable payments={data.recentPayments} />
+        <DataTable
+          columns={recentPaymentsTableColumns}
+          data={data.recentPayments}
+        />
       </div>
     </div>
-  );
-}
-
-function RecentPaymentsTable({ payments }: { payments: Payment[] }) {
-  const dateFormatter = new Intl.DateTimeFormat("en-UK", {
-    year: "numeric",
-    month: "short",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
-  return (
-    <Table>
-      <TableCaption>
-        {payments.length
-          ? `The ${RECENT_PAYMENTS_LIMIT} most recent payment(s).`
-          : "No payments yet."}
-      </TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Date</TableHead>
-          <TableHead>Tenant</TableHead>
-          <TableHead>Unit</TableHead>
-          <TableHead>Amount</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {payments.map((payment) => (
-          <TableRow key={payment.referenceNumber}>
-            <TableCell>
-              {dateFormatter.format(new Date(payment.paidAt))}
-            </TableCell>
-            <TableCell>{payment.tenantName}</TableCell>
-            <TableCell>{payment.unitName}</TableCell>
-            <TableCell>KES {payment.amount}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
   );
 }

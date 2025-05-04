@@ -2,7 +2,7 @@
 
 import "server-only";
 
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
 import { type AddTenantFormPayload } from "~/lib/validators/tenant";
 import { db } from "~/server/db";
@@ -10,7 +10,17 @@ import { tenant, unit } from "~/server/db/schema";
 
 export async function getTenants(propertyId: string) {
   const tenants = await db
-    .select()
+    .select({
+      id: tenant.id,
+      name: sql<string>`concat(${tenant.firstName}, ' ', ${tenant.lastName})`,
+      phoneNumber: tenant.phoneNumber,
+      email: tenant.email,
+      unitId: unit.id,
+      unitName: unit.unitName,
+      moveInDate: tenant.moveInDate,
+      moveOutDate: tenant.moveOutDate,
+      cumulativeRentPaid: tenant.cumulativeRentPaid,
+    })
     .from(tenant)
     .innerJoin(unit, eq(unit.id, tenant.unitId))
     .where(eq(unit.propertyId, propertyId));

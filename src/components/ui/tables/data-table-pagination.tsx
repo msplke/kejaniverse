@@ -15,12 +15,13 @@ interface DataTablePaginationProps<TData> {
 export function DataTablePagination<TData>({
   table,
 }: DataTablePaginationProps<TData>) {
+  const pageCount = table.getPageCount();
+  const pageIndex = table.getState().pagination.pageIndex;
   return (
     <div className="flex items-center justify-end">
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-          Page {table.getState().pagination.pageIndex + 1} of{" "}
-          {table.getPageCount()}
+          {pageCount > 0 && `Page ${pageIndex + 1} of ${pageCount}`}
         </div>
         <div className="flex items-center space-x-2">
           <Button
