@@ -28,10 +28,12 @@ export const unitTableColumns: ColumnDef<UnitTableColumns>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader title="Unit Name" column={column} />
     ),
+    enableHiding: false,
   },
   {
     accessorKey: "unitType",
     header: "Unit Type",
+    enableHiding: false,
   },
   {
     accessorKey: "occupied",
@@ -40,10 +42,12 @@ export const unitTableColumns: ColumnDef<UnitTableColumns>[] = [
       const occupied = row.getValue("occupied");
       return <span>{occupied ? "Yes" : "No"}</span>;
     },
+    enableHiding: false,
   },
   {
     accessorKey: "id",
     header: "Unit ID",
+    enableHiding: false,
   },
   {
     accessorKey: "rentPrice",
@@ -59,6 +63,7 @@ export const unitTableColumns: ColumnDef<UnitTableColumns>[] = [
       const formatted = currencyFormatter.format(rentPrice);
       return <span>{formatted}</span>;
     },
+    enableHiding: false,
   },
   {
     id: "actions",
@@ -91,5 +96,6 @@ export const unitTableColumns: ColumnDef<UnitTableColumns>[] = [
         </DropdownMenu>
       );
     },
+    enableHiding: false,
   },
 ];
