@@ -12,12 +12,13 @@ import { api } from "~/trpc/server";
 
 export default async function Layout({
   children,
-  params: { id },
+  params,
 }: {
   children: React.ReactNode;
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   const properties = await api.property.getAllUnderOwner();
+  const { id } = await params;
 
   return (
     <SidebarProvider>
@@ -28,7 +29,6 @@ export default async function Layout({
             <div className="w-full flex-1">
               <SidebarTrigger />
             </div>
-
             <UserButton />
             <ModeToggle />
           </MaxWidthWrapper>
