@@ -4,8 +4,8 @@ import { useRouter } from "next/navigation";
 import { TooltipTrigger } from "@radix-ui/react-tooltip";
 import { ArrowLeft } from "lucide-react";
 
+import { Button } from "~/components/ui/button";
 import { Tooltip, TooltipContent } from "~/components/ui/tooltip";
-import { Button } from "./button";
 
 export function BackButton() {
   const router = useRouter();

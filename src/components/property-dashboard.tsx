@@ -1,9 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import { DataTable } from "./ui/tables/data-table";
+import { DataTable } from "~/components/ui/tables/data-table";
 import {
   recentPaymentsTableColumns,
   type Payment,
-} from "./ui/tables/table-columns/recent-payments";
+} from "~/components/ui/tables/table-columns/recent-payments";
 
 type PropertyDashboardData = {
   recentPayments: Payment[];

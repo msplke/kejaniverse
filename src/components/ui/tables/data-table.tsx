@@ -14,6 +14,13 @@ import {
 } from "@tanstack/react-table";
 import { ChevronDown } from "lucide-react";
 
+import { Button } from "~/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -23,13 +30,6 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import { camelCaseToSentenceCase } from "~/lib/utils";
-import { Button } from "../button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "../dropdown-menu";
 import { DataTableFilterInput } from "./data-table-filter-input";
 import { DataTablePagination } from "./data-table-pagination";
 

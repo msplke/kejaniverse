@@ -1,8 +1,8 @@
 import { TRPCError } from "@trpc/server";
 
 import { env } from "~/env";
-import type { FetchBanksResponse } from "~/lib/validators/paystack";
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { type FetchBanksResponse } from "~/lib/validators/paystack";
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 /** The base URL for the Paystack API */
 const BASE_URL = "https://api.paystack.co";
