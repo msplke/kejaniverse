@@ -12,3 +12,11 @@ export type SidebarNavItem = {
   items: NavItem[];
   icon?: keyof typeof Icons;
 };
+
+export type MainNavItem = NavItem;
+
+export type MarketingConfig = {
+  mainNav: MainNavItem[];
+};
+
+export type FooterItem = NavItem;
