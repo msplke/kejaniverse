@@ -3,9 +3,9 @@
 import { useContext } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight } from "lucide-react";
 import { useForm } from "react-hook-form";
 
+import { Icons } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -110,7 +110,7 @@ export function CreatePropertyForm({ banks }: { banks: Bank[] }) {
           )}
         />
         <Button type="submit">
-          <ArrowRight className="h-4 w-4" />
+          <Icons.arrowRight className="h-4 w-4" />
           <span>Next</span>
         </Button>
       </form>

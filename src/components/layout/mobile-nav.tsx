@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
-import { Menu, X } from "lucide-react";
 
+import { Icons } from "~/components/icons";
 import { MaxWidthWrapper } from "~/components/max-width-wrapper";
 import { ModeToggle } from "~/components/mode-toggle";
 import { Button } from "~/components/ui/button";
@@ -35,9 +35,9 @@ export function NavMobile() {
         )}
       >
         {open ? (
-          <X className="text-muted-foreground size-5" />
+          <Icons.close className="text-muted-foreground size-5" />
         ) : (
-          <Menu className="text-muted-foreground size-5" />
+          <Icons.menu className="text-muted-foreground size-5" />
         )}
       </Button>
 

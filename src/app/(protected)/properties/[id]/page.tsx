@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
-import { Plus } from "lucide-react";
 
+import { Icons } from "~/components/icons";
 import { PropertyDashboard } from "~/components/property-dashboard";
 import { Button } from "~/components/ui/button";
 import { getUnits } from "~/server/actions/units";
@@ -36,7 +36,7 @@ export default async function Page({ params }: { params: Params }) {
           {units.length === 0 ? (
             <Link href={`/properties/${id}/units/new`}>
               <Button className="cursor-pointer">
-                <Plus className="h-4 w-4" />
+                <Icons.plus className="h-4 w-4" />
                 <span>Create Unit</span>
               </Button>
             </Link>

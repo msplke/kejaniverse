@@ -2,10 +2,10 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { Check, Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
+import { Icons } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -162,12 +162,12 @@ export function AddTenantForm({ units }: AddTenantFormProps) {
         <Button type="submit" disabled={isPending}>
           {isPending ? (
             <>
-              <Loader className="h-4 w-4 animate-spin" />
+              <Icons.loader className="h-4 w-4 animate-spin" />
               <span>Creating...</span>
             </>
           ) : (
             <>
-              <Check className="h-4 w-4" />
+              <Icons.check className="h-4 w-4" />
               <span>Done</span>
             </>
           )}
