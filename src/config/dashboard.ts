@@ -17,7 +17,7 @@ export const getSidebarLinks = (id: string): SidebarNavItem[] => [
       {
         title: "Tenants",
         href: `/properties/${id}/tenants`,
-        icon: "tenants",
+        icon: "users",
       },
       {
         title: "Payments",
