@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { TooltipTrigger } from "@radix-ui/react-tooltip";
-import { ArrowLeft } from "lucide-react";
 
+import { Icons } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import { Tooltip, TooltipContent } from "~/components/ui/tooltip";
 
@@ -18,7 +18,7 @@ export function BackButton() {
           onClick={() => router.back()}
           className="cursor-pointer"
         >
-          <ArrowLeft size={32} />
+          <Icons.arrowLeft size={32} />
           <span className="sr-only">Back</span>
         </Button>
       </TooltipTrigger>

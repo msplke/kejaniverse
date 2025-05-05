@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { AlertCircle, ArrowLeft } from "lucide-react";
 
+import { Icons } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import {
   Card,
@@ -20,7 +20,7 @@ export default function ErrorPage() {
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <AlertCircle className="text-destructive h-6 w-6" />
+            <Icons.alert className="text-destructive h-6 w-6" />
             <span>Error Occurred</span>
           </CardTitle>
         </CardHeader>
@@ -36,7 +36,7 @@ export default function ErrorPage() {
             onClick={() => router.back()}
             className="flex items-center gap-2"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <Icons.arrowLeft className="h-4 w-4" />
             Go Back
           </Button>
           <Button onClick={() => router.push("/")}>Return Home</Button>

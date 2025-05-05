@@ -4,10 +4,10 @@ import { useContext } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { Check, Loader, Plus, Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
+import { Icons } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -155,7 +155,7 @@ export function CreateUnitTypeForm() {
         />
         <div className="my-4 flex gap-4">
           <Button type="submit" variant={"secondary"}>
-            <Plus className="h-4 w-4" />
+            <Icons.plus className="h-4 w-4" />
             <span>Add</span>
           </Button>
           <Button
@@ -165,12 +165,12 @@ export function CreateUnitTypeForm() {
           >
             {isPending ? (
               <>
-                <Loader className="h-4 w-4 animate-spin" />
+                <Icons.loader className="h-4 w-4 animate-spin" />
                 <span>Creating...</span>
               </>
             ) : (
               <>
-                <Check className="h-4 w-4" />
+                <Icons.check className="h-4 w-4" />
                 <span>Done</span>
               </>
             )}
@@ -220,7 +220,7 @@ export function UnitTypesTable({
                 size={"icon"}
                 onClick={() => deleteUnitType(unitType)}
               >
-                <Trash className="h-4 w-4" />
+                <Icons.trash className="h-4 w-4" />
               </Button>
             </TableCell>
           </TableRow>

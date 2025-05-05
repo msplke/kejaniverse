@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChevronsUpDown, Plus } from "lucide-react";
 
 import { Icons } from "~/components/icons";
 import {
@@ -55,7 +54,7 @@ export function PropertySwitcher({
                   {activeProperty.name}
                 </span>
               </div>
-              <ChevronsUpDown className="ml-auto" />
+              <Icons.chevronsUpDown className="ml-auto" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
 
@@ -90,7 +89,7 @@ export function PropertySwitcher({
             <DropdownMenuItem asChild className="gap-2 p-2">
               <Link href="/properties/new">
                 <div className="bg-background flex size-6 items-center justify-center rounded-md border">
-                  <Plus className="size-4" />
+                  <Icons.plus className="size-4" />
                 </div>
                 <div className="text-muted-foreground font-medium">
                   Create property
