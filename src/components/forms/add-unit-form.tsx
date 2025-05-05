@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import type { InferSelectModel } from "drizzle-orm";
+import { type InferSelectModel } from "drizzle-orm";
 import { Check, Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";

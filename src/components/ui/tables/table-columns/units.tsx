@@ -1,9 +1,9 @@
 "use client";
 
-import type { ColumnDef } from "@tanstack/react-table";
+import { type ColumnDef } from "@tanstack/react-table";
 
+import { DataTableColumnHeader } from "~/components/ui/tables/data-table-column-header";
 import { formatCurrency } from "~/lib/formatters";
-import { DataTableColumnHeader } from "../data-table-column-header";
 
 type UnitTableColumns = {
   id: string;

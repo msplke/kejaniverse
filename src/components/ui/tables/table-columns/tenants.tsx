@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import type { ColumnDef } from "@tanstack/react-table";
+import { type ColumnDef } from "@tanstack/react-table";
 
 import { Button } from "~/components/ui/button";
+import { DataTableColumnHeader } from "~/components/ui/tables/data-table-column-header";
 import { formatCurrency, formatDate } from "~/lib/formatters";
-import { DataTableColumnHeader } from "../data-table-column-header";
 
 type Tenant = {
   id: string;
