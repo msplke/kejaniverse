@@ -1,14 +1,22 @@
 import { CreatePropertyForm } from "~/components/forms/create-property-form";
-import { fetchBanks } from "~/server/actions/properties";
+import ErrorPage from "~/components/pages/error";
+import { BackButton } from "~/components/ui/back-button";
+import { api } from "~/trpc/server";
 
-export default async function CreatePropertyPage() {
-  const banks = await fetchBanks();
+export const dynamic = "force-dynamic";
 
-  return (
-    <div>
-      <div className="max-w-xs">
+export default async function NewPropertyPage() {
+  try {
+    const banks = await api.paystack.fetchBanks();
+    return (
+      <div className="p-4 md:p-0">
+        <BackButton />
+        <h1 className="my-8 text-xl">Create Property</h1>
         <CreatePropertyForm banks={banks} />
       </div>
-    </div>
-  );
+    );
+  } catch (error) {
+    console.error("Error fetching banks:", error);
+    return <ErrorPage />;
+  }
 }

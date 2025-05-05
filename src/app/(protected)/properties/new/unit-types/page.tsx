@@ -8,6 +8,7 @@ import {
   CreateUnitTypeForm,
   UnitTypesTable,
 } from "~/components/forms/create-unit-type-form";
+import { BackButton } from "~/components/ui/back-button";
 import { Separator } from "~/components/ui/separator";
 
 export default function Page() {
@@ -24,7 +25,9 @@ export default function Page() {
   }, [router, bankCode, bankAccountNumber, propertyName]);
 
   return (
-    <div>
+    <div className="p-4">
+      <BackButton />
+      <h2 className="my-8 text-lg font-semibold">Unit Types</h2>
       <div className="grid gap-8 md:grid-cols-2">
         <UnitTypesTable unitTypes={unitTypes} />
         <Separator className="md:hidden" />

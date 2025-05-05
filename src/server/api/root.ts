@@ -2,6 +2,7 @@ import { propertyRouter } from "~/server/api/routers/property";
 import { tenantRouter } from "~/server/api/routers/tenant";
 import { unitRouter } from "~/server/api/routers/unit";
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
+import { paystackRouter } from "./routers/paystack";
 
 /**
  * This is the primary router for your server.
@@ -12,6 +13,7 @@ export const appRouter = createTRPCRouter({
   property: propertyRouter,
   tenant: tenantRouter,
   unit: unitRouter,
+  paystack: paystackRouter,
 });
 
 // export type definition of API

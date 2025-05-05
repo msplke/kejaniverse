@@ -18,7 +18,7 @@ export function BackButton() {
           onClick={() => router.back()}
           className="cursor-pointer"
         >
-          <ArrowLeft size={48} />
+          <ArrowLeft size={32} />
           <span className="sr-only">Back</span>
         </Button>
       </TooltipTrigger>
