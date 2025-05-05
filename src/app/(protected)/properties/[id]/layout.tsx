@@ -24,7 +24,7 @@ export default async function Layout({
     <SidebarProvider>
       <AppSidebar id={id} properties={properties} />
       <SidebarInset>
-        <header className="bg-background sticky top-0 z-50 flex h-14 px-4 lg:h-[60px]">
+        <header className="bg-background sticky top-0 z-50 flex h-14 lg:h-[60px]">
           <MaxWidthWrapper className="flex max-w-7xl items-center gap-x-3">
             <div className="w-full flex-1">
               <SidebarTrigger />
@@ -35,7 +35,7 @@ export default async function Layout({
         </header>
 
         <main className="flex-1 p-4">
-          <MaxWidthWrapper className="flex h-full max-w-7xl flex-col gap-4 px-0 lg:gap-6">
+          <MaxWidthWrapper className="flex h-full max-w-7xl flex-col gap-4 lg:gap-6">
             {children}
           </MaxWidthWrapper>
         </main>

@@ -11,10 +11,12 @@ import {
   Sun,
   Users,
   Wallet,
+  X,
 } from "lucide-react";
 
 export const Icons = {
   arrowRight: ArrowRight,
+  close: X,
   dashboard: LayoutDashboard,
   home: BookOpen,
   house: House,
