@@ -10,8 +10,8 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
   return (
     <footer className={cn("bg-background border-t", className)}>
       <MaxWidthWrapper>
-        <div className="flex flex-col items-center justify-between gap-2 md:flex-row">
-          <div className="flex flex-col items-center gap-2 px-0 md:flex-row md:gap-2">
+        <div className="flex flex-col items-center justify-between gap-2 py-4 md:flex-row">
+          <div className="flex flex-col items-center gap-2 md:flex-row md:gap-2">
             <Icons.logo />
             <p className="text-sm leading-loose">
               © {new Date().getFullYear()} Kejaniverse. All rights reserved.

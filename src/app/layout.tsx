@@ -1,4 +1,5 @@
 import { Inter as FontSans } from "next/font/google";
+import LocalFont from "next/font/local";
 import { ClerkProvider } from "@clerk/nextjs";
 
 import "~/styles/globals.css";
@@ -14,6 +15,11 @@ const fontSans = FontSans({
   variable: "--font-sans",
 });
 
+const fontHeading = LocalFont({
+  src: "../styles/CalSans-SemiBold.woff2",
+  variable: "--font-heading",
+});
+
 export const metadata = constructMetadata();
 
 export default function RootLayout({
@@ -26,6 +32,7 @@ export default function RootLayout({
           className={cn(
             "bg-background min-h-screen font-sans antialiased",
             fontSans.variable,
+            fontHeading.variable,
           )}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
