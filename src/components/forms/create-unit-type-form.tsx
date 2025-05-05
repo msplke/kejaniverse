@@ -201,34 +201,31 @@ export function UnitTypesTable({
     });
   }
   return (
-    <div>
-      <h2 className="text-lg font-semibold">Unit Types</h2>
-      <Table className="max-w-[500px]">
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Unit Type</TableHead>
-            <TableHead className="text-right">Rent Price</TableHead>
-          </TableRow>
-        </TableHeader>
+    <Table className="max-w-[500px]">
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-[100px]">Unit Type</TableHead>
+          <TableHead className="text-right">Rent Price</TableHead>
+        </TableRow>
+      </TableHeader>
 
-        <TableBody>
-          {unitTypes.map((unitType) => (
-            <TableRow key={`${unitType.unitType}-${unitType.rentPrice}`}>
-              <TableCell className="font-medium">{unitType.unitType}</TableCell>
-              <TableCell className="text-right">{unitType.rentPrice}</TableCell>
-              <TableCell className="text-right">
-                <Button
-                  variant={"ghost"}
-                  size={"icon"}
-                  onClick={() => deleteUnitType(unitType)}
-                >
-                  <Trash className="h-4 w-4" />
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+      <TableBody>
+        {unitTypes.map((unitType) => (
+          <TableRow key={`${unitType.unitType}-${unitType.rentPrice}`}>
+            <TableCell className="font-medium">{unitType.unitType}</TableCell>
+            <TableCell className="text-right">{unitType.rentPrice}</TableCell>
+            <TableCell className="text-right">
+              <Button
+                variant={"ghost"}
+                size={"icon"}
+                onClick={() => deleteUnitType(unitType)}
+              >
+                <Trash className="h-4 w-4" />
+              </Button>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 }
