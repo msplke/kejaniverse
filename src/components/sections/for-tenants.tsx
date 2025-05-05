@@ -14,7 +14,7 @@ export function ForTenants() {
           <div className="order-last flex items-center justify-center lg:order-first">
             <div className="bg-background relative h-[500px] w-full overflow-hidden rounded-lg border shadow-xl">
               <Image
-                src="/placeholder.svg?height=1000&width=800"
+                src="/images/daniel-chen-unsplash.jpg"
                 alt="Tenant Payment Interface"
                 fill
                 className="object-cover"
@@ -34,15 +34,21 @@ export function ForTenants() {
             </p>
             <ul className="grid gap-3">
               {[
-                "Pay rent via mobile money (USSD/Mpesa) or cards",
-                "Get timely payment reminders",
-                "Receive automatic payment receipts",
-                "Stay informed about your rental status",
-                "Access outstanding support",
-              ].map((item, i) => (
-                <li key={i} className="flex items-center gap-2">
+                {
+                  id: "payment",
+                  text: "Pay rent via mobile money (USSD/Mpesa) or cards",
+                },
+                { id: "reminders", text: "Get timely payment reminders" },
+                { id: "receipts", text: "Receive automatic payment receipts" },
+                {
+                  id: "status",
+                  text: "Stay informed about your rental status",
+                },
+                { id: "support", text: "Access outstanding customer support" },
+              ].map((item) => (
+                <li key={item.id} className="flex items-center gap-2">
                   <Icons.checkCircle className="text-primary h-5 w-5 flex-shrink-0" />
-                  <span>{item}</span>
+                  <span>{item.text}</span>
                 </li>
               ))}
             </ul>

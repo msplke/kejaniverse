@@ -48,7 +48,7 @@ export function HeroLanding() {
           <div className="flex items-center justify-center">
             <div className="bg-background relative h-[400px] w-full overflow-hidden rounded-lg border shadow-xl">
               <Image
-                src="/placeholder.svg?height=800&width=1200"
+                src="/images/luca-bravo-unsplash.jpg"
                 alt="Dashboard Preview"
                 fill
                 className="aspect-video object-cover"
