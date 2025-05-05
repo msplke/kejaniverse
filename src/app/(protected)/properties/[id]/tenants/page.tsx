@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Plus } from "lucide-react";
 
 import { Button } from "~/components/ui/button";
 import { DataTable } from "~/components/ui/tables/data-table";
@@ -12,17 +13,17 @@ export default async function TenantsPage({ params }: { params: Params }) {
 
   const tenants = await getTenants(id);
 
-  if (tenants.length === 0) {
-    return (
-      <Link href={`/properties/${id}/tenants/new`}>
-        <Button>Add Tenant</Button>
-      </Link>
-    );
-  }
-
   return (
     <div>
-      <h1 className="my-4 text-2xl font-bold">Tenants</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="my-4 text-2xl font-bold">Tenants</h1>
+        <Button asChild>
+          <Link href={`/properties/${id}/tenants/new`}>
+            <Plus />
+            Add Tenant
+          </Link>
+        </Button>
+      </div>
       <DataTable
         columns={tenantTableColumns}
         data={tenants}
