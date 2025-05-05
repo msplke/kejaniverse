@@ -22,12 +22,18 @@ export function NavMobile() {
     } else {
       document.body.style.overflow = "auto";
     }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
   }, [open]);
 
   return (
     <MaxWidthWrapper>
       <Button
         variant="ghost"
+        aria-expanded={open}
+        aria-label="Toggle navigation menu"
         onClick={() => setOpen(!open)}
         className={cn(
           "hover:bg-muted active:bg-muted fixed top-2.5 right-2 z-50 rounded-full p-2 transition-colors duration-200 focus:outline-none md:hidden",
@@ -42,6 +48,8 @@ export function NavMobile() {
       </Button>
 
       <nav
+        role="navigation"
+        aria-label="Mobile navigation"
         className={cn(
           "bg-background fixed inset-0 z-20 hidden w-full overflow-auto px-5 py-16 lg:hidden",
           open && "block",

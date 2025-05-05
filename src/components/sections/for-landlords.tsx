@@ -24,15 +24,24 @@ export function ForLandlords() {
             </p>
             <ul className="grid gap-3">
               {[
-                "Collect rent automatically and on time",
-                "Track payment status across all properties",
-                "Manage tenant relationships efficiently",
-                "Reduce administrative overhead by 80%",
-                "Access your dashboard from any device",
-              ].map((item, index) => (
-                <li key={index} className="flex items-center gap-2">
+                {
+                  id: "collect",
+                  text: "Collect rent automatically and on time",
+                },
+                {
+                  id: "track",
+                  text: "Track payment status across all properties",
+                },
+                {
+                  id: "manage",
+                  text: "Manage tenant relationships efficiently",
+                },
+                { id: "reduce", text: "Reduce administrative overhead by 80%" },
+                { id: "access", text: "Access your dashboard from any device" },
+              ].map((item) => (
+                <li key={item.id} className="flex items-center gap-2">
                   <Icons.checkCircle className="text-primary h-5 w-5 flex-shrink-0" />
-                  <span>{item}</span>
+                  <span>{item.text}</span>
                 </li>
               ))}
             </ul>
@@ -56,7 +65,7 @@ export function ForLandlords() {
           <div className="flex items-center justify-center">
             <div className="bg-background relative h-[500px] w-full overflow-hidden rounded-lg border shadow-xl">
               <Image
-                src="/placeholder.svg?height=1000&width=800"
+                src="/images/sean-pollock-unsplash.jpg"
                 alt="Landlord Dashboard"
                 fill
                 className="object-cover"

@@ -20,7 +20,10 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
 
           <div className="text-primary flex gap-2 text-sm">
             {footerItems.map((item, index) => (
-              <Link key={index} href={item.disabled ? "#" : item.href}>
+              <Link
+                key={`${index}-${item.title}`}
+                href={item.disabled ? "#" : item.href}
+              >
                 <Button variant="link">{item.title}</Button>
               </Link>
             ))}
