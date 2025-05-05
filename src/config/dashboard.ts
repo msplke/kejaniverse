@@ -23,12 +23,11 @@ export const getSidebarLinks = (id: string): SidebarNavItem[] => [
         title: "Payments",
         href: `/properties/${id}/payments`,
         icon: "payments",
-        disabled: true,
       },
     ],
   },
   {
-    title: "OPTIONS",
+    title: "Settings",
     items: [
       {
         title: "Settings",

@@ -1,5 +1,22 @@
-import { ComingSoon } from "~/components/pages/coming-soon";
+import { DataTable } from "~/components/ui/tables/data-table";
+import { paymentTableColumns } from "~/components/ui/tables/table-columns/payments";
+import { api } from "~/trpc/server";
 
-export default function Payments() {
-  return <ComingSoon />;
+export default async function Payments({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const payments = await api.payment.getAllPropertyPayments({ propertyId: id });
+  return (
+    <div>
+      <h1 className="my-4 text-2xl font-bold">Payments</h1>
+      <DataTable
+        data={payments}
+        columns={paymentTableColumns}
+        filterOption={{ columnKey: "tenant" }}
+      />
+    </div>
+  );
 }
