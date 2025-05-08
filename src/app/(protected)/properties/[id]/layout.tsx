@@ -34,7 +34,7 @@ export default async function Layout({
           </MaxWidthWrapper>
         </header>
 
-        <main className="flex-1 p-4">
+        <main className="flex-1">
           <MaxWidthWrapper className="flex h-full max-w-7xl flex-col gap-4 lg:gap-6">
             {children}
           </MaxWidthWrapper>
