@@ -4,7 +4,12 @@ import { FilterSection } from "~/components/filter/filter-section";
 import { Icons } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import { Calendar } from "~/components/ui/calendar";
-import { FormControl, FormField, FormItem } from "~/components/ui/form";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "~/components/ui/form";
 import {
   Popover,
   PopoverContent,
@@ -57,6 +62,7 @@ export function DateRangeFilter<
                     />
                   </PopoverContent>
                 </Popover>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -89,6 +95,7 @@ export function DateRangeFilter<
                     />
                   </PopoverContent>
                 </Popover>
+                <FormMessage />
               </FormItem>
             )}
           />

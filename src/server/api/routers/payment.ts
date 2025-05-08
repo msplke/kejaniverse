@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
@@ -33,8 +33,10 @@ export const paymentRouter = createTRPCRouter({
         const payments = await ctx.db
           .select({
             unitName: unit.unitName,
+            unitType: unitType.unitType,
             unitId: unit.id,
             rentAmount: unitType.rentPrice,
+            unitStatus: sql<string>`case when ${tenant.id} is null then 'Vacant' else 'Occupied' end`,
             tenant: {
               id: tenant.id,
               firstName: tenant.firstName,
