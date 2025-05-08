@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -44,12 +44,14 @@ interface DataTableProps<TData, TValue> {
   // If not provided, no filter input will be shown
   filterOption?: FilterOption;
   showPagination?: boolean;
+  FilterComponent?: () => React.ReactNode;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   filterOption,
+  FilterComponent,
   showPagination = false,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -76,38 +78,42 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex flex-wrap items-center py-4">
+      <div className="flex flex-wrap items-center justify-between gap-2 py-4">
         {filterOption && (
           <DataTableFilterInput
             table={table}
             columnKey={filterOption.columnKey}
           />
         )}
-        {hideableColumns.length > 0 && (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
-                Columns <ChevronDown />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {hideableColumns.map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {camelCaseToSentenceCase(column.id)}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )}
+
+        <div className="flex items-center space-x-2 justify-self-end">
+          {FilterComponent && <FilterComponent />}
+          {hideableColumns.length > 0 && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="ml-auto">
+                  Columns <ChevronDown />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {hideableColumns.map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {camelCaseToSentenceCase(column.id)}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </div>
       </div>
 
       <div className="rounded-md border">

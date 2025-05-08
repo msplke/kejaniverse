@@ -1,3 +1,4 @@
+import { FilterComponent } from "~/components/filter/filter-component";
 import { DataTable } from "~/components/ui/tables/data-table";
 import { paymentTableColumns } from "~/components/ui/tables/table-columns/payments";
 import { api } from "~/trpc/server";
@@ -16,6 +17,7 @@ export default async function Payments({
         data={payments}
         columns={paymentTableColumns}
         filterOption={{ columnKey: "tenant" }}
+        FilterComponent={FilterComponent}
       />
     </div>
   );
