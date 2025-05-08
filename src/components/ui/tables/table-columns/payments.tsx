@@ -2,11 +2,13 @@
 
 import type { ColumnDef } from "@tanstack/react-table";
 
+import { dateRangeFilterFn } from "~/components/ui/tables/custom-filters";
 import { formatCurrency } from "~/lib/formatters";
 import { DataTableColumnHeader } from "../data-table-column-header";
 
 type PaymentTableColumns = {
   unitName: string;
+  unitType: string;
   unitId: string;
   rentAmount: number;
   tenant: {
@@ -29,6 +31,18 @@ export const paymentTableColumns: ColumnDef<PaymentTableColumns>[] = [
       <DataTableColumnHeader title="Unit Name" column={column} />
     ),
     enableHiding: false,
+  },
+  {
+    accessorKey: "unitType",
+    header: ({ column }) => (
+      <DataTableColumnHeader title="Unit Type" column={column} />
+    ),
+    enableHiding: true,
+  },
+  {
+    accessorKey: "unitStatus",
+    header: "Unit Status",
+    enableHiding: true,
   },
   {
     accessorKey: "unitId",
@@ -76,6 +90,7 @@ export const paymentTableColumns: ColumnDef<PaymentTableColumns>[] = [
       return date.toLocaleDateString();
     },
     enableHiding: false,
+    filterFn: dateRangeFilterFn,
   },
   {
     accessorKey: "referenceNumber",

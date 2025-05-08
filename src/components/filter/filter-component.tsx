@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
+import type { Table } from "@tanstack/react-table";
 import { Filter } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -18,24 +19,39 @@ import { FilterActions } from "./filter-actions";
 import { SelectFilter } from "./select-filter";
 
 const filterFormSchema = z.object({
-  dateRange: z.object({
-    from: z.date().optional(),
-    to: z.date().optional(),
-  }),
+  dateRange: z
+    .object({
+      from: z.date().optional(),
+      to: z.date().optional(),
+    })
+    .refine(
+      (data) => {
+        // If both dates exist, ensure "to" is not before "from"
+        if (data.from && data.to) {
+          return data.to >= data.from;
+        }
+        // If only one or none of the dates exist, validation passes
+        return true;
+      },
+      {
+        message: "End date cannot be earlier than start date",
+        path: ["to"],
+      },
+    ),
   unitType: z.string(),
-  status: z.string(),
+  unitStatus: z.string(),
 });
 
 type FilterFormValues = z.infer<typeof filterFormSchema>;
 
-export function FilterComponent() {
+export function FilterComponent<TData>({ table }: { table: Table<TData> }) {
   const defaultValues: FilterFormValues = {
     dateRange: {
       from: undefined,
-      to: undefined,
+      to: new Date(),
     },
     unitType: "",
-    status: "",
+    unitStatus: "",
   };
 
   // Initialize the form with react-hook-form
@@ -44,27 +60,57 @@ export function FilterComponent() {
     defaultValues,
   });
 
-  // Handle form submission
-  function onSubmit(data: FilterFormValues) {
-    console.log("Filter applied:", data);
-  }
-
   // Reset the entire form
   function resetAll() {
     form.reset(defaultValues);
+
+    // Clear all filters
+    table.getColumn("paidAt")?.setFilterValue(undefined);
+    table.getColumn("unitType")?.setFilterValue(undefined);
+    table.getColumn("unitStatus")?.setFilterValue(undefined);
   }
 
   // Reset individual fields
   function resetDateRange() {
     form.resetField("dateRange");
+    table.getColumn("paidAt")?.setFilterValue(undefined);
   }
 
   function resetActivityType() {
     form.resetField("unitType");
+    table.getColumn("unitType")?.setFilterValue(undefined);
   }
 
   function resetStatus() {
-    form.resetField("status");
+    form.resetField("unitStatus");
+    table.getColumn("unitStatus")?.setFilterValue(undefined);
+  }
+
+  function onSubmit(data: FilterFormValues) {
+    console.log("Filter applied:", data);
+
+    // Apply date range filter
+    if (data.dateRange.from || data.dateRange.to) {
+      table
+        .getColumn("paidAt")
+        ?.setFilterValue([data.dateRange.from, data.dateRange.to]);
+    } else {
+      table.getColumn("paidAt")?.setFilterValue(undefined);
+    }
+
+    // Apply unit type filter
+    if (data.unitType) {
+      table.getColumn("unitType")?.setFilterValue(data.unitType);
+    } else {
+      table.getColumn("unitType")?.setFilterValue(undefined);
+    }
+
+    // Apply status filter
+    if (data.unitStatus) {
+      table.getColumn("unitStatus")?.setFilterValue(data.unitStatus);
+    } else {
+      table.getColumn("unitStatus")?.setFilterValue(undefined);
+    }
   }
 
   return (
@@ -110,20 +156,20 @@ export function FilterComponent() {
                 />
                 <SelectFilter
                   form={form}
-                  name="status"
-                  title="Status"
+                  name="unitStatus"
+                  title="Unit Status"
                   onReset={resetStatus}
                   options={[
                     {
-                      value: "occupied",
+                      value: "Occupied",
                       label: "Occupied",
                       icon: (
                         <span className="mr-2 h-2 w-2 rounded-full bg-green-500"></span>
                       ),
                     },
                     {
-                      value: "unoccupied",
-                      label: "Unoccupied",
+                      value: "Vacant",
+                      label: "Vacant",
                       icon: (
                         <span className="mr-2 h-2 w-2 rounded-full bg-gray-500"></span>
                       ),

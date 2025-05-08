@@ -11,6 +11,7 @@ import {
   type ColumnDef,
   type ColumnFiltersState,
   type SortingState,
+  type Table as TanStackTable,
 } from "@tanstack/react-table";
 import { ChevronDown } from "lucide-react";
 
@@ -29,9 +30,10 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
+import { dateRangeFilterFn } from "~/components/ui/tables/custom-filters";
+import { DataTableFilterInput } from "~/components/ui/tables/data-table-filter-input";
+import { DataTablePagination } from "~/components/ui/tables/data-table-pagination";
 import { camelCaseToSentenceCase } from "~/lib/utils";
-import { DataTableFilterInput } from "./data-table-filter-input";
-import { DataTablePagination } from "./data-table-pagination";
 
 type FilterOption = {
   columnKey: string;
@@ -44,7 +46,11 @@ interface DataTableProps<TData, TValue> {
   // If not provided, no filter input will be shown
   filterOption?: FilterOption;
   showPagination?: boolean;
-  FilterComponent?: () => React.ReactNode;
+  FilterComponent?: ({
+    table,
+  }: {
+    table: TanStackTable<TData>;
+  }) => React.ReactNode;
 }
 
 export function DataTable<TData, TValue>({
@@ -66,6 +72,9 @@ export function DataTable<TData, TValue>({
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    filterFns: {
+      dateRange: dateRangeFilterFn,
+    },
     state: {
       sorting,
       columnFilters,
@@ -87,7 +96,7 @@ export function DataTable<TData, TValue>({
         )}
 
         <div className="flex items-center space-x-2 justify-self-end">
-          {FilterComponent && <FilterComponent />}
+          {FilterComponent && <FilterComponent table={table} />}
           {hideableColumns.length > 0 && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
