@@ -27,3 +27,16 @@ export function dateRangeFilterFn<TData>(
 
   return true;
 }
+
+export function tenantNameFilterFn<TData>(
+  row: Row<TData>,
+  columnId: string,
+  filterValue: string,
+): boolean {
+  const tenant: { firstName: string; lastName: string } | null =
+    row.getValue(columnId);
+
+  if (!tenant) return false;
+  const fullName = `${tenant.firstName} ${tenant.lastName}`.toLowerCase();
+  return fullName.includes(filterValue.toLowerCase());
+}
