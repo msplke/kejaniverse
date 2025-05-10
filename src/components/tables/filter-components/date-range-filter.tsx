@@ -1,7 +1,7 @@
 import type { FieldPath, FieldValues, UseFormReturn } from "react-hook-form";
 
-import { FilterSection } from "~/components/filter/filter-section";
 import { Icons } from "~/components/icons";
+import { FilterSection } from "~/components/tables/filter-components/filter-section";
 import { Button } from "~/components/ui/button";
 import { Calendar } from "~/components/ui/calendar";
 import {

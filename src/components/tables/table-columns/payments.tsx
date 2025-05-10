@@ -2,7 +2,7 @@
 
 import type { ColumnDef } from "@tanstack/react-table";
 
-import { dateRangeFilterFn } from "~/components/ui/tables/custom-filters";
+import { dateRangeFilterFn } from "~/components/tables/table-columns/custom-filters";
 import { formatCurrency } from "~/lib/formatters";
 import { DataTableColumnHeader } from "../data-table-column-header";
 

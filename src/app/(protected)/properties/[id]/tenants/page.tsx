@@ -1,9 +1,9 @@
 import Link from "next/link";
 
 import { Icons } from "~/components/icons";
+import { DataTable } from "~/components/tables/data-table";
+import { tenantTableColumns } from "~/components/tables/table-columns/tenants";
 import { Button } from "~/components/ui/button";
-import { DataTable } from "~/components/ui/tables/data-table";
-import { tenantTableColumns } from "~/components/ui/tables/table-columns/tenants";
 import { getTenants } from "~/server/actions/tenants";
 
 type Params = Promise<{ id: string }>;

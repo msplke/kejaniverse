@@ -1,9 +1,9 @@
 import Link from "next/link";
 
 import { Icons } from "~/components/icons";
+import { DataTable } from "~/components/tables/data-table";
+import { unitTableColumns } from "~/components/tables/table-columns/units";
 import { Button } from "~/components/ui/button";
-import { DataTable } from "~/components/ui/tables/data-table";
-import { unitTableColumns } from "~/components/ui/tables/table-columns/units";
 import { getUnits } from "~/server/actions/units";
 
 type Params = Promise<{ id: string }>;

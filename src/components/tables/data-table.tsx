@@ -14,10 +14,13 @@ import {
 } from "@tanstack/react-table";
 import { ChevronDown } from "lucide-react";
 
+import { DataTableFilterInput } from "~/components/tables/data-table-filter-input";
+import { DataTablePagination } from "~/components/tables/data-table-pagination";
 import {
   FilterPopover,
   type FilterPopoverOptions,
-} from "~/components/filter/filter-component";
+} from "~/components/tables/filter-components/filter-popover";
+import { dateRangeFilterFn } from "~/components/tables/table-columns/custom-filters";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -33,9 +36,6 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { dateRangeFilterFn } from "~/components/ui/tables/custom-filters";
-import { DataTableFilterInput } from "~/components/ui/tables/data-table-filter-input";
-import { DataTablePagination } from "~/components/ui/tables/data-table-pagination";
 import { camelCaseToSentenceCase } from "~/lib/utils";
 
 type FilterOptions<TData> = {
