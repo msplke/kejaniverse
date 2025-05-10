@@ -94,21 +94,21 @@ export function FilterPopover<TData>({
   function resetDateRange() {
     if (dateRangeKey) {
       form.resetField("dateRange");
-      table.getColumn("paidAt")?.setFilterValue(undefined);
+      table.getColumn(dateRangeKey)?.setFilterValue(undefined);
     }
   }
 
   function resetActivityType() {
     if (unitTypeKey) {
       form.resetField("unitType");
-      table.getColumn("unitType")?.setFilterValue(undefined);
+      table.getColumn(unitTypeKey)?.setFilterValue(undefined);
     }
   }
 
   function resetStatus() {
     if (unitStatusKey) {
       form.resetField("unitStatus");
-      table.getColumn("unitStatus")?.setFilterValue(undefined);
+      table.getColumn(unitStatusKey)?.setFilterValue(undefined);
     }
   }
 
@@ -119,34 +119,34 @@ export function FilterPopover<TData>({
     if (dateRangeKey) {
       if (data.dateRange.from || data.dateRange.to) {
         table
-          .getColumn("paidAt")
+          .getColumn(dateRangeKey)
           ?.setFilterValue([data.dateRange.from, data.dateRange.to]);
       } else {
-        table.getColumn("paidAt")?.setFilterValue(undefined);
+        table.getColumn(dateRangeKey)?.setFilterValue(undefined);
       }
     }
 
     // Apply unit type filter
     if (unitTypeKey) {
       if (data.unitType) {
-        table.getColumn("unitType")?.setFilterValue(data.unitType);
+        table.getColumn(unitTypeKey)?.setFilterValue(data.unitType);
       } else {
-        table.getColumn("unitType")?.setFilterValue(undefined);
+        table.getColumn(unitTypeKey)?.setFilterValue(undefined);
       }
     }
 
     // Apply status filter
     if (unitStatusKey) {
       if (data.unitStatus) {
-        table.getColumn("unitStatus")?.setFilterValue(data.unitStatus);
+        table.getColumn(unitStatusKey)?.setFilterValue(data.unitStatus);
       } else {
-        table.getColumn("unitStatus")?.setFilterValue(undefined);
+        table.getColumn(unitStatusKey)?.setFilterValue(undefined);
       }
     }
   }
 
   return (
-    <div className="bg-yellow-50">
+    <div>
       <Popover>
         <PopoverTrigger asChild>
           <Button variant="outline">

@@ -61,13 +61,6 @@ export const paymentRouter = createTRPCRouter({
             ),
           );
 
-        if (!payments.length) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "No payments found for this property",
-          });
-        }
-
         return payments;
       } catch (error) {
         if (error instanceof TRPCError) {
