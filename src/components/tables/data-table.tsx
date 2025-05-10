@@ -20,7 +20,10 @@ import {
   FilterPopover,
   type FilterPopoverOptions,
 } from "~/components/tables/filter-components/filter-popover";
-import { dateRangeFilterFn } from "~/components/tables/table-columns/custom-filters";
+import {
+  dateRangeFilterFn,
+  tenantNameFilterFn,
+} from "~/components/tables/table-columns/custom-filters";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -72,6 +75,7 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     filterFns: {
       dateRange: dateRangeFilterFn,
+      tenantNameFilter: tenantNameFilterFn,
     },
     state: {
       sorting,

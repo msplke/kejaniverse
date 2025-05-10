@@ -2,7 +2,10 @@
 
 import type { ColumnDef } from "@tanstack/react-table";
 
-import { dateRangeFilterFn } from "~/components/tables/table-columns/custom-filters";
+import {
+  dateRangeFilterFn,
+  tenantNameFilterFn,
+} from "~/components/tables/table-columns/custom-filters";
 import { formatCurrency } from "~/lib/formatters";
 import { DataTableColumnHeader } from "../data-table-column-header";
 
@@ -58,6 +61,7 @@ export const paymentTableColumns: ColumnDef<PaymentTableColumns>[] = [
       return tenant ? `${tenant.firstName} ${tenant.lastName}` : "N/A";
     },
     enableHiding: false,
+    filterFn: tenantNameFilterFn,
   },
   {
     accessorKey: "amountPaid",
