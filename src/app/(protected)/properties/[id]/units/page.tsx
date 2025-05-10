@@ -27,7 +27,7 @@ export default async function UnitsPage({ params }: { params: Params }) {
       <DataTable
         columns={unitTableColumns}
         data={units}
-        filterOption={{ columnKey: "name" }}
+        filterOptions={{ keywordFilterKey: "name" }}
       />
     </div>
   );

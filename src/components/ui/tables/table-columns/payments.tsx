@@ -9,6 +9,7 @@ import { DataTableColumnHeader } from "../data-table-column-header";
 type PaymentTableColumns = {
   unitName: string;
   unitType: string;
+  unitStatus: string;
   unitId: string;
   rentAmount: number;
   tenant: {

@@ -11,10 +11,13 @@ import {
   type ColumnDef,
   type ColumnFiltersState,
   type SortingState,
-  type Table as TanStackTable,
 } from "@tanstack/react-table";
 import { ChevronDown } from "lucide-react";
 
+import {
+  FilterPopover,
+  type FilterPopoverOptions,
+} from "~/components/filter/filter-component";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -35,8 +38,9 @@ import { DataTableFilterInput } from "~/components/ui/tables/data-table-filter-i
 import { DataTablePagination } from "~/components/ui/tables/data-table-pagination";
 import { camelCaseToSentenceCase } from "~/lib/utils";
 
-type FilterOption = {
-  columnKey: string;
+type FilterOptions<TData> = {
+  keywordFilterKey: keyof TData & string;
+  popoverFilterOptions?: FilterPopoverOptions<TData>;
 };
 
 interface DataTableProps<TData, TValue> {
@@ -44,20 +48,14 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   // Optional filter option to show a filter input for a specific column
   // If not provided, no filter input will be shown
-  filterOption?: FilterOption;
   showPagination?: boolean;
-  FilterComponent?: ({
-    table,
-  }: {
-    table: TanStackTable<TData>;
-  }) => React.ReactNode;
+  filterOptions?: FilterOptions<TData>;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  filterOption,
-  FilterComponent,
+  filterOptions,
   showPagination = false,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -88,15 +86,20 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-2 py-4">
-        {filterOption && (
+        {filterOptions?.keywordFilterKey && (
           <DataTableFilterInput
             table={table}
-            columnKey={filterOption.columnKey}
+            columnKey={filterOptions.keywordFilterKey}
           />
         )}
 
         <div className="flex items-center space-x-2 justify-self-end">
-          {FilterComponent && <FilterComponent table={table} />}
+          {filterOptions?.popoverFilterOptions && (
+            <FilterPopover
+              table={table}
+              options={filterOptions.popoverFilterOptions}
+            />
+          )}
           {hideableColumns.length > 0 && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
