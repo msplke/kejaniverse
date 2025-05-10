@@ -1,5 +1,5 @@
-import { DataTable } from "~/components/ui/tables/data-table";
-import { paymentTableColumns } from "~/components/ui/tables/table-columns/payments";
+import { DataTable } from "~/components/tables/data-table";
+import { paymentTableColumns } from "~/components/tables/table-columns/payments";
 import { api } from "~/trpc/server";
 
 export default async function Payments({
