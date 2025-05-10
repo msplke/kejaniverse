@@ -44,7 +44,19 @@ const filterFormSchema = z.object({
 
 type FilterFormValues = z.infer<typeof filterFormSchema>;
 
-export function FilterComponent<TData>({ table }: { table: Table<TData> }) {
+export type FilterPopoverOptions<TData> = {
+  dateRangeKey?: keyof TData & string;
+  unitTypeKey?: keyof TData & string;
+  unitStatusKey?: keyof TData & string;
+};
+
+export function FilterPopover<TData>({
+  table,
+  options,
+}: {
+  table: Table<TData>;
+  options: FilterPopoverOptions<TData>;
+}) {
   const defaultValues: FilterFormValues = {
     dateRange: {
       from: undefined,
@@ -53,6 +65,8 @@ export function FilterComponent<TData>({ table }: { table: Table<TData> }) {
     unitType: "",
     unitStatus: "",
   };
+
+  const { dateRangeKey, unitTypeKey, unitStatusKey } = options;
 
   // Initialize the form with react-hook-form
   const form = useForm<FilterFormValues>({
@@ -65,51 +79,69 @@ export function FilterComponent<TData>({ table }: { table: Table<TData> }) {
     form.reset(defaultValues);
 
     // Clear all filters
-    table.getColumn("paidAt")?.setFilterValue(undefined);
-    table.getColumn("unitType")?.setFilterValue(undefined);
-    table.getColumn("unitStatus")?.setFilterValue(undefined);
+    if (dateRangeKey) {
+      table.getColumn(dateRangeKey)?.setFilterValue(undefined);
+    }
+    if (unitTypeKey) {
+      table.getColumn(unitTypeKey)?.setFilterValue(undefined);
+    }
+    if (unitStatusKey) {
+      table.getColumn(unitStatusKey)?.setFilterValue(undefined);
+    }
   }
 
   // Reset individual fields
   function resetDateRange() {
-    form.resetField("dateRange");
-    table.getColumn("paidAt")?.setFilterValue(undefined);
+    if (dateRangeKey) {
+      form.resetField("dateRange");
+      table.getColumn("paidAt")?.setFilterValue(undefined);
+    }
   }
 
   function resetActivityType() {
-    form.resetField("unitType");
-    table.getColumn("unitType")?.setFilterValue(undefined);
+    if (unitTypeKey) {
+      form.resetField("unitType");
+      table.getColumn("unitType")?.setFilterValue(undefined);
+    }
   }
 
   function resetStatus() {
-    form.resetField("unitStatus");
-    table.getColumn("unitStatus")?.setFilterValue(undefined);
+    if (unitStatusKey) {
+      form.resetField("unitStatus");
+      table.getColumn("unitStatus")?.setFilterValue(undefined);
+    }
   }
 
   function onSubmit(data: FilterFormValues) {
     console.log("Filter applied:", data);
 
     // Apply date range filter
-    if (data.dateRange.from || data.dateRange.to) {
-      table
-        .getColumn("paidAt")
-        ?.setFilterValue([data.dateRange.from, data.dateRange.to]);
-    } else {
-      table.getColumn("paidAt")?.setFilterValue(undefined);
+    if (dateRangeKey) {
+      if (data.dateRange.from || data.dateRange.to) {
+        table
+          .getColumn("paidAt")
+          ?.setFilterValue([data.dateRange.from, data.dateRange.to]);
+      } else {
+        table.getColumn("paidAt")?.setFilterValue(undefined);
+      }
     }
 
     // Apply unit type filter
-    if (data.unitType) {
-      table.getColumn("unitType")?.setFilterValue(data.unitType);
-    } else {
-      table.getColumn("unitType")?.setFilterValue(undefined);
+    if (unitTypeKey) {
+      if (data.unitType) {
+        table.getColumn("unitType")?.setFilterValue(data.unitType);
+      } else {
+        table.getColumn("unitType")?.setFilterValue(undefined);
+      }
     }
 
     // Apply status filter
-    if (data.unitStatus) {
-      table.getColumn("unitStatus")?.setFilterValue(data.unitStatus);
-    } else {
-      table.getColumn("unitStatus")?.setFilterValue(undefined);
+    if (unitStatusKey) {
+      if (data.unitStatus) {
+        table.getColumn("unitStatus")?.setFilterValue(data.unitStatus);
+      } else {
+        table.getColumn("unitStatus")?.setFilterValue(undefined);
+      }
     }
   }
 
@@ -133,59 +165,65 @@ export function FilterComponent<TData>({ table }: { table: Table<TData> }) {
                 className="space-y-6 p-4"
               >
                 <h3 className="text-lg font-medium">Filter</h3>
-                <DateRangeFilter
-                  form={form}
-                  from={"dateRange.from"}
-                  to={"dateRange.to"}
-                  onReset={resetDateRange}
-                />
-                <SelectFilter
-                  form={form}
-                  name="unitType"
-                  title="Unit type"
-                  onReset={resetActivityType}
-                  options={[
-                    { value: "bedsitter", label: "Bedsitter" },
-                    { value: "single-room", label: "Single Room" },
-                  ]}
-                  renderValue={(value, options) => {
-                    const option = options.find((opt) => opt.value === value);
-                    if (!option) return "Select unit type";
-                    return option.label;
-                  }}
-                />
-                <SelectFilter
-                  form={form}
-                  name="unitStatus"
-                  title="Unit Status"
-                  onReset={resetStatus}
-                  options={[
-                    {
-                      value: "Occupied",
-                      label: "Occupied",
-                      icon: (
-                        <span className="mr-2 h-2 w-2 rounded-full bg-green-500"></span>
-                      ),
-                    },
-                    {
-                      value: "Vacant",
-                      label: "Vacant",
-                      icon: (
-                        <span className="mr-2 h-2 w-2 rounded-full bg-gray-500"></span>
-                      ),
-                    },
-                  ]}
-                  renderValue={(value, options) => {
-                    const option = options.find((opt) => opt.value === value);
-                    if (!option) return "Select status";
-                    return (
-                      <div className="flex items-center">
-                        {option.icon}
-                        {option.label}
-                      </div>
-                    );
-                  }}
-                />
+                {dateRangeKey && (
+                  <DateRangeFilter
+                    form={form}
+                    from={"dateRange.from"}
+                    to={"dateRange.to"}
+                    onReset={resetDateRange}
+                  />
+                )}
+                {unitTypeKey && (
+                  <SelectFilter
+                    form={form}
+                    name="unitType"
+                    title="Unit type"
+                    onReset={resetActivityType}
+                    options={[
+                      { value: "bedsitter", label: "Bedsitter" },
+                      { value: "single-room", label: "Single Room" },
+                    ]}
+                    renderValue={(value, options) => {
+                      const option = options.find((opt) => opt.value === value);
+                      if (!option) return "Select unit type";
+                      return option.label;
+                    }}
+                  />
+                )}
+                {unitStatusKey && (
+                  <SelectFilter
+                    form={form}
+                    name="unitStatus"
+                    title="Unit Status"
+                    onReset={resetStatus}
+                    options={[
+                      {
+                        value: "Occupied",
+                        label: "Occupied",
+                        icon: (
+                          <span className="mr-2 h-2 w-2 rounded-full bg-green-500"></span>
+                        ),
+                      },
+                      {
+                        value: "Vacant",
+                        label: "Vacant",
+                        icon: (
+                          <span className="mr-2 h-2 w-2 rounded-full bg-gray-500"></span>
+                        ),
+                      },
+                    ]}
+                    renderValue={(value, options) => {
+                      const option = options.find((opt) => opt.value === value);
+                      if (!option) return "Select status";
+                      return (
+                        <div className="flex items-center">
+                          {option.icon}
+                          {option.label}
+                        </div>
+                      );
+                    }}
+                  />
+                )}
                 <FilterActions
                   onReset={resetAll}
                   onApply={form.handleSubmit(onSubmit)}

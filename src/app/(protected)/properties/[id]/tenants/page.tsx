@@ -27,7 +27,7 @@ export default async function TenantsPage({ params }: { params: Params }) {
       <DataTable
         columns={tenantTableColumns}
         data={tenants}
-        filterOption={{ columnKey: "name" }}
+        filterOptions={{ keywordFilterKey: "name" }}
       />
     </div>
   );
