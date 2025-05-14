@@ -63,7 +63,7 @@
     "@eslint/eslintrc": "^3.3.1",
     "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
     "@tailwindcss/postcss": "^4.1.6",
-    "@types/node": "^22.15.17",
+    "@types/node": "^22.15.18",
     "@types/react": "19.1.4",
     "@types/react-dom": "19.1.5",
     "drizzle-kit": "^0.31.1",
