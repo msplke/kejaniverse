@@ -7,6 +7,7 @@ import {
   validateUnitId,
   type ChargeApiRequest,
 } from "~/app/api/callbacks/ussd/input-validators";
+import { USSDSessionDataHandler } from "~/app/api/callbacks/ussd/ussd-session-handler";
 import { getTenantByUnitId } from "~/server/actions/tenants";
 import { getPropertyByUnitId } from "~/server/actions/units";
 
@@ -21,10 +22,21 @@ export function welcome(): string {
  * Validates `unitId` returns a prompt to enter the amount.
  * If `unitId` invalid, it returns an error message.
  */
-export async function handleUnitId(unitId: string) {
+export async function handleUnitId(sessionId: string, unitId: string) {
   const validationResult = await validateUnitId(unitId);
   if (validationResult.status === "invalid") {
+    console.log(validationResult.message);
     return validationResult.message!;
+  }
+
+  try {
+    await USSDSessionDataHandler.setUnitId(
+      sessionId,
+      validationResult.data as string,
+    );
+  } catch (error) {
+    console.error("Error setting unit ID in session handler:", error);
+    return "END An error occurred. Please try again.";
   }
 
   return "CON Enter the amount you want to pay.";
@@ -34,10 +46,20 @@ export async function handleUnitId(unitId: string) {
  * Validates the amount and returns a prompt to enter the phone number.
  * If the amount is invalid, it returns an error message.
  */
-export function handleAmount(amount: string) {
+export async function handleAmount(sessionId: string, amount: string) {
   const validationResult = validateAmount(amount);
   if (validationResult.status === "invalid") {
     return validationResult.message!;
+  }
+
+  try {
+    await USSDSessionDataHandler.setAmount(
+      sessionId,
+      validationResult.data as number,
+    );
+  } catch (error) {
+    console.error("Error setting amount in session handler:", error);
+    return "END An error occurred. Please try again.";
   }
 
   return "CON Enter the M-Pesa number you want to pay with e.g. +254712345678";
@@ -47,7 +69,8 @@ export function handleAmount(amount: string) {
  * Validates the phone number and returns a confirmation prompt.
  * If the phone number is invalid, it returns an error message.
  */
-export function handlePhoneNumber(
+export async function handlePhoneNumber(
+  sessionId: string,
   phoneNumber: string,
   unitId: string,
   amount: string,
@@ -55,6 +78,15 @@ export function handlePhoneNumber(
   const validationResult = validatePhoneNumber(phoneNumber);
   if (validationResult.status === "invalid") {
     return validationResult.message!;
+  }
+  try {
+    await USSDSessionDataHandler.setPhoneNumber(
+      sessionId,
+      validationResult.data as string,
+    );
+  } catch (error) {
+    console.error("Error setting phone number in session handler:", error);
+    return "END An error occurred. Please try again.";
   }
   return `CON Do you want to pay KES ${amount} for the unit with the identifier ${unitId}?\n1. Yes\n2. No`;
 }
@@ -71,8 +103,10 @@ export async function handleConfirmation(
 ) {
   if (choice === "1") {
     return await chargeUser(unitId, amount, phoneNumber);
-  } else {
+  } else if (choice === "2") {
     return "END Transaction cancelled.";
+  } else {
+    return `CON Invalid choice.\nDo you want to pay KES ${amount} for the unit with the identifier ${unitId}?\n1. Yes\n2. No`;
   }
 }
 
@@ -124,7 +158,7 @@ export async function chargeUser(
       const paystackResponse = await fetch("https://api.paystack.co/charge", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${env.PAYSTACK_LIVE_SECRET_KEY}`,
+          Authorization: `Bearer ${env.PAYSTACK_SECRET_KEY}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),

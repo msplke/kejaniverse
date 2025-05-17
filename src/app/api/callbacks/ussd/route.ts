@@ -6,6 +6,10 @@ import {
   welcome,
 } from "~/app/api/callbacks/ussd/input-handlers";
 import { formDataSchema } from "~/app/api/callbacks/ussd/input-validators";
+import {
+  USSDSessionDataHandler,
+  type USSDSessionData,
+} from "~/app/api/callbacks/ussd/ussd-session-handler";
 
 const responseHeaders = {
   "Content-Type": "text/plain",
@@ -30,8 +34,7 @@ export async function POST(req: Request) {
     });
   }
 
-  // console.log(validation.data);
-  const { text } = validation.data;
+  const { text, sessionId } = validation.data;
 
   if (text === "") {
     return new Response(welcome(), {
@@ -39,31 +42,53 @@ export async function POST(req: Request) {
     });
   }
 
-  let responseText;
-  const prevResponses = text.split("*");
+  // The response to be sent back to the AT server
+  let endpointResponseText: string;
 
-  if (prevResponses.length === 1) {
-    responseText = await handleUnitId(prevResponses[0]!);
-  } else if (prevResponses.length === 2) {
-    responseText = handleAmount(prevResponses[1]!);
-  } else if (prevResponses.length === 3) {
-    responseText = handlePhoneNumber(
-      prevResponses[2]!,
-      prevResponses[0]!,
-      prevResponses[1]!,
-    );
-  } else if (prevResponses.length === 4) {
-    responseText = await handleConfirmation(
-      prevResponses[3]!,
-      prevResponses[0]!,
-      prevResponses[1]!,
-      prevResponses[2]!,
+  // `text` represents the previous responses,
+  //  and is a string of the form "1*2*3*4*5"
+  const prevResponses = text.split("*");
+  // Since the session data is now stored using Redis (managed by `USSDSessionHandler`),
+  // we can use the last response to determine the next step.
+  const lastResponse: string = prevResponses[prevResponses.length - 1]!;
+  console.log("Last response:", lastResponse);
+  console.log("Prev responses:", prevResponses);
+
+  let sessionData: USSDSessionData;
+  try {
+    sessionData = await USSDSessionDataHandler.sessionData(sessionId);
+  } catch (error) {
+    console.error("Error retrieving session data:", error);
+    return new Response("END Something went wrong. Please try again later.", {
+      status: 200,
+    });
+  }
+  console.log("Session:", sessionId);
+  console.log("Session data:", sessionData);
+
+  const { unitId, amount, phoneNumber } = sessionData;
+
+  if (!unitId) {
+    endpointResponseText = await handleUnitId(sessionId, lastResponse);
+  } else if (!amount) {
+    endpointResponseText = await handleAmount(sessionId, lastResponse);
+  } else if (!phoneNumber) {
+    endpointResponseText = await handlePhoneNumber(
+      sessionId,
+      lastResponse,
+      unitId,
+      amount,
     );
   } else {
-    responseText = "END Invalid input. Please try again.";
+    const choice = lastResponse;
+    endpointResponseText = await handleConfirmation(
+      choice,
+      unitId,
+      amount,
+      phoneNumber,
+    );
   }
-
-  return new Response(responseText, {
+  return new Response(endpointResponseText, {
     headers: responseHeaders,
   });
 }
