@@ -32,7 +32,8 @@ export type ChargeApiRequest = z.infer<typeof chargeApiRequestSchema>;
 
 type UssdInputValidationResult = {
   status: "valid" | "invalid";
-  message?: string;
+  data?: unknown; // Optional data to be returned in case of valid input
+  message?: string; // Optional message to be returned in case of invalid input
 };
 
 export async function validateUnitId(
@@ -41,7 +42,7 @@ export async function validateUnitId(
   if (unitId.length !== 6) {
     return {
       status: "invalid",
-      message: `END The unit identifier should be 6 characters long. Please try again.`,
+      message: `CON The unit identifier should be 6 characters long. Please try again.`,
     };
   }
   try {
@@ -52,7 +53,7 @@ export async function validateUnitId(
     if (error instanceof Error && error.message === "Unit not found") {
       return {
         status: "invalid",
-        message: "END Unit not found. Please try again.",
+        message: "CON Unit not found. Please try again.",
       };
     }
     // Log unexpected errors
@@ -64,6 +65,7 @@ export async function validateUnitId(
   }
   return {
     status: "valid",
+    data: unitId,
   };
 }
 
@@ -79,12 +81,13 @@ export function validateAmount(amount: string): UssdInputValidationResult {
   if (!validation.success) {
     return {
       status: "invalid",
-      message: `END Invalid amount: ${amount}. The amount must be between KES 1 and KES 150,000.\nPlease try again.`,
+      message: `CON Invalid amount: ${amount}.\nThe amount must be between KES 1 and KES 150,000.\nPlease try again.`,
     };
   }
 
   return {
     status: "valid",
+    data: validation.data,
   };
 }
 
@@ -96,12 +99,13 @@ export function validatePhoneNumber(
   if (!phoneNumberRegex.test(phoneNumber)) {
     return {
       status: "invalid",
-      message: `END Invalid phone number: ${phoneNumber}. Please try again.`,
+      message: `CON Invalid phone number: ${phoneNumber}.\nPlease try again.`,
     };
   }
 
   return {
     status: "valid",
+    data: phoneNumber,
   };
 }
 
