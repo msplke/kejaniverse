@@ -7,7 +7,11 @@ import {
   validateUnitId,
   type ChargeApiRequest,
 } from "~/app/api/callbacks/ussd/input-validators";
-import { USSDSessionDataHandler } from "~/app/api/callbacks/ussd/ussd-session-handler";
+import {
+  setAmount,
+  setPhoneNumber,
+  setUnitId,
+} from "~/app/api/callbacks/ussd/ussd-session-handler";
 import { getTenantByUnitId } from "~/server/actions/tenants";
 import { getPropertyByUnitId } from "~/server/actions/units";
 
@@ -30,10 +34,7 @@ export async function handleUnitId(sessionId: string, unitId: string) {
   }
 
   try {
-    await USSDSessionDataHandler.setUnitId(
-      sessionId,
-      validationResult.data as string,
-    );
+    await setUnitId(sessionId, validationResult.data as string);
   } catch (error) {
     console.error("Error setting unit ID in session handler:", error);
     return "END An error occurred. Please try again.";
@@ -53,10 +54,7 @@ export async function handleAmount(sessionId: string, amount: string) {
   }
 
   try {
-    await USSDSessionDataHandler.setAmount(
-      sessionId,
-      validationResult.data as number,
-    );
+    await setAmount(sessionId, validationResult.data as number);
   } catch (error) {
     console.error("Error setting amount in session handler:", error);
     return "END An error occurred. Please try again.";
@@ -80,10 +78,7 @@ export async function handlePhoneNumber(
     return validationResult.message!;
   }
   try {
-    await USSDSessionDataHandler.setPhoneNumber(
-      sessionId,
-      validationResult.data as string,
-    );
+    await setPhoneNumber(sessionId, validationResult.data as string);
   } catch (error) {
     console.error("Error setting phone number in session handler:", error);
     return "END An error occurred. Please try again.";
