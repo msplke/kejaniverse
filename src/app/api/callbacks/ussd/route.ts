@@ -7,7 +7,7 @@ import {
 } from "~/app/api/callbacks/ussd/input-handlers";
 import { formDataSchema } from "~/app/api/callbacks/ussd/input-validators";
 import {
-  USSDSessionDataHandler,
+  getUSSDSessionData,
   type USSDSessionData,
 } from "~/app/api/callbacks/ussd/ussd-session-handler";
 
@@ -48,7 +48,7 @@ export async function POST(req: Request) {
   // `text` represents the previous responses,
   //  and is a string of the form "1*2*3*4*5"
   const prevResponses = text.split("*");
-  // Since the session data is now stored using Redis (managed by `USSDSessionHandler`),
+  // Since the session data is now stored using Redis,
   // we can use the last response to determine the next step.
   const lastResponse: string = prevResponses[prevResponses.length - 1]!;
   console.log("Last response:", lastResponse);
@@ -56,7 +56,7 @@ export async function POST(req: Request) {
 
   let sessionData: USSDSessionData;
   try {
-    sessionData = await USSDSessionDataHandler.sessionData(sessionId);
+    sessionData = await getUSSDSessionData(sessionId);
   } catch (error) {
     console.error("Error retrieving session data:", error);
     return new Response("END Something went wrong. Please try again later.", {
@@ -69,13 +69,16 @@ export async function POST(req: Request) {
   const { unitId, amount, phoneNumber } = sessionData;
 
   if (!unitId) {
-    endpointResponseText = await handleUnitId(sessionId, lastResponse);
+    const userUnitId = lastResponse;
+    endpointResponseText = await handleUnitId(sessionId, userUnitId);
   } else if (!amount) {
-    endpointResponseText = await handleAmount(sessionId, lastResponse);
+    const userAmount = lastResponse;
+    endpointResponseText = await handleAmount(sessionId, userAmount);
   } else if (!phoneNumber) {
+    const userPhoneNumber = lastResponse;
     endpointResponseText = await handlePhoneNumber(
       sessionId,
-      lastResponse,
+      userPhoneNumber,
       unitId,
       amount,
     );
