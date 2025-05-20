@@ -29,18 +29,22 @@ import {
   CreatePropertyFormSchema,
   type CreatePropertyFormData,
 } from "~/lib/validators/property";
-import { CreatePropertyFormDispatchContext } from "./context";
+import {
+  CreatePropertyFormContext,
+  CreatePropertyFormDispatchContext,
+} from "./context";
 
 export function CreatePropertyForm({ banks }: { banks: Bank[] }) {
   const router = useRouter();
+  const currentFormData = useContext(CreatePropertyFormContext);
   const setFormData = useContext(CreatePropertyFormDispatchContext);
 
   const form = useForm<CreatePropertyFormData>({
     resolver: zodResolver(CreatePropertyFormSchema),
     defaultValues: {
-      propertyName: "",
-      bankCode: "",
-      bankAccountNumber: "",
+      propertyName: currentFormData.propertyName ?? "",
+      bankCode: currentFormData.bankCode ?? "",
+      bankAccountNumber: currentFormData.bankAccountNumber ?? "",
     },
   });
 
