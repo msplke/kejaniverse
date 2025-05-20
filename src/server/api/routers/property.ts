@@ -65,6 +65,18 @@ export const propertyRouter = createTRPCRouter({
       return result;
     }),
 
+  getFirstUnderOwner: protectedProcedure.query(async ({ ctx }) => {
+    const { userId } = ctx.auth;
+    const properties = await ctx.db
+      .select({ id: property.id })
+      .from(property)
+      .where(eq(property.ownerId, userId))
+      .limit(1);
+    const propertyId = properties[0]?.id;
+
+    return propertyId;
+  }),
+
   getAllUnderOwner: protectedProcedure.query(async ({ ctx }) => {
     const { userId } = ctx.auth;
 

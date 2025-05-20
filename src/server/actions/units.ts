@@ -102,3 +102,37 @@ export async function getPropertyByUnitId(unitId: string) {
 
   return current;
 }
+
+export async function addUnitsGivenRange(
+  start: number,
+  end: number,
+  unitTypeId: string,
+  propertyId: string,
+) {
+  // Check if any units in the range already exist
+  const existingUnits = await db
+    .select()
+    .from(unit)
+    .where(eq(unit.propertyId, propertyId));
+
+  const existingUnitNames = new Set(existingUnits.map((u) => u.unitName));
+
+  for (let i = start; i <= end; i++) {
+    if (existingUnitNames.has(`${i}`)) {
+      throw new Error(`Unit ${i} already exists in this property`);
+    }
+  }
+
+  // If no conflicts, proceed with insertion
+  const units = [];
+  for (let i = start; i <= end; i++) {
+    const id = genUniqueId();
+    units.push({ id, unitName: `${i}`, unitTypeId, propertyId });
+  }
+
+  const result = await db.insert(unit).values(units).returning({ id: unit.id });
+  if (result.length === 0) {
+    throw new Error("Failed to create units");
+  }
+  return result.length;
+}

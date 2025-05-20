@@ -3,11 +3,11 @@ import { redirect } from "next/navigation";
 import { api } from "~/trpc/server";
 
 export default async function Page() {
-  const properties = await api.property.getAllUnderOwner();
+  const propertyId = await api.property.getFirstUnderOwner();
 
-  if (properties.length === 0) {
+  if (!propertyId) {
     redirect("/properties/new");
   } else {
-    redirect(`/properties/${properties[0]?.id}`);
+    redirect(`/properties/${propertyId}`);
   }
 }
