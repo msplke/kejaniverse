@@ -57,7 +57,7 @@
     "svix": "^1.65.0",
     "tailwind-merge": "^3.3.0",
     "tw-animate-css": "^1.3.0",
-    "zod": "^3.25.20",
+    "zod": "^3.25.23",
     "zod-form-data": "^2.0.7"
   },
   "devDependencies": {
