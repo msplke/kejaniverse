@@ -56,7 +56,7 @@
     "superjson": "^2.2.2",
     "svix": "^1.66.0",
     "tailwind-merge": "^3.3.0",
-    "tw-animate-css": "^1.3.0",
+    "tw-animate-css": "^1.3.2",
     "zod": "^3.25.32",
     "zod-form-data": "^2.0.7"
   },
