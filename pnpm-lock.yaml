@@ -72,8 +72,8 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0
       drizzle-orm:
-        specifier: ^0.44.4
-        version: 0.44.4(@upstash/redis@1.35.4)(gel@2.0.1)(postgres@3.4.6)
+        specifier: ^0.44.5
+        version: 0.44.5(@upstash/redis@1.35.4)(gel@2.0.1)(postgres@3.4.6)
       lucide-react:
         specifier: ^0.544.0
         version: 0.544.0(react@19.1.1)
@@ -1819,8 +1819,8 @@ packages:
     resolution: {integrity: sha512-+CHgPFzuoTQTt7cOYCV6MOw2w8vqEn/ap1yv4bpZOWL03u7rlVRQhUY0WYT3rHsgVTXwYQDZaSUJSQrMBUKuWg==}
     hasBin: true
 
-  drizzle-orm@0.44.4:
-    resolution: {integrity: sha512-ZyzKFpTC/Ut3fIqc2c0dPZ6nhchQXriTsqTNs4ayRgl6sZcFlMs9QZKPSHXK4bdOf41GHGWf+FrpcDDYwW+W6Q==}
+  drizzle-orm@0.44.5:
+    resolution: {integrity: sha512-jBe37K7d8ZSKptdKfakQFdeljtu3P2Cbo7tJoJSVZADzIKOBo9IAJPOmMsH2bZl90bZgh8FQlD8BjxXA/zuBkQ==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=4'
@@ -4702,7 +4702,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.44.4(@upstash/redis@1.35.4)(gel@2.0.1)(postgres@3.4.6):
+  drizzle-orm@0.44.5(@upstash/redis@1.35.4)(gel@2.0.1)(postgres@3.4.6):
     optionalDependencies:
       '@upstash/redis': 1.35.4
       gel: 2.0.1
