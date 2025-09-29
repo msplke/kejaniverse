@@ -26,7 +26,7 @@ export type CreatePropertyFormData = z.infer<typeof CreatePropertyFormSchema>;
 
 export const CreateUnitTypeFormSchema = z.object({
   unitType: z.enum(unitTypeEnumValues),
-  rentPrice: z.number({ coerce: true }).int().min(1000).max(100_000),
+  rentPrice: z.number().int().min(1000).max(100_000),
 });
 
 export type CreateUnitTypeFormData = z.infer<typeof CreateUnitTypeFormSchema>;
