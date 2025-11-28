@@ -60,7 +60,7 @@
     "zod-form-data": "^3.0.1"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/eslintrc": "^3.3.3",
     "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
     "@tailwindcss/postcss": "^4.1.17",
     "@types/node": "^24.10.1",
