@@ -43,7 +43,7 @@ importers:
         version: 1.2.8(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@t3-oss/env-nextjs':
         specifier: ^0.13.10
-        version: 0.13.10(arktype@2.1.20)(typescript@5.9.3)(zod@4.3.2)
+        version: 0.13.10(arktype@2.1.20)(typescript@5.9.3)(zod@4.3.3)
       '@tanstack/react-query':
         specifier: ^5.90.16
         version: 5.90.16(react@19.2.3)
@@ -117,11 +117,11 @@ importers:
         specifier: ^3.4.0
         version: 3.4.0
       zod:
-        specifier: ^4.3.2
-        version: 4.3.2
+        specifier: ^4.3.3
+        version: 4.3.3
       zod-form-data:
         specifier: ^3.0.1
-        version: 3.0.1(zod@4.3.2)
+        version: 3.0.1(zod@4.3.3)
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3.3.3
@@ -3188,8 +3188,8 @@ packages:
     peerDependencies:
       zod: '>= 3.25.0'
 
-  zod@4.3.2:
-    resolution: {integrity: sha512-b8L8yn4rIVfiXyHAmnr52/ZEpDumlT0bmxiq3Ws1ybrinhflGpt12Hvv54kYnEsGPRs6o/Ka3/ppA2OWY21IVg==}
+  zod@4.3.3:
+    resolution: {integrity: sha512-bQ7Rxwfn04DCrTjjRfD9SavY2vWdmf3REjs/mkc1LdwI1KkcHClBRJmnvmA/6epGeqlHePtIRF1J4SrMMlW7IA==}
 
 snapshots:
 
@@ -4131,19 +4131,19 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@t3-oss/env-core@0.13.10(arktype@2.1.20)(typescript@5.9.3)(zod@4.3.2)':
+  '@t3-oss/env-core@0.13.10(arktype@2.1.20)(typescript@5.9.3)(zod@4.3.3)':
     optionalDependencies:
       arktype: 2.1.20
       typescript: 5.9.3
-      zod: 4.3.2
+      zod: 4.3.3
 
-  '@t3-oss/env-nextjs@0.13.10(arktype@2.1.20)(typescript@5.9.3)(zod@4.3.2)':
+  '@t3-oss/env-nextjs@0.13.10(arktype@2.1.20)(typescript@5.9.3)(zod@4.3.3)':
     dependencies:
-      '@t3-oss/env-core': 0.13.10(arktype@2.1.20)(typescript@5.9.3)(zod@4.3.2)
+      '@t3-oss/env-core': 0.13.10(arktype@2.1.20)(typescript@5.9.3)(zod@4.3.3)
     optionalDependencies:
       arktype: 2.1.20
       typescript: 5.9.3
-      zod: 4.3.2
+      zod: 4.3.3
 
   '@tailwindcss/node@4.1.18':
     dependencies:
@@ -6148,9 +6148,9 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zod-form-data@3.0.1(zod@4.3.2):
+  zod-form-data@3.0.1(zod@4.3.3):
     dependencies:
       '@rvf/set-get': 7.0.1
-      zod: 4.3.2
+      zod: 4.3.3
 
-  zod@4.3.2: {}
+  zod@4.3.3: {}
