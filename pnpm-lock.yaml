@@ -51,14 +51,14 @@ importers:
         specifier: ^8.21.3
         version: 8.21.3(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@trpc/client':
-        specifier: ^11.15.1
-        version: 11.15.1(@trpc/server@11.15.1(typescript@5.9.3))(typescript@5.9.3)
+        specifier: ^11.16.0
+        version: 11.16.0(@trpc/server@11.16.0(typescript@5.9.3))(typescript@5.9.3)
       '@trpc/react-query':
-        specifier: ^11.15.1
-        version: 11.15.1(@tanstack/react-query@5.95.2(react@19.2.4))(@trpc/client@11.15.1(@trpc/server@11.15.1(typescript@5.9.3))(typescript@5.9.3))(@trpc/server@11.15.1(typescript@5.9.3))(react@19.2.4)(typescript@5.9.3)
+        specifier: ^11.16.0
+        version: 11.16.0(@tanstack/react-query@5.95.2(react@19.2.4))(@trpc/client@11.16.0(@trpc/server@11.16.0(typescript@5.9.3))(typescript@5.9.3))(@trpc/server@11.16.0(typescript@5.9.3))(react@19.2.4)(typescript@5.9.3)
       '@trpc/server':
-        specifier: ^11.15.1
-        version: 11.15.1(typescript@5.9.3)
+        specifier: ^11.16.0
+        version: 11.16.0(typescript@5.9.3)
       '@upstash/redis':
         specifier: ^1.37.0
         version: 1.37.0
@@ -1628,24 +1628,24 @@ packages:
     resolution: {integrity: sha512-ldZXEhOBb8Is7xLs01fR3YEc3DERiz5silj8tnGkFZytt1abEvl/GhUmCE0PMLaMPTa3Jk4HbKmRlHmu+gCftg==}
     engines: {node: '>=12'}
 
-  '@trpc/client@11.15.1':
-    resolution: {integrity: sha512-Zav9uPSEM7zBlEbttKep1kCfxHumB7P/e/zVFspzfyeB6XYGVeILFeZVL6cnODkgUIFSzgO9X4fXRnn0BP/BhQ==}
+  '@trpc/client@11.16.0':
+    resolution: {integrity: sha512-TxIzm7OoK3baKZ0XCbuMUbI3GhgjcbKHIc4nWVKaRpCRnbSh0T31BT6fTPYwtnA/Nur8pBCGqC2B4J5hEPiPFQ==}
     hasBin: true
     peerDependencies:
-      '@trpc/server': 11.15.1
+      '@trpc/server': 11.16.0
       typescript: '>=5.7.2'
 
-  '@trpc/react-query@11.15.1':
-    resolution: {integrity: sha512-9xOshELkQ9KMC9nxZKWjcjXfn5UNz3a2IXxG/hDHjOfLkb78L5vp2UJJyc90WHi8br0dwYBZmoVEW9M5bj6cvg==}
+  '@trpc/react-query@11.16.0':
+    resolution: {integrity: sha512-ah6ULOu4k7lCEFAEoEgqg14YPVu1lnCVVYcz8TP7avPPKwtcB0CbFKYve3ElRP+V5DoBT75Q+G66bRdR+rQ5fg==}
     peerDependencies:
       '@tanstack/react-query': ^5.80.3
-      '@trpc/client': 11.15.1
-      '@trpc/server': 11.15.1
+      '@trpc/client': 11.16.0
+      '@trpc/server': 11.16.0
       react: '>=18.2.0'
       typescript: '>=5.7.2'
 
-  '@trpc/server@11.15.1':
-    resolution: {integrity: sha512-0A1fIBU0zDLXaSOhuHOChqM4mCCCi233FcPdPNXJ+FIVMd5VEGe33u6cehUavZMquIi6uIec9xymac2P4LgqMA==}
+  '@trpc/server@11.16.0':
+    resolution: {integrity: sha512-XgGuUMddrUTd04+za/WE5GFuZ1/YU9XQG0t3VL5WOIu2JspkOlq6k4RYEiqS6HSJt+S0RXaPdIoE2anIP/BBRQ==}
     hasBin: true
     peerDependencies:
       typescript: '>=5.7.2'
@@ -4482,20 +4482,20 @@ snapshots:
 
   '@tanstack/table-core@8.21.3': {}
 
-  '@trpc/client@11.15.1(@trpc/server@11.15.1(typescript@5.9.3))(typescript@5.9.3)':
+  '@trpc/client@11.16.0(@trpc/server@11.16.0(typescript@5.9.3))(typescript@5.9.3)':
     dependencies:
-      '@trpc/server': 11.15.1(typescript@5.9.3)
+      '@trpc/server': 11.16.0(typescript@5.9.3)
       typescript: 5.9.3
 
-  '@trpc/react-query@11.15.1(@tanstack/react-query@5.95.2(react@19.2.4))(@trpc/client@11.15.1(@trpc/server@11.15.1(typescript@5.9.3))(typescript@5.9.3))(@trpc/server@11.15.1(typescript@5.9.3))(react@19.2.4)(typescript@5.9.3)':
+  '@trpc/react-query@11.16.0(@tanstack/react-query@5.95.2(react@19.2.4))(@trpc/client@11.16.0(@trpc/server@11.16.0(typescript@5.9.3))(typescript@5.9.3))(@trpc/server@11.16.0(typescript@5.9.3))(react@19.2.4)(typescript@5.9.3)':
     dependencies:
       '@tanstack/react-query': 5.95.2(react@19.2.4)
-      '@trpc/client': 11.15.1(@trpc/server@11.15.1(typescript@5.9.3))(typescript@5.9.3)
-      '@trpc/server': 11.15.1(typescript@5.9.3)
+      '@trpc/client': 11.16.0(@trpc/server@11.16.0(typescript@5.9.3))(typescript@5.9.3)
+      '@trpc/server': 11.16.0(typescript@5.9.3)
       react: 19.2.4
       typescript: 5.9.3
 
-  '@trpc/server@11.15.1(typescript@5.9.3)':
+  '@trpc/server@11.16.0(typescript@5.9.3)':
     dependencies:
       typescript: 5.9.3
 
