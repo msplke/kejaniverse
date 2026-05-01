@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       '@clerk/nextjs':
-        specifier: ^6.39.2
+        specifier: ^6.39.3
         version: 6.39.3(next@15.5.15(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@hookform/resolvers':
         specifier: ^5.2.2
