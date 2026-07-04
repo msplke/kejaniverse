@@ -120,8 +120,8 @@ importers:
         specifier: ^4.4.3
         version: 4.4.3
       zod-form-data:
-        specifier: ^3.0.2
-        version: 3.0.2(zod@4.4.3)
+        specifier: ^3.0.3
+        version: 3.0.3(zod@4.4.3)
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3.3.5
@@ -1436,8 +1436,8 @@ packages:
   '@rushstack/eslint-patch@1.10.5':
     resolution: {integrity: sha512-kkKUDVlII2DQiKy7UstOR1ErJP8kUKAQ4oa+SQtM0K+lPdmmjj0YnnxBgtTVYH7mUKtbsxeFC9y0AmK7Yb78/A==}
 
-  '@rvf/set-get@7.0.1':
-    resolution: {integrity: sha512-GkTSn9K1GrTYoTUqlUs36k6nJnzjQaFBTTEIqUYmzBcsGsoJM8xG7EAx2WLHWAA4QzFjcwWUSHQ3vM3Fbw50Tg==}
+  '@rvf/set-get@7.0.3':
+    resolution: {integrity: sha512-Ky2uOJ5WpgqVev4W+dNlOIJ2R9b6heHD4PHx7NGI98XanfeH8Pl/m5wE0aZU3d/nD79iOUlZHBn0uxJU/DJF7g==}
 
   '@stablelib/base64@1.0.1':
     resolution: {integrity: sha512-1bnPQqSxSuc3Ii6MhBysoWCg58j97aUjuCSZrGSmDxNqtytIi0k8utUenAwTZN4V5mXXYGsVUI9zeBqy+jBOSQ==}
@@ -3268,8 +3268,8 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  zod-form-data@3.0.2:
-    resolution: {integrity: sha512-iN8oSINKqNHJ90T+SHUvHg2gfvF+gyVvg4nK1RYYhMUDUpUWaqwqawLbJNDxxrM59pgE0kdcMfqKVwK55Bm5cw==}
+  zod-form-data@3.0.3:
+    resolution: {integrity: sha512-1qXJ6hayyUr3TqxfXqmm5qwCa8f/mnG/o8Itcny03iFyrwX/dZkCwfCcYoJDyQP8RxEkycw0c/ldCJXBeaCstg==}
     peerDependencies:
       zod: '>= 3.25.0'
 
@@ -4260,7 +4260,7 @@ snapshots:
 
   '@rushstack/eslint-patch@1.10.5': {}
 
-  '@rvf/set-get@7.0.1': {}
+  '@rvf/set-get@7.0.3': {}
 
   '@stablelib/base64@1.0.1': {}
 
@@ -6214,9 +6214,9 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zod-form-data@3.0.2(zod@4.4.3):
+  zod-form-data@3.0.3(zod@4.4.3):
     dependencies:
-      '@rvf/set-get': 7.0.1
+      '@rvf/set-get': 7.0.3
       zod: 4.4.3
 
   zod@4.4.3: {}
