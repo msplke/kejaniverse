@@ -114,28 +114,24 @@ export function CreateUnitTypeForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Unit Type</FormLabel>
-              <FormControl>
-                <Select
-                  onValueChange={field.onChange}
-                  value={field.value}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
+              <Select onValueChange={field.onChange} value={field.value}>
+                <FormControl
+                  render={
                     <SelectTrigger>
                       <SelectValue placeholder="Select a unit type" />
                     </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {CreateUnitTypeFormSchema.shape.unitType.options.map(
-                      (option) => (
-                        <SelectItem key={option} value={option}>
-                          {option}
-                        </SelectItem>
-                      ),
-                    )}
-                  </SelectContent>
-                </Select>
-              </FormControl>
+                  }
+                />
+                <SelectContent>
+                  {CreateUnitTypeFormSchema.shape.unitType.options.map(
+                    (option) => (
+                      <SelectItem key={option} value={option}>
+                        {option}
+                      </SelectItem>
+                    ),
+                  )}
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}
@@ -146,9 +142,16 @@ export function CreateUnitTypeForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Rent Price</FormLabel>
-              <FormControl>
-                <Input type="number" step={100} placeholder="3500" {...field} />
-              </FormControl>
+              <FormControl
+                render={
+                  <Input
+                    type="number"
+                    step={100}
+                    placeholder="3500"
+                    {...field}
+                  />
+                }
+              />
               <FormMessage />
             </FormItem>
           )}

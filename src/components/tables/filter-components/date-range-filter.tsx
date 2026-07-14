@@ -42,17 +42,23 @@ export function DateRangeFilter<
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant="outline"
-                        className="w-full justify-start border-gray-200 bg-white text-left font-normal"
-                      >
-                        <Icons.calendar />
-                        {field.value ? formatDate(field.value) : "Select date"}
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
+                  <PopoverTrigger
+                    render={
+                      <FormControl
+                        render={
+                          <Button
+                            variant="outline"
+                            className="w-full justify-start border-gray-200 bg-white text-left font-normal"
+                          >
+                            <Icons.calendar />
+                            {field.value
+                              ? formatDate(field.value)
+                              : "Select date"}
+                          </Button>
+                        }
+                      />
+                    }
+                  />
                   <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
                       mode="single"
@@ -75,17 +81,23 @@ export function DateRangeFilter<
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant="outline"
-                        className="w-full justify-start border-gray-200 bg-white text-left font-normal"
-                      >
-                        <Icons.calendar />
-                        {field.value ? formatDate(field.value) : "Select date"}
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
+                  <PopoverTrigger
+                    render={
+                      <FormControl
+                        render={
+                          <Button
+                            variant="outline"
+                            className="w-full justify-start border-gray-200 bg-white text-left font-normal"
+                          >
+                            <Icons.calendar />
+                            {field.value
+                              ? formatDate(field.value)
+                              : "Select date"}
+                          </Button>
+                        }
+                      />
+                    }
+                  />
                   <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
                       mode="single"

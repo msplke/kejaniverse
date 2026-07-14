@@ -17,11 +17,12 @@ export default async function UnitsPage({ params }: { params: Params }) {
     <div>
       <div className="flex items-center justify-between">
         <h1 className="my-4 text-2xl font-bold">Units</h1>
-        <Button asChild>
-          <Link href={`/properties/${id}/units/new`}>
-            <Icons.plus />
-            Add Unit
-          </Link>
+        <Button
+          render={<Link href={`/properties/${id}/units/new`} />}
+          nativeButton={false}
+        >
+          <Icons.plus />
+          Add Unit
         </Button>
       </div>
       <DataTable

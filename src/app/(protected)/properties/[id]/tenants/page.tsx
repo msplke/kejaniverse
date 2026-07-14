@@ -17,11 +17,12 @@ export default async function TenantsPage({ params }: { params: Params }) {
     <div>
       <div className="flex items-center justify-between">
         <h1 className="my-4 text-2xl font-bold">Tenants</h1>
-        <Button asChild>
-          <Link href={`/properties/${id}/tenants/new`}>
-            <Icons.plus />
-            Add Tenant
-          </Link>
+        <Button
+          render={<Link href={`/properties/${id}/tenants/new`} />}
+          nativeButton={false}
+        >
+          <Icons.plus />
+          Add Tenant
         </Button>
       </div>
       <DataTable
