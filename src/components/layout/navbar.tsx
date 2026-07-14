@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
-import { SignedIn, SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
+import { Show, SignInButton, SignUpButton } from "@clerk/nextjs";
 
 import { Icons } from "~/components/icons";
 import { MaxWidthWrapper } from "~/components/max-width-wrapper";
@@ -20,7 +20,7 @@ export function NavBar({ scroll = false }: { scroll?: boolean }) {
 
   return (
     <header
-      className={`bg-background/60 sticky top-0 z-40 flex w-full justify-center backdrop-blur-xl transition-all ${
+      className={`sticky top-0 z-40 flex w-full justify-center bg-background/60 backdrop-blur-xl transition-all ${
         scroll ? (scrolled ? "border-b" : "bg-transparent") : "border-b"
       }`}
     >
@@ -39,7 +39,7 @@ export function NavBar({ scroll = false }: { scroll?: boolean }) {
                   href={link.disabled ? "#" : link.href}
                   prefetch={true}
                   className={cn(
-                    "hover:text-foreground/80 flex items-center text-lg font-medium transition-colors sm:text-sm",
+                    "flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm",
                     link.href.startsWith(`/${segment}`)
                       ? "text-foreground"
                       : "text-foreground/60",
@@ -54,7 +54,7 @@ export function NavBar({ scroll = false }: { scroll?: boolean }) {
         </div>
 
         <div className="hidden items-center gap-4 md:flex">
-          <SignedOut>
+          <Show when="signed-out">
             <SignInButton>
               <Button size="sm" variant="ghost">
                 Sign In
@@ -64,13 +64,13 @@ export function NavBar({ scroll = false }: { scroll?: boolean }) {
             <SignUpButton>
               <Button size="sm">Get Started</Button>
             </SignUpButton>
-          </SignedOut>
+          </Show>
 
-          <SignedIn>
+          <Show when="signed-in">
             <Link href="/properties">
               <Button size="sm">Properties</Button>
             </Link>
-          </SignedIn>
+          </Show>
 
           <ModeToggle />
         </div>

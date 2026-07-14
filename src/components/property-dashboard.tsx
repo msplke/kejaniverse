@@ -37,7 +37,7 @@ export function PropertyDashboard({ data }: { data: PropertyDashboardData }) {
       </div>
       <div className="mt-8">
         <h2 className="mb-2 text-2xl font-bold">Recent Payments</h2>
-        <p className="text-muted-foreground text-sm">
+        <p className="text-sm text-muted-foreground">
           This table shows the 5 most recent payments made by tenants.
         </p>
         <DataTable

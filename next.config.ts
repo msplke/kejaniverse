@@ -7,8 +7,7 @@ import { type NextConfig } from "next";
 import "./src/env.js";
 
 const config: NextConfig = {
-  /** We already do linting and typechecking as separate tasks in CI */
-  eslint: { ignoreDuringBuilds: true },
+  /** We already run typechecking as a separate task in CI */
   typescript: { ignoreBuildErrors: true },
 };
 

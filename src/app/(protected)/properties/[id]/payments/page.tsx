@@ -9,31 +9,36 @@ export default async function Payments({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  let payments;
   try {
-    const payments = await api.payment.getAllPropertyPayments({
+    payments = await api.payment.getAllPropertyPayments({
       propertyId: id,
     });
-    return (
-      <div>
-        <h1 className="my-4 text-2xl font-bold">Payments</h1>
-        <DataTable
-          data={payments}
-          columns={paymentTableColumns}
-          filterOptions={{
-            keywordFilterKey: "tenant",
-            popoverFilterOptions: {
-              dateRangeKey: "paidAt",
-              unitTypeKey: "unitType",
-              unitStatusKey: "unitStatus",
-            },
-          }}
-        />
-      </div>
-    );
   } catch (error) {
     console.error("Error fetching payments:", error);
+  }
+
+  if (!payments) {
     return (
       <ErrorPage message="Unable to retrieve payment data. Please try again later." />
     );
   }
+
+  return (
+    <div>
+      <h1 className="my-4 text-2xl font-bold">Payments</h1>
+      <DataTable
+        data={payments}
+        columns={paymentTableColumns}
+        filterOptions={{
+          keywordFilterKey: "tenant",
+          popoverFilterOptions: {
+            dateRangeKey: "paidAt",
+            unitTypeKey: "unitType",
+            unitStatusKey: "unitStatus",
+          },
+        }}
+      />
+    </div>
+  );
 }

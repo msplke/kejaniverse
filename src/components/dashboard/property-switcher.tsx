@@ -46,7 +46,7 @@ export function PropertySwitcher({
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                 <Icons.house className="size-4" />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
@@ -64,7 +64,7 @@ export function PropertySwitcher({
             side={isMobile ? "bottom" : "right"}
             sideOffset={4}
           >
-            <DropdownMenuLabel className="text-muted-foreground text-xs">
+            <DropdownMenuLabel className="text-xs text-muted-foreground">
               Properties
             </DropdownMenuLabel>
 
@@ -88,10 +88,10 @@ export function PropertySwitcher({
 
             <DropdownMenuItem asChild className="gap-2 p-2">
               <Link href="/properties/new">
-                <div className="bg-background flex size-6 items-center justify-center rounded-md border">
+                <div className="flex size-6 items-center justify-center rounded-md border bg-background">
                   <Icons.plus className="size-4" />
                 </div>
-                <div className="text-muted-foreground font-medium">
+                <div className="font-medium text-muted-foreground">
                   Create property
                 </div>
               </Link>

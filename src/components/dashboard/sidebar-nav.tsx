@@ -55,7 +55,7 @@ export function SidebarNav({
                             <Link
                               href={item.href}
                               className={cn(
-                                "hover:bg-muted flex flex-1 items-center gap-3 rounded-md text-sm font-medium",
+                                "flex flex-1 items-center gap-3 rounded-md text-sm font-medium hover:bg-muted",
                               )}
                             >
                               <Icon className="size-4" />

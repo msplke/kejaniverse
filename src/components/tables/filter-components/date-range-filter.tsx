@@ -58,7 +58,7 @@ export function DateRangeFilter<
                       mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
-                      initialFocus
+                      autoFocus
                     />
                   </PopoverContent>
                 </Popover>
@@ -91,7 +91,7 @@ export function DateRangeFilter<
                       mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
-                      initialFocus
+                      autoFocus
                     />
                   </PopoverContent>
                 </Popover>

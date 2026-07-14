@@ -24,7 +24,7 @@ export default async function Layout({
     <SidebarProvider>
       <AppSidebar id={id} properties={properties} />
       <SidebarInset>
-        <header className="bg-background sticky top-0 z-50 flex h-14 lg:h-[60px]">
+        <header className="sticky top-0 z-50 flex h-14 bg-background lg:h-[60px]">
           <MaxWidthWrapper className="flex max-w-7xl items-center gap-x-3">
             <div className="w-full flex-1">
               <SidebarTrigger />
