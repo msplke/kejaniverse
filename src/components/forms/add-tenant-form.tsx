@@ -82,9 +82,7 @@ export function AddTenantForm({ units }: AddTenantFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>First Name</FormLabel>
-              <FormControl>
-                <Input placeholder="John" {...field} />
-              </FormControl>
+              <FormControl render={<Input placeholder="John" {...field} />} />
               <FormMessage />
             </FormItem>
           )}
@@ -95,9 +93,7 @@ export function AddTenantForm({ units }: AddTenantFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Last Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Mtume" {...field} />
-              </FormControl>
+              <FormControl render={<Input placeholder="Mtume" {...field} />} />
               <FormMessage />
             </FormItem>
           )}
@@ -109,9 +105,9 @@ export function AddTenantForm({ units }: AddTenantFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Phone Number</FormLabel>
-              <FormControl>
-                <Input placeholder="0712345678" {...field} />
-              </FormControl>
+              <FormControl
+                render={<Input placeholder="0712345678" {...field} />}
+              />
               <FormMessage />
             </FormItem>
           )}
@@ -122,9 +118,9 @@ export function AddTenantForm({ units }: AddTenantFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder="johnmtume@gmail.com" {...field} />
-              </FormControl>
+              <FormControl
+                render={<Input placeholder="johnmtume@gmail.com" {...field} />}
+              />
               <FormMessage />
             </FormItem>
           )}
@@ -135,26 +131,26 @@ export function AddTenantForm({ units }: AddTenantFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Unit Name</FormLabel>
-              <FormControl>
-                <Select
-                  onValueChange={field.onChange}
-                  value={field.value}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
+              <Select
+                items={units.map((u) => ({ label: u.name, value: u.id }))}
+                onValueChange={(value) => field.onChange(value ?? "")}
+                value={field.value || null}
+              >
+                <FormControl
+                  render={
                     <SelectTrigger>
                       <SelectValue placeholder="Select a unit" />
                     </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {units.map((u) => (
-                      <SelectItem key={u.id} value={u.id}>
-                        {`${u.name}`}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
+                  }
+                />
+                <SelectContent>
+                  {units.map((u) => (
+                    <SelectItem key={u.id} value={u.id}>
+                      {`${u.name}`}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}

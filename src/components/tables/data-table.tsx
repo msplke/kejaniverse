@@ -106,10 +106,10 @@ export function DataTable<TData, TValue>({
           )}
           {hideableColumns.length > 0 && (
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="ml-auto">
-                  Columns <ChevronDown />
-                </Button>
+              <DropdownMenuTrigger
+                render={<Button variant="outline" className="ml-auto" />}
+              >
+                Columns <ChevronDown />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 {hideableColumns.map((column) => {

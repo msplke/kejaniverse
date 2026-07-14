@@ -63,9 +63,9 @@ export function CreatePropertyForm({ banks }: { banks: Bank[] }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Property Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Awesome Properties" {...field} />
-              </FormControl>
+              <FormControl
+                render={<Input placeholder="Awesome Properties" {...field} />}
+              />
               <FormMessage />
             </FormItem>
           )}
@@ -75,9 +75,9 @@ export function CreatePropertyForm({ banks }: { banks: Bank[] }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Bank Account Number</FormLabel>
-              <FormControl>
-                <Input placeholder="12345678" {...field} />
-              </FormControl>
+              <FormControl
+                render={<Input placeholder="12345678" {...field} />}
+              />
               <FormDescription>
                 This will be used to settle payments received from tenants.
               </FormDescription>
@@ -91,12 +91,21 @@ export function CreatePropertyForm({ banks }: { banks: Bank[] }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Bank Name (For payouts)</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Choose Bank" />
-                  </SelectTrigger>
-                </FormControl>
+              <Select
+                items={banks.map((bank) => ({
+                  label: bank.name,
+                  value: bank.code,
+                }))}
+                onValueChange={(value) => field.onChange(value ?? "")}
+                value={field.value || null}
+              >
+                <FormControl
+                  render={
+                    <SelectTrigger>
+                      <SelectValue placeholder="Choose Bank" />
+                    </SelectTrigger>
+                  }
+                />
                 <SelectContent>
                   {banks.map((bank, index) => (
                     <SelectItem key={`${bank.id}-${index}`} value={bank.code}>

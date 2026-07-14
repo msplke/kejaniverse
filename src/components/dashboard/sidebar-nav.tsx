@@ -13,7 +13,7 @@ import {
   SidebarMenuItem,
 } from "~/components/ui/sidebar";
 import { cn } from "~/lib/utils";
-import { type SidebarNavItem } from "~/types";
+import type { SidebarNavItem } from "~/types";
 
 export function SidebarNav({
   sidebarLinks,

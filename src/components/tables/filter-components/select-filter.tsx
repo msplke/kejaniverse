@@ -47,16 +47,23 @@ export function SelectFilter<
         name={name}
         render={({ field }) => (
           <FormItem>
-            <Select value={field.value} onValueChange={field.onChange}>
-              <FormControl>
-                <SelectTrigger className="w-full border-gray-200 bg-white">
-                  <SelectValue placeholder={`Select ${title.toLowerCase()}`}>
-                    {renderValue
-                      ? renderValue(field.value, options)
-                      : undefined}
-                  </SelectValue>
-                </SelectTrigger>
-              </FormControl>
+            <Select
+              items={options}
+              value={field.value || null}
+              onValueChange={(value) => field.onChange(value ?? "")}
+            >
+              <FormControl
+                render={
+                  <SelectTrigger className="w-full border-gray-200 bg-white">
+                    <SelectValue placeholder={`Select ${title.toLowerCase()}`}>
+                      {renderValue
+                        ? (value: string | null) =>
+                            renderValue(value ?? "", options)
+                        : undefined}
+                    </SelectValue>
+                  </SelectTrigger>
+                }
+              />
               <SelectContent>
                 {options.map((option) => (
                   <SelectItem key={option.value} value={option.value}>

@@ -39,8 +39,13 @@ export const tenantTableColumns: ColumnDef<Tenant>[] = [
     cell: ({ row }) => {
       const email: string = row.getValue("email");
       return (
-        <Button asChild variant="link" className="p-0">
-          <Link href={`mailto:${email}`}>{email}</Link>
+        <Button
+          render={<Link href={`mailto:${email}`} />}
+          nativeButton={false}
+          variant="link"
+          className="p-0"
+        >
+          {email}
         </Button>
       );
     },
@@ -81,11 +86,11 @@ export const tenantTableColumns: ColumnDef<Tenant>[] = [
   //   cell: () => {
   //     return (
   //       <DropdownMenu>
-  //         <DropdownMenuTrigger asChild>
-  //           <Button variant="ghost" className="h-8 w-8 p-0">
-  //             <span className="sr-only">Open menu</span>
-  //             <MoreHorizontal className="h-4 w-4" />
-  //           </Button>
+  //         <DropdownMenuTrigger
+  //           render={<Button variant="ghost" className="h-8 w-8 p-0" />}
+  //         >
+  //           <span className="sr-only">Open menu</span>
+  //           <MoreHorizontal className="h-4 w-4" />
   //         </DropdownMenuTrigger>
   //         <DropdownMenuContent align="end" className="p-2">
   //           <DropdownMenuGroup>

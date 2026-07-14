@@ -1,7 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
 import type { Table } from "@tanstack/react-table";
 import { Filter } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -14,6 +13,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
+import { ScrollArea } from "~/components/ui/scroll-area";
 import { DateRangeFilter } from "./date-range-filter";
 import { FilterActions } from "./filter-actions";
 import { SelectFilter } from "./select-filter";
@@ -148,11 +148,9 @@ export function FilterPopover<TData>({
   return (
     <div>
       <Popover>
-        <PopoverTrigger asChild>
-          <Button variant="outline">
-            <Filter className="h-4 w-4" />
-            Filter
-          </Button>
+        <PopoverTrigger render={<Button variant="outline" />}>
+          <Filter className="h-4 w-4" />
+          Filter
         </PopoverTrigger>
         <PopoverContent
           className="w-[380px] rounded-lg border-gray-200 p-0"

@@ -27,7 +27,7 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { addUnit } from "~/server/actions/units";
-import { type unitType } from "~/server/db/schema";
+import type { unitType } from "~/server/db/schema";
 
 type AddUnitFormProps = {
   unitTypes: InferSelectModel<typeof unitType>[];
@@ -75,9 +75,7 @@ export function AddUnitForm({ unitTypes, propertyId }: AddUnitFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Unit Name</FormLabel>
-              <FormControl>
-                <Input placeholder="A1" {...field} />
-              </FormControl>
+              <FormControl render={<Input placeholder="A1" {...field} />} />
               <FormDescription>
                 This is an identifier for the unit.
               </FormDescription>
@@ -91,26 +89,29 @@ export function AddUnitForm({ unitTypes, propertyId }: AddUnitFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Unit Type</FormLabel>
-              <FormControl>
-                <Select
-                  onValueChange={field.onChange}
-                  value={field.value}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
+              <Select
+                items={unitTypes.map((u) => ({
+                  label: `${u.unitType} - ${u.rentPrice}`,
+                  value: u.id,
+                }))}
+                onValueChange={(value) => field.onChange(value ?? "")}
+                value={field.value || null}
+              >
+                <FormControl
+                  render={
                     <SelectTrigger>
                       <SelectValue placeholder="Select a unit type" />
                     </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {unitTypes.map((u) => (
-                      <SelectItem key={u.id} value={u.id}>
-                        {`${u.unitType} - ${u.rentPrice}`}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
+                  }
+                />
+                <SelectContent>
+                  {unitTypes.map((u) => (
+                    <SelectItem key={u.id} value={u.id}>
+                      {`${u.unitType} - ${u.rentPrice}`}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}
