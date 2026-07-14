@@ -1,4 +1,4 @@
-import { type SidebarNavItem } from "~/types";
+import type { SidebarNavItem } from "~/types";
 
 export const getSidebarLinks = (id: string): SidebarNavItem[] => [
   {
