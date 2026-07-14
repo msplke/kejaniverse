@@ -20,7 +20,7 @@ export default function Layout({
       <CreatePropertyFormDispatchContext value={setValues}>
         <div className="flex min-h-screen flex-col items-center">
           <MaxWidthWrapper className="flex-1">
-            <header className="bg-background sticky top-0 z-50 flex h-14 items-center justify-end space-x-4 px-4 lg:h-[60px]">
+            <header className="sticky top-0 z-50 flex h-14 items-center justify-end space-x-4 bg-background px-4 lg:h-[60px]">
               <UserButton />
               <ModeToggle />
             </header>

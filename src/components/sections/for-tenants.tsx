@@ -7,12 +7,12 @@ export function ForTenants() {
   return (
     <section
       id="tenants"
-      className="bg-background w-full py-12 md:py-24 lg:py-32"
+      className="w-full bg-background py-12 md:py-24 lg:py-32"
     >
       <MaxWidthWrapper>
         <div className="grid items-center gap-6 lg:grid-cols-2 lg:gap-12">
           <div className="order-last flex items-center justify-center lg:order-first">
-            <div className="bg-background relative h-[500px] w-full overflow-hidden rounded-lg border shadow-xl">
+            <div className="relative h-[500px] w-full overflow-hidden rounded-lg border bg-background shadow-xl">
               <Image
                 src="/images/daniel-chen-unsplash.jpg"
                 alt="Tenant Payment Interface"
@@ -22,7 +22,7 @@ export function ForTenants() {
             </div>
           </div>
           <div className="flex flex-col justify-center space-y-4">
-            <div className="bg-primary/10 text-primary inline-block w-fit rounded-xl px-3 py-1 text-sm">
+            <div className="inline-block w-fit rounded-xl bg-primary/10 px-3 py-1 text-sm text-primary">
               For Tenants
             </div>
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
@@ -47,7 +47,7 @@ export function ForTenants() {
                 { id: "support", text: "Access outstanding customer support" },
               ].map((item) => (
                 <li key={item.id} className="flex items-center gap-2">
-                  <Icons.checkCircle className="text-primary h-5 w-5 flex-shrink-0" />
+                  <Icons.checkCircle className="h-5 w-5 flex-shrink-0 text-primary" />
                   <span>{item.text}</span>
                 </li>
               ))}

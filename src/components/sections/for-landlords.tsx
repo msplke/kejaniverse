@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
+import { Show, SignUpButton } from "@clerk/nextjs";
 
 import { Icons } from "~/components/icons";
 import { MaxWidthWrapper } from "~/components/max-width-wrapper";
@@ -8,11 +8,11 @@ import { Button } from "~/components/ui/button";
 
 export function ForLandlords() {
   return (
-    <section id="landlords" className="bg-muted w-full py-12 md:py-24 lg:py-32">
+    <section id="landlords" className="w-full bg-muted py-12 md:py-24 lg:py-32">
       <MaxWidthWrapper>
         <div className="grid items-center gap-6 lg:grid-cols-2 lg:gap-12">
           <div className="flex flex-col justify-center space-y-4">
-            <div className="bg-primary/10 text-primary inline-block w-fit rounded-xl px-3 py-1 text-sm">
+            <div className="inline-block w-fit rounded-xl bg-primary/10 px-3 py-1 text-sm text-primary">
               For Landlords
             </div>
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
@@ -40,30 +40,30 @@ export function ForLandlords() {
                 { id: "access", text: "Access your dashboard from any device" },
               ].map((item) => (
                 <li key={item.id} className="flex items-center gap-2">
-                  <Icons.checkCircle className="text-primary h-5 w-5 flex-shrink-0" />
+                  <Icons.checkCircle className="h-5 w-5 flex-shrink-0 text-primary" />
                   <span>{item.text}</span>
                 </li>
               ))}
             </ul>
 
             <div>
-              <SignedOut>
+              <Show when="signed-out">
                 <SignUpButton>
                   <Button size="lg">
                     Get Started <Icons.arrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </SignUpButton>
-              </SignedOut>
+              </Show>
 
-              <SignedIn>
+              <Show when="signed-in">
                 <Link href="/properties">
                   <Button size="lg">Properties</Button>
                 </Link>
-              </SignedIn>
+              </Show>
             </div>
           </div>
           <div className="flex items-center justify-center">
-            <div className="bg-background relative h-[500px] w-full overflow-hidden rounded-lg border shadow-xl">
+            <div className="relative h-[500px] w-full overflow-hidden rounded-lg border bg-background shadow-xl">
               <Image
                 src="/images/sean-pollock-unsplash.jpg"
                 alt="Landlord Dashboard"

@@ -30,7 +30,7 @@ export default function ErrorPage({
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Icons.alert className="text-destructive h-6 w-6" />
+            <Icons.alert className="h-6 w-6 text-destructive" />
             <span>{headline ?? defaultErrorHeadline}</span>
           </CardTitle>
         </CardHeader>

@@ -22,7 +22,7 @@ export function PropertiesBreadcrumb() {
 
   return (
     <nav aria-label="breadcrumb">
-      <ol className="text-muted-foreground flex text-sm">
+      <ol className="flex text-sm text-muted-foreground">
         {breadcrumbSegments?.map((segment, index) => (
           <li key={index} className="breadcrumb-item capitalize">
             {segment}
