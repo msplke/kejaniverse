@@ -2,7 +2,8 @@
 
 import "server-only";
 
-import { eq } from "drizzle-orm";
+import { auth } from "@clerk/nextjs/server";
+import { and, eq } from "drizzle-orm";
 import { customAlphabet } from "nanoid";
 
 import { db } from "~/server/db";
@@ -10,7 +11,30 @@ import { property, unit, unitType } from "~/server/db/schema";
 
 const genUniqueId = customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", 6);
 
+/**
+ * Verifies that the property exists and belongs to the authenticated user.
+ * @throws Error if the user is unauthenticated or does not own the property
+ */
+async function verifyPropertyOwnership(propertyId: string) {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("User not authenticated");
+  }
+
+  const propertyExists = await db
+    .select({ id: property.id })
+    .from(property)
+    .where(and(eq(property.id, propertyId), eq(property.ownerId, userId)))
+    .limit(1);
+
+  if (propertyExists.length === 0) {
+    throw new Error("Property not found or you don't have access to it");
+  }
+}
+
 export async function getUnitTypes(propertyId: string) {
+  await verifyPropertyOwnership(propertyId);
+
   const unitTypes = await db
     .select()
     .from(unitType)
@@ -24,6 +48,8 @@ export async function addUnit(
   unitTypeId: string,
   propertyId: string,
 ) {
+  await verifyPropertyOwnership(propertyId);
+
   for (let attempts = 0; attempts < 5; attempts++) {
     const id = genUniqueId();
     try {
@@ -44,6 +70,8 @@ export async function addUnit(
 }
 
 export async function getUnits(propertyId: string) {
+  await verifyPropertyOwnership(propertyId);
+
   const units = await db
     .select({
       id: unit.id,
@@ -61,39 +89,56 @@ export async function getUnits(propertyId: string) {
 }
 /** Gets a unit with the given unit name */
 export async function getUnitByName(name: string) {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("User not authenticated");
+  }
+
   const results = await db
-    .select()
+    .select({ unit })
     .from(unit)
-    .where(eq(unit.unitName, name))
+    .innerJoin(property, eq(unit.propertyId, property.id))
+    .where(and(eq(unit.unitName, name), eq(property.ownerId, userId)))
     .limit(1);
 
   if (results.length === 0) {
     throw new Error("Unit not found");
   }
 
-  return results[0];
+  return results[0]?.unit;
 }
 
 export async function getUnitById(unitId: string) {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("User not authenticated");
+  }
+
   const results = await db
-    .select()
+    .select({ unit })
     .from(unit)
-    .where(eq(unit.id, unitId))
+    .innerJoin(property, eq(unit.propertyId, property.id))
+    .where(and(eq(unit.id, unitId), eq(property.ownerId, userId)))
     .limit(1);
 
   if (results.length === 0) {
     throw new Error("Unit not found");
   }
 
-  return results[0]!;
+  return results[0]!.unit;
 }
 
 export async function getPropertyByUnitId(unitId: string) {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("User not authenticated");
+  }
+
   const results = await db
     .select({ property })
     .from(unit)
     .leftJoin(property, eq(unit.propertyId, property.id))
-    .where(eq(unit.id, unitId))
+    .where(and(eq(unit.id, unitId), eq(property.ownerId, userId)))
     .limit(1);
   const current = results[0]?.property;
   if (!current) {
