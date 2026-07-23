@@ -11,21 +11,23 @@ export const tenantRouter = createTRPCRouter({
     .input(AddTenantFormSchema)
     .mutation(async ({ ctx, input }) => {
       const { unitId, firstName, lastName, phoneNumber, email } = input;
+      const { userId } = ctx.auth;
 
       const unitExists = await ctx.db
-        .select()
+        .select({ unit })
         .from(unit)
-        .where(eq(unit.id, unitId))
+        .innerJoin(property, eq(unit.propertyId, property.id))
+        .where(and(eq(unit.id, unitId), eq(property.ownerId, userId)))
         .limit(1);
 
       if (unitExists.length === 0) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: "Unit does not exist",
+          message: "Unit not found or you don't have access to it",
         });
       }
 
-      const unitOccupied = unitExists[0]?.occupied;
+      const unitOccupied = unitExists[0]?.unit.occupied;
       if (unitOccupied) {
         throw new TRPCError({
           code: "BAD_REQUEST",
@@ -109,6 +111,7 @@ export const tenantRouter = createTRPCRouter({
     .input(z.object({ unitId: z.string() }))
     .query(async ({ ctx, input }) => {
       const { unitId } = input;
+      const { userId } = ctx.auth;
 
       const results = await ctx.db
         .select({
@@ -120,7 +123,8 @@ export const tenantRouter = createTRPCRouter({
         })
         .from(tenant)
         .innerJoin(unit, eq(unit.id, tenant.unitId))
-        .where(eq(unit.id, unitId))
+        .innerJoin(property, eq(unit.propertyId, property.id))
+        .where(and(eq(unit.id, unitId), eq(property.ownerId, userId)))
         .limit(1);
 
       if (results.length === 0) {

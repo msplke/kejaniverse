@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { UserButton } from "@clerk/nextjs";
 
 import { AppSidebar } from "~/components/dashboard/app-sidebar";
@@ -19,6 +20,13 @@ export default async function Layout({
 }) {
   const properties = await api.property.getAllUnderOwner();
   const { id } = await params;
+
+  // Central ownership check for all /properties/[id]/* pages:
+  // `getAllUnderOwner` only returns properties owned by the authenticated
+  // user, so an id outside that list either doesn't exist or isn't theirs.
+  if (!properties.some((property) => property.id === id)) {
+    notFound();
+  }
 
   return (
     <SidebarProvider>
