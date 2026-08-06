@@ -1,7 +1,9 @@
+import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 
-import { getUnitById } from "~/server/actions/units";
+import { db } from "~/server/db";
+import { unit } from "~/server/db/schema";
 
 export const formDataSchema = zfd.formData({
   sessionId: zfd.text(),
@@ -46,16 +48,22 @@ export async function validateUnitId(
     };
   }
   try {
-    await getUnitById(unitId);
-  } catch (error) {
-    console.error(error);
-    // Check if this is the expected "Unit not found" error
-    if (error instanceof Error && error.message === "Unit not found") {
+    // Queried directly (not via the server actions in ~/server/actions)
+    // because this flow is driven by the Africa's Talking gateway, which has
+    // no Clerk session — the actions now require an authenticated owner.
+    const results = await db
+      .select({ id: unit.id })
+      .from(unit)
+      .where(eq(unit.id, unitId))
+      .limit(1);
+
+    if (results.length === 0) {
       return {
         status: "invalid",
         message: "CON Unit not found. Please try again.",
       };
     }
+  } catch (error) {
     // Log unexpected errors
     console.error("Unexpected error validating unit name:", error);
     return {
