@@ -20,8 +20,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@base-ui/react": "^1.6.0",
-    "@clerk/nextjs": "^7.6.4",
+    "@base-ui/react": "^1.7.0",
+    "@clerk/nextjs": "^7.6.5",
     "@hookform/resolvers": "^5.7.1",
     "@t3-oss/env-nextjs": "^0.13.11",
     "@tanstack/react-query": "^5.101.4",
@@ -29,7 +29,7 @@
     "@trpc/client": "^11.18.0",
     "@trpc/react-query": "^11.18.0",
     "@trpc/server": "^11.18.0",
-    "@upstash/redis": "^1.38.1",
+    "@upstash/redis": "^1.38.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.4.0",
