@@ -44,3 +44,5 @@ yarn-error.log*
 
 # idea files
 .idea
+# local agent config — personal tooling, never committed (public repo)
+.claude/

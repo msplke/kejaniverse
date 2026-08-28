@@ -6,12 +6,8 @@ on:
         type: string
         description: "Testbox session ID"
         required: true
-  pull_request:
-    paths:
-      - '.github/workflows/**'
-
 jobs:
-  typecheck:
+  testbox:
     runs-on: blacksmith-4vcpu-ubuntu-2404
     steps:
       - name: Begin Testbox
