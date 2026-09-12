@@ -7,20 +7,26 @@ Verified with `pnpm lint` (1 known warning), `pnpm typecheck` (clean), `knip` (u
 
 ## CRITICAL
 
-### C1. Server-action layer has no authorization — full cross-landlord IDOR for any signed-in user
+### ~~C1. Server-action layer has no authorization — full cross-landlord IDOR for any signed-in user~~
+**Status: fixed** — every export in `actions/tenants.ts` and `actions/units.ts`, plus `getPropertyDashboardData`/`fetchBanks`/`createSubaccount` in `actions/properties.ts`, now resolves `auth()` and verifies `property.ownerId` (unit-scoped functions resolve unit → property → owner); the unauthenticated USSD flow no longer calls these actions — it queries the db directly inside its own route-handler modules.
+
 The `"use server"` modules below do no `auth()` or ownership checks, and each module is pulled into the client graph by a form/hook import, so **every export becomes a POSTable endpoint** for any authenticated user:
 - `src/server/actions/tenants.ts:11` (`getTenants`), `:31` (`getTenantByUnitId`), `:57` (`addTenant`) — exposed via `src/components/forms/add-tenant-form.tsx:30`. Any signed-in user can read any property's tenant PII (names, phones, emails) and insert tenants into any landlord's units (also flips `unit.occupied`).
 - `src/server/actions/units.ts:13` (`getUnitTypes`), `:22` (`addUnit`), `:46` (`getUnits`), `:63` (`getUnitByName`), `:77` (`getUnitById`), `:91` (`getPropertyByUnitId`) — exposed via `src/components/forms/add-unit-form.tsx:29`. Cross-property reads and unit creation; `getPropertyByUnitId` leaks `subaccountCode`/bank details.
 - `src/server/actions/properties.ts:166` (`getPropertyDashboardData` — revenue, recent payments, tenant names) and `:25` (`fetchBanks`) — exposed via `src/components/forms/create-unit-type-form.tsx:41` (`createProperty` at `:95` is the only export that checks auth).
 Remediation: in every action, `await auth()`, then join to `property` and filter `eq(property.ownerId, userId)`; or route all client-reachable operations through `protectedProcedure` with ownership checks and stop importing these modules from client code.
 
-### C2. Page-level IDOR — /properties/[id]/* renders any property to any signed-in user
+### ~~C2. Page-level IDOR — /properties/[id]/* renders any property to any signed-in user~~
+**Status: fixed** — `properties/[id]/layout.tsx` now checks the id against `api.property.getAllUnderOwner()` (owner-filtered) and calls `notFound()` on miss, covering all child pages centrally.
+
 - `src/app/(protected)/properties/[id]/page.tsx:18-27` — existence check only (no `ownerId`), then `getUnits(id)` + dashboard data.
 - `src/app/(protected)/properties/[id]/tenants/page.tsx:14` — `getTenants(id)`: tenant PII for arbitrary property UUIDs.
 - `src/app/(protected)/properties/[id]/units/page.tsx:14`, `tenants/new/page.tsx:9`, `units/new/page.tsx:10` — same pattern.
 Remediation: verify `property.ownerId === userId` once in `src/app/(protected)/properties/[id]/layout.tsx` (currently no check, `layout.tsx:20`) and `notFound()` otherwise.
 
-### C3. tRPC IDOR — procedures keyed by id without ownership filter
+### ~~C3. tRPC IDOR — procedures keyed by id without ownership filter~~
+**Status: fixed** — `property.getPropertyDashboardData`, `tenant.addTenant`, `tenant.getTenantByUnitId`, and `unit.addUnit` now apply the same `property.ownerId = ctx.auth.userId` join/filter as `payment.getAllPropertyPayments`.
+
 All are live endpoints under `/api/trpc` for any authenticated user (several are unused by the UI but still exposed):
 - `src/server/api/routers/property.ts:108-111` — `getPropertyDashboardData` checks the property *exists* but not `eq(property.ownerId, userId)`; leaks revenue/payments/tenant names.
 - `src/server/api/routers/tenant.ts:15-34` — `addTenant` verifies the unit exists but not that its property belongs to `ctx.auth.userId`.
@@ -28,7 +34,9 @@ All are live endpoints under `/api/trpc` for any authenticated user (several are
 - `src/server/api/routers/unit.ts:19-22` — `addUnit` inserts into any `propertyId`.
 Remediation: add the `property.ownerId = ctx.auth.userId` join/filter to each (as `payment.getAllPropertyPayments` already does, `routers/payment.ts:18-24`).
 
-### C4. USSD callback: unauthenticated third-party charge initiation + unit oracle
+### ~~C4. USSD callback: unauthenticated third-party charge initiation + unit oracle~~
+**Status: fixed** — the route now requires a `?token=` shared secret (`USSD_CALLBACK_TOKEN`, compared with `crypto.timingSafeEqual`, 401 before any parsing) and rate-limits to 10 requests/phone number/minute via the existing Upstash Redis (INCR + EXPIRE, `END`-terminated message on exceed); `input-handlers.ts` now uses the validated `~/env`. **Operator follow-up:** `USSD_CALLBACK_TOKEN` is set in Vercel (done); append `?token=<value>` to the callback URL in the Africa's Talking dashboard.
+
 `src/middleware.ts:7` makes `/api/callbacks/ussd` public and `src/app/api/callbacks/ussd/route.ts:25` accepts any POST — there is no Africa's Talking source verification (no shared secret, no IP allowlist) and no rate limiting. `input-handlers.ts:118-160` then calls Paystack `/charge`, sending M-Pesa STK-push prompts to **arbitrary +254 numbers for attacker-chosen amounts** billed against real tenants' units; `input-validators.ts:39-70` doubles as a unit-id existence oracle.
 Remediation: authenticate the AT origin (shared header secret and/or IP allowlist), rate-limit per phoneNumber/sessionId with the existing Upstash Redis, and return a uniform message for unknown unit ids.
 

@@ -14,6 +14,7 @@ export const env = createEnv({
     PAYSTACK_SECRET_KEY: z.string(),
     UPSTASH_REDIS_URL: z.string().url(),
     UPSTASH_REDIS_REST_TOKEN: z.string(),
+    USSD_CALLBACK_TOKEN: z.string().min(16),
   },
 
   /**
@@ -35,6 +36,7 @@ export const env = createEnv({
     PAYSTACK_SECRET_KEY: process.env.PAYSTACK_SECRET_KEY,
     UPSTASH_REDIS_URL: process.env.UPSTASH_REDIS_URL,
     UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
+    USSD_CALLBACK_TOKEN: process.env.USSD_CALLBACK_TOKEN,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
 
