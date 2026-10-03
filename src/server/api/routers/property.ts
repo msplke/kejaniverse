@@ -105,21 +105,28 @@ export const propertyRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const { propertyId } = input;
+        const { userId } = ctx.auth;
+
         const currentProperty = await ctx.db
           .select({ id: property.id })
           .from(property)
-          .where(eq(property.id, propertyId));
+          .where(and(eq(property.id, propertyId), eq(property.ownerId, userId)))
+          .limit(1);
 
         if (!currentProperty[0]) {
           throw new TRPCError({
             code: "NOT_FOUND",
-            message: "Property not found",
+            message: "Property not found or you don't have access to it",
           });
         }
 
         const data = await getPropertyDashboardData(propertyId);
         return data;
       } catch (error) {
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+
         console.error("Error fetching property dashboard data:", error);
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",

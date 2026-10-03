@@ -14,6 +14,21 @@ export const unitRouter = createTRPCRouter({
     .input(AddUnitSchema)
     .mutation(async ({ ctx, input }) => {
       const { unitName, unitTypeId, propertyId } = input;
+      const { userId } = ctx.auth;
+
+      const propertyExists = await ctx.db
+        .select({ id: property.id })
+        .from(property)
+        .where(and(eq(property.id, propertyId), eq(property.ownerId, userId)))
+        .limit(1);
+
+      if (!propertyExists.length) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Property not found or you don't have access to it",
+        });
+      }
+
       const id = genUniqueId();
 
       const results = await ctx.db
