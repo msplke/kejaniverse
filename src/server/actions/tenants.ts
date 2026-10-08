@@ -2,13 +2,29 @@
 
 import "server-only";
 
-import { eq, sql } from "drizzle-orm";
+import { auth } from "@clerk/nextjs/server";
+import { and, eq, sql } from "drizzle-orm";
 
 import { type AddTenantFormPayload } from "~/lib/validators/tenant";
 import { db } from "~/server/db";
-import { tenant, unit } from "~/server/db/schema";
+import { property, tenant, unit } from "~/server/db/schema";
 
 export async function getTenants(propertyId: string) {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("User not authenticated");
+  }
+
+  const propertyExists = await db
+    .select({ id: property.id })
+    .from(property)
+    .where(and(eq(property.id, propertyId), eq(property.ownerId, userId)))
+    .limit(1);
+
+  if (propertyExists.length === 0) {
+    throw new Error("Property not found or you don't have access to it");
+  }
+
   const tenants = await db
     .select({
       id: tenant.id,
@@ -29,6 +45,22 @@ export async function getTenants(propertyId: string) {
 }
 
 export async function getTenantByUnitId(unitId: string) {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("User not authenticated");
+  }
+
+  const ownedUnit = await db
+    .select({ id: unit.id })
+    .from(unit)
+    .innerJoin(property, eq(unit.propertyId, property.id))
+    .where(and(eq(unit.id, unitId), eq(property.ownerId, userId)))
+    .limit(1);
+
+  if (ownedUnit.length === 0) {
+    throw new Error("Unit not found or you don't have access to it");
+  }
+
   const results = await db
     .select({
       id: tenant.id,
@@ -55,16 +87,22 @@ export async function getTenantByUnitId(unitId: string) {
  * @returns The id of the added tenant
  */
 export async function addTenant(data: AddTenantFormPayload) {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("User not authenticated");
+  }
+
   const unitExists = await db
-    .select()
+    .select({ unit })
     .from(unit)
-    .where(eq(unit.id, data.unitId))
+    .innerJoin(property, eq(unit.propertyId, property.id))
+    .where(and(eq(unit.id, data.unitId), eq(property.ownerId, userId)))
     .limit(1);
   if (unitExists.length === 0) {
     throw new Error("Unit does not exist");
   }
 
-  const unitOccupied = unitExists[0]?.occupied;
+  const unitOccupied = unitExists[0]?.unit.occupied;
   if (unitOccupied) {
     throw new Error("Unit is already occupied");
   }

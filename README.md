@@ -51,7 +51,7 @@ pnpm dev
 ## Notes
 
 - **Deployment:** Vercel builds and deploys the app. GitHub Actions CI runs lint + typecheck only — it does not build or gate deploys (`next.config.ts` also sets `typescript.ignoreBuildErrors` since typechecking happens in CI).
-- **Dependency policy:** pnpm `minimumReleaseAge: 1440` (packages must be ≥24h old to install) with **no exclusions**; all install-time build scripts are denied (`allowBuilds` all `false` in `pnpm-workspace.yaml`) — review before flipping any to `true`.
+- **Dependency policy:** pnpm 11's default minimum release age applies (packages must be ≥24h old to install) with **no exclusions** — don't add `minimumReleaseAgeExclude`. All install-time build scripts are denied (`allowBuilds` all `false` in `pnpm-workspace.yaml`) — review before flipping any to `true`.
 - **Pinned versions:** TypeScript is held at 5.9 (typescript-eslint support ceiling) and ESLint at 9 (`eslint-config-next` compatibility). Bump them together, not independently.
 - **UI components:** the `src/components/ui` wrappers are Base UI, not Radix. `components.json` still declares the legacy `new-york` style, so `shadcn add` would fetch Radix-based variants that no longer match — add new components manually. Per-component migration reports (API/behavior deltas, verify-by-hand checklists) live in `.migration/`.
 - **Env vars:** validated in `src/env.js` (t3-env). `SKIP_ENV_VALIDATION=1` skips validation for tooling/builds.

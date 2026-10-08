@@ -1,4 +1,4 @@
-import { env } from "process";
+import { eq } from "drizzle-orm";
 
 import {
   validateAmount,
@@ -12,8 +12,9 @@ import {
   setPhoneNumber,
   setUnitId,
 } from "~/app/api/callbacks/ussd/ussd-session-handler";
-import { getTenantByUnitId } from "~/server/actions/tenants";
-import { getPropertyByUnitId } from "~/server/actions/units";
+import { env } from "~/env";
+import { db } from "~/server/db";
+import { property, tenant, unit } from "~/server/db/schema";
 
 /**
  * @returns Welcome text with prompt to enter unit identifier.
@@ -122,9 +123,31 @@ export async function chargeUser(
 ): Promise<string> {
   let responseText;
   // Get tenant for the unit
+  // Note: queried directly (not via the server actions in ~/server/actions)
+  // because this flow is driven by the Africa's Talking gateway, which has
+  // no Clerk session — the actions now require an authenticated owner.
   try {
-    const { email: tenantEmail } = await getTenantByUnitId(unitId);
-    const { subaccountCode } = await getPropertyByUnitId(unitId);
+    const tenantRows = await db
+      .select({ email: tenant.email })
+      .from(tenant)
+      .innerJoin(unit, eq(unit.id, tenant.unitId))
+      .where(eq(unit.id, unitId))
+      .limit(1);
+    const tenantEmail = tenantRows[0]?.email;
+    if (!tenantEmail) {
+      throw new Error("Tenant not found");
+    }
+
+    const propertyRows = await db
+      .select({ subaccountCode: property.subaccountCode })
+      .from(unit)
+      .innerJoin(property, eq(unit.propertyId, property.id))
+      .where(eq(unit.id, unitId))
+      .limit(1);
+    const subaccountCode = propertyRows[0]?.subaccountCode;
+    if (!subaccountCode) {
+      throw new Error("Unit or property not found");
+    }
 
     const data: ChargeApiRequest = {
       // Paystack parses the amount in subunits, so we multiply by 100
