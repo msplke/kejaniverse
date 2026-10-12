@@ -1,3 +1,5 @@
+import { timingSafeEqual } from "node:crypto";
+
 import {
   handleAmount,
   handleConfirmation,
@@ -10,10 +12,31 @@ import {
   getUSSDSessionData,
   type USSDSessionData,
 } from "~/app/api/callbacks/ussd/ussd-session-handler";
+import { env } from "~/env";
+import { redis } from "~/server/redis";
 
 const responseHeaders = {
   "Content-Type": "text/plain",
 };
+
+const RATE_LIMIT_MAX_REQUESTS = 10;
+const RATE_LIMIT_WINDOW_SECONDS = 60;
+
+/**
+ * Constant-time comparison of the `token` query parameter against the
+ * shared secret configured in the Africa's Talking dashboard callback URL.
+ */
+function isValidCallbackToken(token: string | null): boolean {
+  if (!token) {
+    return false;
+  }
+  const expected = Buffer.from(env.USSD_CALLBACK_TOKEN);
+  const received = Buffer.from(token);
+  if (received.length !== expected.length) {
+    return false;
+  }
+  return timingSafeEqual(received, expected);
+}
 
 /**
  * Handles the USSD callback from the Afirca's Talking API.
@@ -23,6 +46,12 @@ const responseHeaders = {
  * The session is ended if the input is invalid.
  */
 export async function POST(req: Request) {
+  // Authenticate the Africa's Talking origin before any parsing or dispatch.
+  const token = new URL(req.url).searchParams.get("token");
+  if (!isValidCallbackToken(token)) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
   const validation = formDataSchema.safeParse(await req.formData());
   if (!validation.success) {
     console.error(
@@ -34,7 +63,28 @@ export async function POST(req: Request) {
     });
   }
 
-  const { text, sessionId } = validation.data;
+  const { text, sessionId, phoneNumber: callerPhoneNumber } = validation.data;
+
+  // Fixed-window rate limit per phone number.
+  try {
+    const rateLimitKey = `ussd-ratelimit:${callerPhoneNumber}`;
+    const requestCount = await redis.incr(rateLimitKey);
+    if (requestCount === 1) {
+      // Start the window when the counter is first created
+      await redis.expire(rateLimitKey, RATE_LIMIT_WINDOW_SECONDS);
+    }
+    if (requestCount > RATE_LIMIT_MAX_REQUESTS) {
+      return new Response("END Too many requests. Try again later.", {
+        status: 200,
+        headers: responseHeaders,
+      });
+    }
+  } catch (error) {
+    console.error("Error applying USSD rate limit:", error);
+    return new Response("END Something went wrong. Please try again later.", {
+      status: 200,
+    });
+  }
 
   if (text === "") {
     return new Response(welcome(), {

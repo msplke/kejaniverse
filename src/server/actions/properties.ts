@@ -3,7 +3,7 @@
 import "server-only";
 
 import { auth } from "@clerk/nextjs/server";
-import { desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
 
 import { env } from "~/env";
 import type {
@@ -23,6 +23,11 @@ import { payment, property, tenant, unit, unitType } from "~/server/db/schema";
  * @throws Error if the network request fails or Paystack returns a non-OK status
  */
 export async function fetchBanks() {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("User not authenticated");
+  }
+
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
@@ -65,6 +70,11 @@ export async function fetchBanks() {
  * @returns The newly created subaccount record
  */
 export async function createSubaccount(input: CreateSubaccountPayload) {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("User not authenticated");
+  }
+
   try {
     const res = await fetch("https://api.paystack.co/subaccount", {
       method: "POST",
@@ -164,6 +174,21 @@ export async function getProperties() {
 }
 
 export async function getPropertyDashboardData(propertyId: string) {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("User not authenticated");
+  }
+
+  const propertyExists = await db
+    .select({ id: property.id })
+    .from(property)
+    .where(and(eq(property.id, propertyId), eq(property.ownerId, userId)))
+    .limit(1);
+
+  if (propertyExists.length === 0) {
+    throw new Error("Property not found or you don't have access to it");
+  }
+
   // Get recent payments with tenant and unit info
   const recentPayments = await db
     .select({
