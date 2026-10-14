@@ -9,6 +9,8 @@ import "./src/env.js";
 const config: NextConfig = {
   /** We already run typechecking as a separate task in CI */
   typescript: { ignoreBuildErrors: true },
+  /** Keep `next dev` from writing an AGENTS.md into the repo */
+  agentRules: false,
 };
 
 export default config;
