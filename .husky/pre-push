@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -e
 pnpm lint
 pnpm format:check
 pnpm typecheck
