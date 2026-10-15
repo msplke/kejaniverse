@@ -170,8 +170,8 @@ importers:
         specifier: ^1.9.0
         version: 1.9.0(@date-fns/tz@1.5.0)(@types/react@19.3.0)(date-fns@4.4.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@clerk/nextjs':
-        specifier: ^7.9.14
-        version: 7.9.14(next@16.4.0(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@24.19.2)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        specifier: ^7.9.15
+        version: 7.9.15(next@16.4.0(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@24.19.2)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@hookform/resolvers':
         specifier: ^5.9.1
         version: 5.9.1(react-hook-form@7.90.0(@types/react@19.3.0)(react@19.3.0))(zod@4.6.7)
@@ -209,8 +209,8 @@ importers:
         specifier: ^0.45.4
         version: 0.45.4(@upstash/redis@1.39.0)(postgres@3.4.9)
       lucide-react:
-        specifier: ^1.55.0
-        version: 1.55.0(@types/react@19.3.0)(react@19.3.0)
+        specifier: ^1.56.0
+        version: 1.56.0(@types/react@19.3.0)(react@19.3.0)
       nanoid:
         specifier: ^6.0.2
         version: 6.0.2
@@ -414,8 +414,8 @@ packages:
     resolution: {integrity: sha512-QW2qJPY7xQyn5SrNWJ+xO7o6va60X9/v4nX8y5zq8OJFS10X7GlEz8s5PDKTgo6W6SWb8L3APhrZH+LTp7yuNw==}
     engines: {node: '>=20.9.0'}
 
-  '@clerk/nextjs@7.9.14':
-    resolution: {integrity: sha512-fHP9/D0zJCcC1DHJBoA/rlfMXLYBtgNoVE8T45jTBbdDeftLYIl6nJ4cbHERvNsc+D5MotTdrvZd5zenZ013EQ==}
+  '@clerk/nextjs@7.9.15':
+    resolution: {integrity: sha512-Qu3LdVycMjOoUeK8v8+GgSvQQnOnP/IRf+TMvHe7HexNveKnZpJJwrbjZmlwn1Sy79bEdpsmF1OAxbD9VI2SqA==}
     engines: {node: '>=20.9.0'}
     peerDependencies:
       next: ^15.2.8 || ^15.3.8 || ^15.4.10 || ^15.5.9 || ^15.6.0-0 || ^16.0.10 || ^16.1.0-0
@@ -1478,9 +1478,6 @@ packages:
 
   '@tailwindcss/postcss@4.3.3':
     resolution: {integrity: sha512-JTSZZGQi1AyKirbLN3azmjVzef92tcX7h+iSqPdaeStyFpGpDlKvvpxeOE8njhbUanbRwr3z8DyzhICWnMtQeg==}
-
-  '@tanstack/query-core@5.104.1':
-    resolution: {integrity: sha512-TiRghcrGkUTE+M4JBxvpPSpBhxvIzQairw+cksrHYGr+2uwC77yW1SY9nYxnYRYOppvucf8rEg6b5byoz4rTpw==}
 
   '@tanstack/query-core@5.104.2':
     resolution: {integrity: sha512-/qbsxJK5c3Ve1aFIULWYNcT2jeRUAiD4HME6Eu2ZdpofHoVgAjpkQhLg5xHuOoBkTPQUJLfP7zOxy0qsBcqROA==}
@@ -2683,8 +2680,8 @@ packages:
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
-  lucide-react@1.55.0:
-    resolution: {integrity: sha512-bSozQHiI3/8q7JvgoqVRGOYUi7fYT3siAZwmZsljjsOH2Husp/2ODdFf/leD+ZC/2yKfn7r8oh6yeoR3ITR5vA==}
+  lucide-react@1.56.0:
+    resolution: {integrity: sha512-b+hqj30/trHBma5r1zlKb6yLewQp6tUtnz9loc3xdrYerPmvLYhlEbyPVCJ8DOg2/blBf6lwPLznftFVACka6A==}
     peerDependencies:
       '@types/react': '*'
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -3454,7 +3451,7 @@ snapshots:
       - react
       - react-dom
 
-  '@clerk/nextjs@7.9.14(next@16.4.0(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@24.19.2)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@clerk/nextjs@7.9.15(next@16.4.0(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@24.19.2)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
     dependencies:
       '@clerk/backend': 3.23.2(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@clerk/react': 6.17.8(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -3474,7 +3471,7 @@ snapshots:
 
   '@clerk/shared@4.40.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
     dependencies:
-      '@tanstack/query-core': 5.104.1
+      '@tanstack/query-core': 5.104.2
       dequal: 2.0.3
       glob-to-regexp: 0.4.1
       js-cookie: 3.0.8
@@ -4108,8 +4105,6 @@ snapshots:
       '@tailwindcss/oxide': 4.3.3
       postcss: 8.5.30
       tailwindcss: 4.3.3
-
-  '@tanstack/query-core@5.104.1': {}
 
   '@tanstack/query-core@5.104.2': {}
 
@@ -5413,7 +5408,7 @@ snapshots:
     dependencies:
       yallist: 3.1.1
 
-  lucide-react@1.55.0(@types/react@19.3.0)(react@19.3.0):
+  lucide-react@1.56.0(@types/react@19.3.0)(react@19.3.0):
     dependencies:
       react: 19.3.0
     optionalDependencies:
